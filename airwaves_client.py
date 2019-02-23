@@ -58,7 +58,6 @@ def get_adsb_message(fields):
     msg.src = 'patate'  # TODO from cfg
     msg.data = ",".join(fields)
     msg.srcPos = False  # TODO add position support
-    msg.clientName = "airwaves_client"
     return msg
 
 
