@@ -52,7 +52,7 @@ function initMap() {
     window.layers = Object.assign({}, baseLayers, overlaysLayers);
 
     // Set up the map object.
-    map = new L.Map(document.getElementById('map')).setView([defaultLat, defaultLng], defaultZoom);
+    window.map = new L.Map(document.getElementById('map')).setView([defaultLat, defaultLng], defaultZoom);
     map.addLayer(layers["Black and White"]);
     map.addLayer(layers["OpenSeaMap"]);
 
