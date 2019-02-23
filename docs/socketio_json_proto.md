@@ -17,7 +17,6 @@ SBS Reference: http://woodair.net/sbs/article/barebones42_socket_data.htm
 |lon|Decoded longitude|float|field 16|
 |lat|Decoded latitude|float|field 15|
 |entryPoint|Connector component the data arrived in the stack from|string| |airwaves_client
-|dataOrigin|Data origin describes the software source of the data (dump1090/aisConn)|string| |dump1090
 |dts|Date/time stamp data hits system or is generated|str(datetime.utcnow())| |2019-02-23 15:34:49.495070
 |src|Name of source host.|string| |some_server
 |data|Raw data frame.|string| |MSG,3,1,1,407...

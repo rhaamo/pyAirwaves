@@ -53,11 +53,20 @@ def get_adsb_message(fields):
     msg.lon = float(fields[15]) if fields[15] else None
     msg.lat = float(fields[14]) if fields[14] else None
     msg.entryPoint = 'airwaves_client'
-    msg.dataOrigin = 'dump1090'  # TODO from cfg
     msg.dts = str(datetime.datetime.utcnow())
     msg.src = 'patate'  # TODO from cfg
+    msg.lastSrc = msg.src
     msg.data = ",".join(fields)
     msg.srcPos = False  # TODO add position support
+    msg.vertState = fields[21]
+    msg.vertRate = int(fields[16]) if fields[16] else None
+    msg.category = None
+    msg.icaoAACC = None
+    msg.velo = None
+    msg.heading = None
+    msg.supersonic = None
+    msg.clientName = "dump1090_adsb"  # todo from cfg
+    msg.lastClientName = msg.clientName
     return msg
 
 
