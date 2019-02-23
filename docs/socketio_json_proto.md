@@ -6,24 +6,35 @@ This is a work in progress, reverse ingeneered from AirSuck.
 
 SBS Reference: http://woodair.net/sbs/article/barebones42_socket_data.htm
 
-| Field name | Description | Type | SBS Field |
-| ---------- | ----------- | ---- | --------- |
-|type|Incoming data type – airAIS or airSSR|string||
-|addr|Vehicle address – will be a ICAO aircraft address or MMSI|string|field 5|
-|idInfo|Aircraft ID string|string|field 4|
+| Field name | Description | Type | SBS Field | Example,value |
+| ---------- | ----------- | ---- | --------- | ------------- |
+|   required   |
+|type|Incoming data type – airAIS or airSSR|string| |airAIS,airSSR
+|addr|Vehicle address – will be a ICAO aircraft address or MMSI|string|field 5|3C6426
+|idInfo|Aircraft ID string|string|field 4|1
 |aSquawk|Mode A squawk code. 4 character string representing four octal numbers.|string|field 18|
-|alt|Altitude data in feet|int|field 12|
+|alt|Altitude data in feet|int|field 12|29000
 |lon|Decoded longitude|float|field 16|
 |lat|Decoded latitude|float|field 15|
-|entryPoint|Connector component the data arrived in the stack from|string||
-|dataOrigin|Data origin describes the software source of the data (dump1090/aisConn)|string||
-|dts|Date/time stamp data hits system or is generated|str(datetime.utcnow())||
-|src|Name of source host.|string||
-|data|Raw data frame.|string||
+|entryPoint|Connector component the data arrived in the stack from|string| |airwaves_client
+|dataOrigin|Data origin describes the software source of the data (dump1090/aisConn)|string| |dump1090
+|dts|Date/time stamp data hits system or is generated|str(datetime.utcnow())| |2019-02-23 15:34:49.495070
+|src|Name of source host.|string| |some_server
+|data|Raw data frame.|string| |MSG,3,1,1,407...
 |srcPos|Is srcPos available|boolean|
-|srcLat|Data source latitude|float||
-|srcLon|Data source longitude|float||
-|srcPosMeta|Metadata about how srcLat and srcLon are derived.|string||
+|srcLat|Data source latitude|float| |
+|srcLon|Data source longitude|float| |
+|srcPosMeta|Metadata about how srcLat and srcLon are derived.|string| |
+|  optional  |
+|vertStat|Vertical status of vehicle (air/gnd)|string|field 22, |gnd,air
+|vertRate|Aircraft climb or decline rate in feet/min.|int|field 17|
+|category|Category|string| |
+|icaoAACC|Country code of the block the ICAO AA is in. (Might also be “ICAO” reserved)|string| |
+|velo|Veocity in knots|float| |
+|heading|Heading data|float| |
+|supersonic|True if aircraft is moving at supersonic speeds|bool| |
+|clientName|Data source name|string| |dump1090_ant_b|
+
 
 ## AIS (rtl-ais)
 
