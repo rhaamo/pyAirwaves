@@ -10,6 +10,7 @@ import socket
 import time
 import datetime
 from flask_socketio import SocketIO
+import config as cfg
 
 sources = [
     {'name': 'ADSB', 'host': 'patate', 'port': 30003, 'type': 'adsb'},
@@ -56,7 +57,7 @@ def slice_adsb_message(fields):
 
 
 if __name__ == "__main__":
-    socketio = SocketIO(message_queue='redis://127.0.0.1:6379/3')
+    socketio = SocketIO(message_queue=cfg.SOCKETIO_MESSAGE_QUEUE)
 
     while count_failed_connection < max_failed_connection:
         try:
@@ -119,7 +120,10 @@ if __name__ == "__main__":
                 if len(line) == 22:
                     if is_valid_adsb_message(line):
                         adsb_message = slice_adsb_message(line)
-                        socketio.emit('adsb-new', {'message': adsb_message})
+                        # Emit Socket.IO message only if altitude, latitude and longitude are set
+                        # AKA a "MSG,3" message and perhaps a "MSG,2" (Surface position)
+                        if adsb_message['field12'] and adsb_message['field15'] and adsb_message['field16']:
+                            socketio.emit('adsb-new', {'message': adsb_message})
                     # It's valid, reset stream message
                     data_str = ""
                 else:
