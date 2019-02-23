@@ -11,11 +11,7 @@ import time
 import datetime
 from flask_socketio import SocketIO
 import config as cfg
-
-sources = [
-    {'name': 'ADSB', 'host': 'patate', 'port': 30003, 'type': 'adsb'},
-    {'name': 'AIS', 'host': 'patate', 'port': 0, 'type': 'dummy'}
-]
+from structs import AdsbType
 
 count_failed_connection = 0
 max_failed_connection = 10
@@ -47,13 +43,23 @@ def is_valid_adsb_message(fields):
     return is_valid
 
 
-def slice_adsb_message(fields):
-    start = 1
-    message = {}
-    for field in fields:
-        message[f"field{start}"] = field
-        start += 1
-    return message
+def get_adsb_message(fields):
+    # Remember that fields start at 1 but python array at 0, so field 3 (session ID) is at position 2
+    msg = AdsbType()
+    msg.addr = fields[4]  # int(fields[4], 16)
+    msg.idInfo = fields[3]
+    msg.aSquawk = fields[17]
+    msg.alt = int(fields[11]) if fields[11] else None
+    msg.lon = float(fields[15]) if fields[15] else None
+    msg.lat = float(fields[14]) if fields[14] else None
+    msg.entryPoint = 'airwaves_client'
+    msg.dataOrigin = 'dump1090'  # TODO from cfg
+    msg.dts = str(datetime.datetime.utcnow())
+    msg.src = 'patate'  # TODO from cfg
+    msg.data = ",".join(fields)
+    msg.srcPos = False  # TODO add position support
+    msg.clientName = "airwaves_client"
+    return msg
 
 
 if __name__ == "__main__":
@@ -119,23 +125,13 @@ if __name__ == "__main__":
                 # we need 22 items to be a valid looking message
                 if len(line) == 22:
                     if is_valid_adsb_message(line):
-                        adsb_message = slice_adsb_message(line)
+                        adsb_message = get_adsb_message(line)
                         # Emit Socket.IO message only if altitude, latitude and longitude are set
                         # AKA a "MSG,3" message and perhaps a "MSG,2" (Surface position)
-                        if adsb_message['field12'] and adsb_message['field15'] and adsb_message['field16']:
-                            lol = {
-                                "type": "airSSR",
-                                "src": "patate",
-                                "entryPoint": "",
-                                "dts": "",
-                                "data": "",
-                                "dataOrigin": "dump1090",
-                                "alt": float(adsb_message['field12']),
-                                "lat": float(adsb_message['field15']),
-                                "lon": float(adsb_message['field16']),
-                                "addr": adsb_message['field5'] # should be ICAO / MMSI, uses Mode S hex ident
-                            }
-                            socketio.emit('message', lol)
+                        if adsb_message.has_location():
+                            adsb_message.dts = ''
+                            print(adsb_message.to_dict())
+                            socketio.emit('message', adsb_message.to_dict())
                     # It's valid, reset stream message
                     data_str = ""
                 else:
