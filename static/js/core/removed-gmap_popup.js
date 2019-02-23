@@ -17,7 +17,7 @@ function infoFactory(vehName) {
 
     // Which position type do we have?
     // ADS-B/SSR
-    if (vehData[vehName].type == "airSSR") {
+    if (vehData[vehName].type === "airSSR") {
         // Build an aircraft identity string.
         var idStr = "";
         var catStr = "--";
@@ -89,9 +89,9 @@ function infoFactory(vehName) {
 
         // If we have supersonic data...
         if ("supersonic" in vehData[vehName]) {
-            if (vehData[vehName].supersonic == 0) {
+            if (vehData[vehName].supersonic === 0) {
                 supersonicStr = "No";
-            } else if (vehData[vehName].supersonic == 1) {
+            } else if (vehData[vehName].supersonic === 1) {
                 supersonicStr = "Yes";
             }
         }
@@ -107,7 +107,7 @@ function infoFactory(vehName) {
 
         // If we have some sort of emergency...
         if ('emergency' in vehData[vehName]) {
-            if ((vehData[vehName].emergency == true) && ("emergencyData" in vehData[vehName])) {
+            if ((vehData[vehName].emergency === true) && ("emergencyData" in vehData[vehName])) {
                 retVal += "<tr><td class=\"tblEmerg\" colspan=4>** EMERGENCY **</td></tr>";
                 retVal += "<td class=\"tblEmerg\" colspan=4>Description - " + vehData[vehName].emergencyData + "</td></tr>";
             }
@@ -123,7 +123,7 @@ function infoFactory(vehName) {
     }
 
     // AIS
-    else if (vehData[vehName].type == "airAIS") {
+    else if (vehData[vehName].type === "airAIS") {
         // Build a ship identity string.
         var idStr = "";
         var veloStr = "--";
@@ -148,7 +148,7 @@ function infoFactory(vehName) {
 
         // If we an IMO that doesn't check out...
         if ("imoCheck" in vehData[vehName]) {
-            if (vehData[vehName].imoCheck == false) {
+            if (vehData[vehName].imoCheck === false) {
                 imoFlagStr = "*";
             }
         }
@@ -170,7 +170,7 @@ function infoFactory(vehName) {
 
         // If we have heading data...
         if ("heading" in vehData[vehName]) {
-            if (vehData[vehName].heading != 511) {
+            if (vehData[vehName].heading !== 511) {
                 headingStr = vehData[vehName].heading;
             }
         }
@@ -194,7 +194,7 @@ function infoFactory(vehName) {
 
         // If we have navigation status data...
         if ("callsign" in vehData[vehName]) {
-            if (vehData[vehName].callsign != "") {
+            if (vehData[vehName].callsign !== "") {
                 callsignStr = vehData[vehName].callsign;
             }
         }
@@ -248,31 +248,31 @@ function infoFactory(vehName) {
         retVal += "<tr><td class=\"tblHeader\">Callsign</td><td class=\"tblCell\">" + callsignStr + "</td><td class=\"tblHeader\">Draught</td><td class=\"tblCell\">" + draughtStr + " m</td></tr>";
         retVal += "<tr><td class=\"tblHeader\">Turn rate</td><td class=\"tblCell\">" + turnRtStr + " deg</td><td class=\"tblHeader\">Dim.</td><td class=\"tblCell\">" + dimStr + " m</td></tr>";
 
-        if (posStr != "--") {
+        if (posStr !== "--") {
             retVal += "<tr><td class=\"tblHeader\">Position</td><td colspan=3 class=\"tblCell\">" + posStr + "</td></tr>";
         }
 
 
-        if (navStatStr != "--") {
+        if (navStatStr !== "--") {
             retVal += "<td class=\"tblHeader\">NavStat</td><td colspan=3 class=\"tblCell\">" + navStatStr + "</td></tr>";
         }
 
         // If we have ship type data...
         if ('shipTypeMeta' in vehData[vehName]) {
-            if (vehData[vehName].shipTypeMeta != "") {
+            if (vehData[vehName].shipTypeMeta !== "") {
                 retVal += "<td class=\"tblHeader\">Ship type</td><td colspan=3 class=\"tblCell\">" + vehData[vehName].shipTypeMeta + "</td></tr>";
             }
         }
 
         // If we have destination data...
         if ('destination' in vehData[vehName]) {
-            if (vehData[vehName].destination != "") {
+            if (vehData[vehName].destination !== "") {
                 retVal += "<td class=\"tblHeader\">Dest.</td><td colspan=3 class=\"tblCell\">" + vehData[vehName].destination + "</td></tr>";
             }
         }
 
         // If we have ETA data...
-        if (etaStr != "--") {
+        if (etaStr !== "--") {
             retVal += "<td class=\"tblHeader\">ETA</td><td colspan=3 class=\"tblCell\">" + etaStr + "</td></tr>";
         }
 
@@ -283,7 +283,7 @@ function infoFactory(vehName) {
 
         // If we have some sort of emergency...
         if ('emergency' in vehData[vehName]) {
-            if ((vehData[vehName].emergency == true) && ("emergencyData" in vehData[vehName])) {
+            if ((vehData[vehName].emergency === true) && ("emergencyData" in vehData[vehName])) {
                 retVal += "<tr><td class=\"tblEmerg\" colspan=4>** EMERGENCY **</td></tr>";
                 retVal += "<td class=\"tblEmerg\" colspan=4>Description - " + vehData[vehName].emergencyData + "</td></tr>";
             }

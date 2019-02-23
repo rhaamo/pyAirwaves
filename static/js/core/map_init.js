@@ -31,7 +31,7 @@ function initMap() {
                 if (error.code === error.PERMISSION_DENIED) {
                     console.log("GeoLocation denied, defaulting to server's one.");
                 }
-            })
+            });
         } else {
             console.log("GeoLocation deactivated, defaulting to server's one.");
         }

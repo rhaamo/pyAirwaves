@@ -44,7 +44,7 @@ function setupSidebar() {
             }
             $('#sidebar-header').append('<i id="button-list-' + vehicleTypes[index].domName + '" class="fa ' + vehicleTypes[index].faIcon + ' sidebar-button"></i>');
             // set the first icon to active
-            if (index == 0) {
+            if (index === 0) {
                 $('#button-list-' + vehicleTypes[index].domName).addClass('active');
             }
         }
@@ -124,7 +124,7 @@ function setupSidebar() {
         // Flag sidebar as loaded.
         sidebarLoaded = true;
     }
-};
+}
 
 // sets up the sidebar search tab
 function loadSidebarSearch(container) {

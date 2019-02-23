@@ -65,7 +65,7 @@ Ship.prototype.parseName = function () {
     // If we have a valid IMO
     if (this.imo) {
         if (this.imo > 0) {
-            idStr += "(" + this.imo + ((this.imoCheck == false) ? "*" : "") + ") ";
+            idStr += "(" + this.imo + ((this.imoCheck === false) ? "*" : "") + ") ";
         }
     }
     // We should always have an MMSI address.

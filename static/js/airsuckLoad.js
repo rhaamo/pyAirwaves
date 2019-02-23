@@ -21,20 +21,17 @@ var sidebarLoaded = false;
 /***************************************************
  * LOAD CONFIG OPTIONS AND HELPER SCRIPTS
  **************************************************/
-// Load config options
 $.getScript("static/js/config.js", function () {
     if (debug) {
-        $('.dbgBx').addClass('dbgActive');
         $('.msgBx').addClass('dbgActive');
     }
     // set the html object ID for sending on-screen debug and messages
-    window.debugBx = 'debugBx';//name of the debug input ID
-    window.messageBx = 'message';//name of the message input ID
-});// Load script dependencies
+    window.messageBx = 'message';
+});
 
 // Load Socket.IO
 $.getScript("static/js/socket.io.js", function () {
-    window.socket = io();// Instanciate Socket.IO
+    window.socket = io();
 });
 
 /***************************************************
@@ -99,12 +96,12 @@ $(document).ready(function () {
         polyRamp.setNumberRange(minimumAltitude, maximumAltitude);
         polyRamp.setSpectrum(spectrum[0], spectrum[1], spectrum[2], spectrum[3]);
     });
-    // Global Maps objects are global. :)
+    // Globals
     window.map = null;
     window.layers = null;
     window.mapLoaded = false;
     window.vehData = {}; // Create a generic array to hold our vehicle data
     $.getScript("static/js/core/map_init.js", function () {
         initMap();
-    }); // Load and init the map
+    });
 });

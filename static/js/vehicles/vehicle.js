@@ -87,12 +87,12 @@ function vehicleMarkerClickListener(vehName) {
 
 function vehicleTableRowClickListener(vehName) {
     // check the string for validity
-    if (vehName == 'undefined') {
+    if (vehName === 'undefined') {
         if (debug) {
             console.log('Error: ID passed to vehicleTableRowClickListener is invalid.');
         }
         return false;
-    } else if (vehName.substring(0, 2) != 'veh') {
+    } else if (vehName.substring(0, 2) !== 'veh') {
         vehName = 'veh' + vehName;//missing veh at the beginning, add
     }
     if (debug) {
@@ -397,7 +397,7 @@ Vehicle.prototype.update = function (msgJSON) {
     // update data in the object
     $.extend(true, this, msgJSON);
     // if not set to active, reactivate
-    if (this.active == false) {
+    if (this.active === false) {
         this.active = true;
         // Reset so the counter bounces up to 1.
         this.spinState = 0;
@@ -407,7 +407,7 @@ Vehicle.prototype.update = function (msgJSON) {
     if (this.spinState < (spinnerAnim.length - 2)) {
         // Increment the animation counter.
         this.spinState++;
-    } else if (this.spinState == (spinnerAnim.length - 2)) {
+    } else if (this.spinState === (spinnerAnim.length - 2)) {
         // Reset counter at 1. We do this to make sure we have > 1 frame from the target.
         this.spinState = 1;
     }
@@ -492,7 +492,7 @@ Vehicle.prototype.checkExpiration = function () {
     // Return Active, Halflife, or Expired
     if (vehDelta >= this.maxAge) {
         return ('Expired');
-    } else if ((vehDelta >= (this.maxAge / 2)) && (this.active == true)) {
+    } else if ((vehDelta >= (this.maxAge / 2)) && (this.active === true)) {
         // Set to inactive animation.
         this.spinState = spinnerAnim.length - 1;
         return ('Halflife');
@@ -515,4 +515,4 @@ function registerVehicleType(newProtocol, newDomName, newFaIcon, newConstructor,
         constructor: newConstructor,// constructor function for this vehicle type
         buildTable: newTableHeader// header row to use for this vehicle type in its' data table
     });
-};
+}

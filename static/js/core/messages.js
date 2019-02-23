@@ -59,7 +59,7 @@ function handleMessage(msgJSON) {
             console.log('msgJson: ');
             console.log(msgJSON);
             console.log('msgJson END');
-            if (msgJSON.type == vehicleTypes[index].protocol) {
+            if (msgJSON.type === vehicleTypes[index].protocol) {
                 if (debug) {
                     console.log('New vehicle found, type registered: ' + msgJSON.type);
                 }
@@ -92,7 +92,7 @@ function handleMessage(msgJSON) {
                     }
                 }
                 break;
-            } else if (index == length) {
+            } else if (index === length) {
                 // vehicle type not registered, drop data
                 if (debug) {
                     console.log('New vehicle found, type not registered: ' + msgJSON.type + ' Dropping data.')

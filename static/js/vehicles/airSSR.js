@@ -58,7 +58,7 @@ Aircraft.prototype.update = function (msgJSON) {
     // update data in the object **do this first**
     $.extend(true, this, msgJSON);
     // if not set to active, reactivate
-    if (this.active == false) {
+    if (this.active === false) {
         this.active = true;
         // Reset so the counter bounces up to 1.
         this.spinState = 0;
@@ -68,13 +68,13 @@ Aircraft.prototype.update = function (msgJSON) {
     if (this.spinState < (spinnerAnim.length - 2)) {
         // Increment the animation counter.
         this.spinState++;
-    } else if (this.spinState == (spinnerAnim.length - 2)) {
+    } else if (this.spinState === (spinnerAnim.length - 2)) {
         // Reset counter at 1. We do this to make sure we have > 1 frame from the target.
         this.spinState = 1;
     }
 
     // set the path color if we have an altitude
-    if (this.alt != 'undefined' && this.alt != null) {
+    if (this.alt !== 'undefined' && this.alt != null) {
         this.stkColor = "#" + polyRamp.colourAt(this.alt / 1000); // Color of the path
     }
     // update the last update parameter
@@ -93,7 +93,7 @@ Aircraft.prototype.parseName = function () {
     // If we have a plane/flight ID
     if (this.idInfo) {
         // If we have 'default' or 'blank' idInfo field
-        if (this.idInfo != "@@@@@@@@") {
+        if (this.idInfo !== "@@@@@@@@") {
             // Just blank the field.
             idStr += this.idInfo + " ";
         }
