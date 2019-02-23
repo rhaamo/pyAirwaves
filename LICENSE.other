@@ -16,7 +16,6 @@ Files imported from AirSuck (https://github.com/ThreeSixes/airSuck) (not exhaust
  - static/js/plugins/rainbowvis.js
  - static/js/core/sidebar.js
  - static/js/core/messages.js
- - static/js/core/removed-gmap_popup.js
  - static/js/core/map_init.js
  - static/js/vehicles/airSSR.js
  - static/js/vehicles/airAIS.js
