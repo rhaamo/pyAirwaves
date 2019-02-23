@@ -58,7 +58,10 @@ def get_adsb_message(fields):
     msg.lastSrc = msg.src
     msg.data = ",".join(fields)
     msg.srcPos = False  # TODO add position support
-    msg.vertState = fields[21]
+    if fields[21] == 0 or fields[21] == '0':
+        msg.vertStat = 'air'
+    else:
+        msg.vertStat = 'gnd'
     msg.vertRate = int(fields[16]) if fields[16] else None
     msg.category = None
     msg.icaoAACC = None

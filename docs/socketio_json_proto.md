@@ -33,6 +33,7 @@ SBS Reference: http://woodair.net/sbs/article/barebones42_socket_data.htm
 |heading|Heading data|float| |
 |supersonic|True if aircraft is moving at supersonic speeds|bool| |
 |clientName|Data source name|string| |dump1090_ant_b|
+|fs|Flight status bit|int|
 
 
 ## AIS (rtl-ais)

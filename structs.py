@@ -65,7 +65,7 @@ class AdsbType(DefaultType):
         self.srcPosMeta: str = None
 
         # Vertical status of vehicle (air/gnd)
-        self.vertState: str = None
+        self.vertStat: str = None
 
         # Aircraft climb or decline rate in feet/min.
         self.vertRate: int = None
