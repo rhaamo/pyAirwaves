@@ -5,19 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>pyAirwaves</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
 </head>
 <body>
-yolo here
+<div class="galaxy">
+    <div class="sidebar"></div>
+    <div id="world"></div>
+</div>
 
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-<script type="text/javascript" charset="utf-8">
-    var socket = io.connect('http://' + document.domain + ':' + location.port);
-    socket.on('connect', function() {
-        socket.emit('my event', {data: 'I\'m connected!'});
-    });
-    socket.on('adsb-new', function(data) {
-        console.log('adsb-new: ' + data.message);
-    });
-</script>
+<script src="{{ url_for('static', filename='js/leaflet-src.js') }}"></script>
+<script src="{{ url_for('static', filename='js/leaflet-providers.js') }}"></script>
+<script src="{{ url_for('static', filename='js/leaflet.planemarker.js') }}"></script>
+<script src="{{ url_for('static', filename='js/leaflet.boatmarker.js') }}"></script>
+<script src="{{ url_for('static', filename='js/socket.io.js') }}"></script>
+<script src="{{ url_for('static', filename='js/pyairwaves/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/pyairwaves/map.js') }}"></script>
+<script src="{{ url_for('static', filename='js/pyairwaves/socketio.js') }}"></script>
+
 </body>
 </html>

@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica, Arial, "Lucia Grande", sans-serif;
+    font-size: 10px;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+div.galaxy {
+    height: 100%;
+}
+
+div.sidebar {
+    width: 25%;
+    right: 0;
+    background-color: lightblue;
+    float: right;
+    height: 100%;
+}
+
+div#world {
+    margin-right: 25%;
+    height: 100%;
+}
