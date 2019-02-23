@@ -5,4 +5,7 @@ db = SQLAlchemy()
 make_searchable(db.metadata)
 
 
-# #### Base ####
+class FaaMfr(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    icao = db.Column(db.String(10), nullable=False, unique=True)
+    mfr = db.Column(db.String(255), nullable=False)

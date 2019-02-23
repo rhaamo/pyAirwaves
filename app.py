@@ -13,7 +13,7 @@ from models import db
 import texttable
 from flask_debugtoolbar import DebugToolbarExtension
 
-from utils import InvalidUsage
+from utils import InvalidUsage, utils_download_and_ingest_faa
 
 from pprint import pprint as pp
 import click
@@ -185,6 +185,11 @@ def create_app(config_filename="config.py", app_name=None, register_blueprints=T
         """Seed database with default content"""
         #make_db_seed(db)
         pass
+
+    @app.cli.command()
+    def download_and_ingest_faa():
+        """Downloads and ingest FAA datas"""
+        utils_download_and_ingest_faa()
 
     return app
 
