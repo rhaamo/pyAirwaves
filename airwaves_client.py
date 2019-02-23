@@ -19,6 +19,42 @@ sources = [
 count_failed_connection = 0
 max_failed_connection = 10
 
+
+# Do some basic checks on the ADS-B received message
+# http://woodair.net/sbs/article/barebones42_socket_data.htm
+def is_valid_adsb_message(fields):
+    is_valid = False
+
+    if len(fields) == 22:
+        is_valid = True
+
+    if fields[0].upper() in ['MSG', 'STA', 'ID', 'AIR', 'SEL', 'CLK']:
+        is_valid = True
+    else:
+        logging.error(f"Field 1 invalid : '{fields[0]}'")
+        logging.error(f"Invalid ADSB Message: '{fields}'")
+
+    if int(fields[1]) in [1, 2, 3, 4, 5, 6, 7, 8]:
+        is_valid = True
+    else:
+        logging.error(f"Field 2 invalid: '{fields[1]}'")
+        logging.error(f"Invalid ADSB Message: '{fields}'")
+
+    if not is_valid:
+        logging.error(f"Invalid ADSB Message: '{fields}'")
+
+    return is_valid
+
+
+def slice_adsb_message(fields):
+    start = 1
+    message = {}
+    for field in fields:
+        message[f"field{start}"] = field
+        start += 1
+    return message
+
+
 if __name__ == "__main__":
     socketio = SocketIO(message_queue='redis://127.0.0.1:6379/3')
 
@@ -47,7 +83,7 @@ if __name__ == "__main__":
             ts = cur_time.strftime("%H:%M:%S")
 
             try:
-                message = sock.recv(128)
+                message = sock.recv(512)
                 data_str += message.decode().strip("\n")
             except socket.error:
                 pass
@@ -73,19 +109,21 @@ if __name__ == "__main__":
 
                 continue
 
+            # split if multiple messages have been received
             data = data_str.split("\n")
 
-            # http://woodair.net/sbs/article/barebones42_socket_data.htm
-
             for d in data:
+                d = d.strip()
                 line = d.split(",")
-
+                # we need 22 items to be a valid looking message
                 if len(line) == 22:
-                    print(f"VALID DATA: {len(line)}: {d}")
-                    socketio.emit('adsb-new', {'message': d})
+                    if is_valid_adsb_message(line):
+                        adsb_message = slice_adsb_message(line)
+                        socketio.emit('adsb-new', {'message': adsb_message})
+                    # It's valid, reset stream message
                     data_str = ""
                 else:
-                    #print(f"INVALID DATA: {len(line)}: {d}")
+                    # stream message still too short
                     data_str = d
                     continue
 
