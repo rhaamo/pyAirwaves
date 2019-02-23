@@ -1,16 +1,12 @@
 import datetime
 import hashlib
 import os
-import subprocess
 from os.path import splitext
 import csv
 import zipfile
 import pycurl
 
 from flask import current_app
-from flask_security import current_user
-
-from models import db, FaaMfr
 
 
 class InvalidUsage(Exception):
@@ -109,61 +105,22 @@ def ingest_faa_aircrafts(file: str):
 
             if data_row:
                 # Type-correct our CSV data.
-                try:
-                    this_row.update({"mfgName": row[1].strip()})
-                except:
-                    None
-
-                try:
-                    this_row.update({"modelName": row[2].strip()})
-                except:
-                    None
-
-                try:
-                    this_row.update({"acType": int(row[3].strip())})
-                except:
-                    None
-
-                try:
-                    this_row.update({"engType": int(row[4].strip())})
-                except:
-                    None
-
-                try:
-                    this_row.update({"acCat": int(row[5].strip())})
-                except:
-                    None
-
-                try:
-                    this_row.update({"buldCert": int(row[6].strip())})
-                except:
-                    None
-
-                try:
-                    this_row.update({"engCt": int(row[7].strip())})
-                except:
-                    None
-
-                try:
-                    this_row.update({"seatCt": int(row[8].strip())})
-                except:
-                    None
-
-                try:
-                    this_row.update({"weight": int(row[9].replace("CLASS ", "").strip())})
-                except:
-                    None
-
-                try:
-                    this_row.update({"cruiseSpd": int(row[10].strip())})
-                except:
-                    None
+                this_row.update({"mfgName": row[1].strip()})
+                this_row.update({"modelName": row[2].strip()})
+                this_row.update({"acType": int(row[3].strip())})
+                this_row.update({"engType": int(row[4].strip())})
+                this_row.update({"acCat": int(row[5].strip())})
+                this_row.update({"buldCert": int(row[6].strip())})
+                this_row.update({"engCt": int(row[7].strip())})
+                this_row.update({"seatCt": int(row[8].strip())})
+                this_row.update({"weight": int(row[9].replace("CLASS ", "").strip())})
+                this_row.update({"cruiseSpd": int(row[10].strip())})
 
                 print(this_row)
                 rows.update({row[0].strip(): this_row})
 
             else:
-                dataRow = True
+                data_row = True
 
             # Then eat the datas
             # print(rows)
@@ -177,21 +134,16 @@ def utils_download_and_ingest_faa():
     print("Downloading file...")
 
     try:
-        try:
-            os.makedirs(current_app.config["FAA_DL_TEMP_PATH"])
-        except OSError:
-            None
-        except:
-            raise
+        os.makedirs(current_app.config["FAA_DL_TEMP_PATH"])
+    except OSError:
+        None
 
-        with open(file_target, "wb") as zip_file:
-            crl = pycurl.Curl()
-            crl.setopt(crl.URL, current_app.config["FAA_ARCHIVE_URL"])
-            crl.setopt(crl.WRITEDATA, zip_file)
-            crl.perform()
-            crl.close()
-    except:
-        raise
+    with open(file_target, "wb") as zip_file:
+        crl = pycurl.Curl()
+        crl.setopt(crl.URL, current_app.config["FAA_ARCHIVE_URL"])
+        crl.setopt(crl.WRITEDATA, zip_file)
+        crl.perform()
+        crl.close()
 
     print("Extracting files...")
 
@@ -199,13 +151,11 @@ def utils_download_and_ingest_faa():
         # Open and extract MASTER, AIRCRAFT and ENGINE
         zip = zipfile.ZipFile(file_target, "r")
         zip.extractall(current_app.config["FAA_DL_TEMP_PATH"], ["MASTER.txt", "ACFTREF.txt", "ENGINE.txt"])
-    except:
-        raise
     finally:
         zip.close()
 
     aircrafts_file = os.path.join(current_app.config["FAA_DL_TEMP_PATH"], "ACFTREF.txt")
-    engines_file = os.path.join(current_app.config["FAA_DL_TEMP_PATH"], "ENGINE.txt")
-    master_file = os.path.join(current_app.config["FAA_DL_TEMP_PATH"], "MASTER.txt")
+    # engines_file = os.path.join(current_app.config["FAA_DL_TEMP_PATH"], "ENGINE.txt")
+    # master_file = os.path.join(current_app.config["FAA_DL_TEMP_PATH"], "MASTER.txt")
 
     ingest_faa_aircrafts(aircrafts_file)

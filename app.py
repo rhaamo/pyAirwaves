@@ -16,7 +16,6 @@ from flask_debugtoolbar import DebugToolbarExtension
 from utils import InvalidUsage, utils_download_and_ingest_faa
 
 from pprint import pprint as pp
-import click
 
 from version import VERSION
 
