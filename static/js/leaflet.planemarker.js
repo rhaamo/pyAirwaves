@@ -189,7 +189,7 @@ L.PlaneMarker = L.Marker.extend({
 	}
 });
 
-L.PlaneMarker = function(pos, options) {
+L.planeMarker = function(pos, options) {
 
 	var c = ("color" in options) ? options.color : "#f1c40f";
 	var i = ("idleCircle" in options) ? options.idleCircle : false;
