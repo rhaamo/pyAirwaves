@@ -3,6 +3,7 @@
  * v1.1.0
  * Thomas Brüggemann
  * https://github.com/thomasbrueggemann/leaflet.boatmarker
+ * See COPYING.other in airSuck for icon source
  */
 
 /* BOAT ICON */
@@ -188,7 +189,7 @@ L.PlaneMarker = L.Marker.extend({
 	}
 });
 
-L.planeMarker = function(pos, options) {
+L.PlaneMarker = function(pos, options) {
 
 	var c = ("color" in options) ? options.color : "#f1c40f";
 	var i = ("idleCircle" in options) ? options.idleCircle : false;

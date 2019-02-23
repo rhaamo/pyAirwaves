@@ -1,0 +1,135 @@
+/***********************************************************
+ * Airsuck User Interface Sidebar CSS
+ * v. 0.1
+ *
+ * Sidebar styling for airsuck UI-Sidebar
+ *
+ * Licensed under GPL V3
+ * https://github.com/ThreeSixes/airSuck
+ *
+ **********************************************************/
+
+/* Button for the sidebar on the main page */
+#sidebar-icon {
+    /* uses font-awesome chevron-left */
+    position:absolute;
+    right:10px;
+    top:50%;
+    font-size:30px;
+    color:#ff9900;
+    z-index:999;
+}
+
+#sidebar-icon:hover {
+    color:#000000;
+}
+
+/* Sidebar structure - main container and primary structure */
+#sidebar {
+    width:30%;
+    height:100%;
+    position:absolute;
+    right:0;
+    top:0;
+    z-index:998;
+    background-color:#ffffff;
+    padding:10px;
+    overflow:scroll;
+}
+
+#sidebar h1 {
+    text-align:center;
+    font-size:18px;
+    margin:10px 0px 10px 0px;
+}
+
+#sidebar-header {
+    width:100%;
+    border-bottom:1px solid #000000;
+    text-align:center;
+    }
+
+#sidebar-body {}
+
+#sidebar-footer {}
+
+/* Elements within #sidebar-header */
+.sidebar-button {
+    width:33%;
+    /*border:1px solid #000000;
+    border-radius:3px;*/
+    margin:10px 0px 10px 0px;
+    font-size:24px;
+    cursor:pointer;
+}
+
+.sidebar-button.active, .sidebar-button:hover {
+    color:#ff9900;
+}
+
+/* Sub-containers within #sidebar-body */
+
+.sidebar-container {}
+
+
+/* Vehicle List Container */
+
+.vehicle-table {
+    width:100%;
+    max-height:300px;
+    overflow:auto;
+    border-collapse:collapse;
+}
+
+.vehicle-table tbody {
+}
+
+.vehicle-table th {
+    height:30px;
+}
+
+.vehicle-table td {
+    padding:5px;
+}
+
+.vehicle-table-entry {
+    border-top:1px solid #e6e6e6;
+}
+
+tr.vehicle-table-entry:hover {background-color: #f2f2f2}
+
+tr.vehicle-table-entry {cursor:pointer;}
+
+.vehicle-table-detail {
+    display:none;
+}
+
+/* MISC */
+.hide {display:none;}
+
+
+/* Imported from original gMaps info window table */
+.infoTable {
+  border: 0px;
+}
+
+.vehInfoHeader {
+  text-align: center;
+  font-weight: bold;
+}
+
+.tblHeader {
+  font-weight: bold;
+  border: 0px;
+}
+
+.tblCell {
+  border: 0px;
+}
+
+.tblEmerg {
+  font-weight: bold;
+  border: 0px;
+  background-color: #ffff00;
+  color: #ff0000;
+}

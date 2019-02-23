@@ -1,29 +1,61 @@
-* {
-    margin: 0;
-    padding: 0;
-    font-family: Helvetica, Arial, "Lucia Grande", sans-serif;
-    font-size: 10px;
+* { margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: 10px;
+  font-family:
+    Helvetica,
+    Arial,
+    "Lucida Grande",
+    sans-serif;
+  }
+
+.msgBx {
+  width: 100%;
+  border: 1px solid;
+  border-color: #000000;
+  background-color: #cccccc;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0.85;
+}
+
+.dbgBx {
+  width: 100%;
+  border: 1px solid;
+  border-color: #000000;
+  background-color: #cccccc;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  opacity: 0.85;
+}
+
+.dbgActive {
+  z-index: 9999;
 }
 
 html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-div.galaxy {
-    height: 100%;
+#map {
+  height: 100%;
 }
 
-div.sidebar {
-    width: 25%;
-    right: 0;
-    background-color: lightblue;
-    float: right;
-    height: 100%;
+#mapStyleBox {
+  text-align: left;
+  font-family: Roboto, Arial, sans-serif;
+  position: absolute;
+  top: 5px!important;
+  left: 35px!important;
 }
 
-div#world {
-    margin-right: 25%;
-    height: 100%;
+.mapStyleSelector {
+  font-size: 12px;
+  z-index: 9999;
 }

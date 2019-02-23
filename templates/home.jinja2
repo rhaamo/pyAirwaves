@@ -1,28 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<!--
+AirSuck geospatial viewer by ThreeSixes (https://github.com/ThreeSixes) and Matt Lambert <https://github.com/mjlurbanist>
+
+This project is licensed under GPLv3. See COPYING for dtails.
+
+This file is part of the airSuck project (https://github.com/ThreeSixes/airSuck).
+-->
+
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>pyAirwaves</title>
+    
+    <title>AirSuck geospatial viewer</title>
+    
+    <!-- Scripts and CSS -->
+    <link rel="stylesheet" type="text/css" href="static/css/main.css"><!-- Master stylesheet -->
+    <link rel="stylesheet" type="text/css" href="static/css/leaflet-1.0.3.css"><!-- Master stylesheet -->
+    <script src="static/js/jquery-3.2.0.min.js" type="text/javascript"></script><!-- Include jQuery because normal JS sucks. -->
+    <script src="static/js/leaflet-1.0.3.min.js" type="text/javascript"></script><!-- Include Leaflet mapping stuff. -->
+    <script src="static/js/leaflet-providers-1.1.15.js" type="text/javascript"></script><!-- Include Leaflet provider. -->
+    <script src="static/js/leaflet.planemarker.js" type="text/javascript"></script><!-- Include canvas plane marker. -->
+    <script src="static/js/leaflet.boatmarker.js" type="text/javascript"></script><!-- Include canvas boat marker. -->
+    <script src="static/js/airsuckLoad.js" type="text/javascript"></script><!-- Include airsuck JS loader. -->
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.css') }}"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
-</head>
-<body>
-<div class="galaxy">
-    <div class="sidebar"></div>
-    <div id="world"></div>
-</div>
+  </head>
+  <body>
+    <form><input type="text" class="dbgBx" id="debugBx" value="Debug stream..." /></form>
 
-<script src="{{ url_for('static', filename='js/leaflet-src.js') }}"></script>
-<script src="{{ url_for('static', filename='js/leaflet-providers.js') }}"></script>
-<script src="{{ url_for('static', filename='js/leaflet.planemarker.js') }}"></script>
-<script src="{{ url_for('static', filename='js/leaflet.boatmarker.js') }}"></script>
-<script src="{{ url_for('static', filename='js/socket.io.js') }}"></script>
-<script src="{{ url_for('static', filename='js/pyairwaves/main.js') }}"></script>
-<script src="{{ url_for('static', filename='js/pyairwaves/map.js') }}"></script>
-<script src="{{ url_for('static', filename='js/pyairwaves/socketio.js') }}"></script>
+    <!-- The Giggle map goes here. -->
+    <div id="map"></div>
 
-</body>
+    <form><input type="text" class="msgBx" id="message" value="Waiting for message data..." /></form>
+  </body>
 </html>

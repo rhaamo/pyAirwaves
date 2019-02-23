@@ -123,7 +123,19 @@ if __name__ == "__main__":
                         # Emit Socket.IO message only if altitude, latitude and longitude are set
                         # AKA a "MSG,3" message and perhaps a "MSG,2" (Surface position)
                         if adsb_message['field12'] and adsb_message['field15'] and adsb_message['field16']:
-                            socketio.emit('adsb-new', {'message': adsb_message})
+                            lol = {
+                                "type": "airSSR",
+                                "src": "patate",
+                                "entryPoint": "",
+                                "dts": "",
+                                "data": "",
+                                "dataOrigin": "dump1090",
+                                "alt": float(adsb_message['field12']),
+                                "lat": float(adsb_message['field15']),
+                                "lon": float(adsb_message['field16']),
+                                "addr": adsb_message['field5'] # should be ICAO / MMSI, uses Mode S hex ident
+                            }
+                            socketio.emit('message', lol)
                     # It's valid, reset stream message
                     data_str = ""
                 else:

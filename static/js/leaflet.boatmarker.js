@@ -2,6 +2,7 @@
  * LEAFLET.BOATMARKER
  * v1.1.0
  * Thomas Brüggemann
+ * https://github.com/thomasbrueggemann/leaflet.boatmarker
  */
 
 /* BOAT ICON */
@@ -49,74 +50,74 @@ L.BoatIcon = L.Icon.extend({
 
 	// DRAW
 	// renders the boat icon onto the canvas element
-	draw: function(ctx, w, h) {
-		if(!ctx) return;
-		var x = this.x;
-		var y = this.y;
+    draw: function(ctx, w, h) {
+        if(!ctx) return;
+        var x = this.x;
+        var y = this.y;
 
-		var x_fac = this.x_fac;
-		var y_fac = this.y_fac;
+        var x_fac = this.x_fac;
+        var y_fac = this.y_fac;
 
-		ctx.clearRect(0, 0, w, h);
+        ctx.clearRect(0, 0, w, h);
 
-		ctx.translate(w/2, h/2);
-		ctx.rotate(this.options.course*Math.PI/180);
-		ctx.translate(-w/2, -h/2);
+        ctx.translate(w/2, h/2);
+        ctx.rotate(this.options.course*Math.PI/180);
+        ctx.translate(-w/2, -h/2);
 
-		//ctx.fillRect(0,0,w,h);
+        //ctx.fillRect(0,0,w,h);
 
-		ctx.beginPath();
+        ctx.beginPath();
 
-		// draw idle boat shape
-		if(this.options.idleCircle === true && this.options.speed === 0) {
-			ctx.arc(x+(50*x_fac), y-(50*y_fac), 50*x_fac, 0, 2 * Math.PI);
+        // draw idle boat shape
+        if(this.options.idleCircle === true && this.options.speed === 0) {
+            ctx.arc(x+(50*x_fac), y-(50*y_fac), 50*x_fac, 0, 2 * Math.PI);
+        }
+        // draw boat shape in motion
+        else {
+            // Offset
+            let xx = 10;
+            let yy = 10;
+
+            //ctx.scale(1.5, 1.5);
+
+            // Move origin
+            ctx.moveTo(x, y);
+
+            // Main body
+            ctx.beginPath(); // start a new path
+            ctx.moveTo(x, y);
+            ctx.bezierCurveTo(x, y+(80*y_fac), x+(100*x_fac), y+(80*y_fac), x+(100*x_fac), y);
+            ctx.quadraticCurveTo(x+(100*x_fac), y-(100*y_fac), x+(50*x_fac), y-(200*y_fac));
+            ctx.quadraticCurveTo(x, y-(100*y_fac), x, y);
+            ctx.stroke();
+            ctx.fillStyle = this.options.color;
+            ctx.fill();
+
+            // Arrow thingy
+            ctx.beginPath(); // start a new path
+            ctx.lineWidth=0.5;
+            ctx.lineTo(w/2, h/2);
+            // The Arrow
+            // up-left
+            ctx.moveTo(w/2, h/2); // move to origin
+            ctx.lineTo((w/2)-5, (h/2)-5);
+            // up-right
+            ctx.moveTo(w/2, h/2); // move to origin
+            ctx.lineTo((w/2)+5, (h/2)-5);
+            // bot-left
+            ctx.moveTo(w/2, h/2); // move to origin
+            ctx.lineTo((w/2)-5, (h/2)+5);
+            // bot-right
+            ctx.moveTo(w/2, h/2); // move to origin
+            ctx.lineTo((w/2)+5, (h/2)+5);
+            ctx.stroke();
 		}
-		// draw boat shape in motion
-		else {
-			ctx.moveTo(x, y);
-			ctx.bezierCurveTo(x, y+(80*y_fac), x+(100*x_fac), y+(80*y_fac), x+(100*x_fac), y);
-			ctx.quadraticCurveTo(x+(100*x_fac), y-(100*y_fac), x+(50*x_fac), y-(200*y_fac));
-			ctx.quadraticCurveTo(x, y-(100*y_fac), x, y);
-		}
 
-		ctx.fillStyle = this.options.color;
-		ctx.fill();
-		ctx.stroke();
-		ctx.closePath();
 
-		// draw wind
-		if(this.options.wind == true) {
+        ctx.closePath();
 
-			ctx.translate(w/2, h/2);
-			ctx.rotate(this.options.windDirection*Math.PI/180);
-			ctx.translate(-w/2, -h/2);
+    },
 
-			ctx.beginPath();
-			ctx.moveTo(w/2, y-45);
-			ctx.lineTo(w/2, y-70);
-
-			var center = w/2;
-
-			var spd = 5 * Math.round(this.options.windSpeed / 5);
-			var tenLines = Math.floor(spd / 10);
-			var fiveLine = ((spd % 10) > 0);
-
-			var carriage = 70;
-			for(var i = 0; i < tenLines; i++) {
-				ctx.moveTo(center, y - carriage);
-				ctx.lineTo(center + 8, y - carriage - 8);
-				carriage -= 5;
-			}
-
-			if(fiveLine) {
-				if(tenLines == 0) carriage -= 5;
-				ctx.moveTo(center, y - carriage);
-				ctx.lineTo(center + 5, y - carriage - 5);
-			}
-
-      		ctx.stroke();
-		}
-	},
 
 	setHeadingWind: function(heading, windSpeed, windDirection) {
 		this.options.wind = true;
