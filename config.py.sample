@@ -1,0 +1,59 @@
+# Website translations
+BABEL_DEFAULT_LOCALE = "en"
+
+# If using sentry, set a DSN
+SENTRY_USER_ATTRS = ['name', 'email']
+SENTRY_DSN = ""
+
+SQLALCHEMY_DATABASE_URI = \
+    'postgresql+psycopg2://postgres@database/pyairwaves'
+
+# Redis configuration for socket.io
+SOCKETIO_MESSAGE_QUEUE = "redis://127.0.0.1:6379/3"
+
+# URL to FAA Archive
+FAA_ARCHIVE_URL = "https://registry.faa.gov/database/ReleasableAircraft.zip"
+FAA_DL_TEMP_PATH = "/tmp/faaingest/"
+
+# Hostname on where this server is running
+PYAW_HOSTNAME = 'potato'
+
+# Sources for ADS-B and AIS, PLEASE NOTE that currently only one source is handled for each !
+# Port for ADSB (dump1090) needs to be 30003 (SBS BaseStation)
+# Port for AIS (rtl-ais) needs to be 10110
+ADSB_SOURCE = {"host": "patate", "port": 30003, "name": "patate", "reconnect_delay": 5, "thread_timeout": 30}
+AIS_SOURCE = {'host': 'patate', 'port': 10110, "name": "patate", "reconnect_delay": 5, "thread_timeout": 30}
+
+# Mail setup
+MAIL_SERVER = "localhost"
+MAIL_PORT = 25
+MAIL_USE_TLS = False
+MAIL_USE_SSL = False
+MAIL_USERNAME = None
+MAIL_PASSWORD = None
+MAIL_DEFAULT_SENDER = f"postmaster@{AP_DOMAIN}"
+
+# Development only options
+DEBUG = False
+TESTING = False
+SQLALCHEMY_ECHO = False
+DEBUG_TB_PROFILER_ENABLED = False
+DEBUG_TB_INTERCEPT_REDIRECTS = False
+
+# Do not touch that
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+SQLALCHEMY_RECORD_QUERIES = True
+# Users can change password
+# Do not disable, will breaks things
+SECURITY_CHANGEABLE = True
+# Password hash algorithm
+SECURITY_PASSWORD_HASH = 'bcrypt'
+
+SECURITY_SEND_REGISTER_EMAIL = True
+SECURITY_SEND_PASSWORD_CHANGE_EMAIL = True
+SECURITY_SEND_PASSWORD_RESET_NOTICE_EMAIL = True
+
+BOOTSTRAP_USE_MINIFIED = True
+BOOTSTRAP_SERVE_LOCAL = True
+BOOTSTRAP_QUERYSTRING_REVVING = True
+BABEL_DEFAULT_TIMEZONE = "UTC"
