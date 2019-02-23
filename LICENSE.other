@@ -1,0 +1,23 @@
+Various copyrights or sources.
+
+Picture 'static/css/images/ship.svg':
+    Creative Commons
+    https://thenounproject.com/term/boat/81205/
+
+Picture 'static/css/images/plane.svg':
+    Public Domain
+    https://commons.wikimedia.org/wiki/Category:SVG_aircraft_icons#/media/File:1a2.svg
+
+Files imported from AirSuck (https://github.com/ThreeSixes/airSuck) (not exhaustive but they have a header) :
+ - templates/home.jinja2
+ - static/css/sidebar.css
+ - static/js/airsuckLoad.js
+ - static/js/config.js
+ - static/js/plugins/rainbowvis.js
+ - static/js/core/sidebar.js
+ - static/js/core/messages.js
+ - static/js/core/removed-gmap_popup.js
+ - static/js/core/map_init.js
+ - static/js/vehicles/airSSR.js
+ - static/js/vehicles/airAIS.js
+ - static/js/vehicles/vehicle.js

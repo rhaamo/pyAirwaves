@@ -3,7 +3,7 @@
  * v1.1.0
  * Thomas Brüggemann
  * https://github.com/thomasbrueggemann/leaflet.boatmarker
- * See COPYING.other in airSuck for icon source
+ * See LICENSE.other in airSuck for icon source
  */
 
 /* BOAT ICON */
