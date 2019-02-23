@@ -41,7 +41,7 @@ def create_app(config_filename="config.py", app_name=None, register_blueprints=T
     app = Flask(app_name or __name__)
     app.config.from_pyfile(config_filename)
 
-    socketio.init_app(app, message_queue=app.config['SOCKETIO_MESSAGE_QUEUE'])
+    socketio.init_app(app, message_queue=app.config["SOCKETIO_MESSAGE_QUEUE"])
 
     app.jinja_env.add_extension("jinja2.ext.with_")
     app.jinja_env.add_extension("jinja2.ext.do")
@@ -183,7 +183,7 @@ def create_app(config_filename="config.py", app_name=None, register_blueprints=T
     @app.cli.command()
     def seed():
         """Seed database with default content"""
-        #make_db_seed(db)
+        # make_db_seed(db)
         pass
 
     @app.cli.command()
@@ -194,7 +194,8 @@ def create_app(config_filename="config.py", app_name=None, register_blueprints=T
     return app
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import eventlet
+
     eventlet.monkey_patch()
     socketio.run(create_app())

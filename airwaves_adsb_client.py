@@ -25,7 +25,7 @@ def is_valid_adsb_message(fields):
     if len(fields) == 22:
         is_valid = True
 
-    if fields[0].upper() in ['MSG', 'STA', 'ID', 'AIR', 'SEL', 'CLK']:
+    if fields[0].upper() in ["MSG", "STA", "ID", "AIR", "SEL", "CLK"]:
         is_valid = True
     else:
         logging.error(f"Field 1 invalid : '{fields[0]}'")
@@ -52,25 +52,25 @@ def get_adsb_message(fields):
     msg.alt = int(fields[11]) if fields[11] else None
     msg.lon = float(fields[15]) if fields[15] else None
     msg.lat = float(fields[14]) if fields[14] else None
-    msg.entryPoint = 'airwaves_adsb_client'
+    msg.entryPoint = "airwaves_adsb_client"
     msg.dts = str(datetime.datetime.utcnow())
     msg.src = config.PYAW_HOSTNAME
     msg.lastSrc = msg.src
     msg.data = ",".join(fields)
     msg.srcPos = False  # TODO add position support
-    if fields[21] == 0 or fields[21] == '0':
-        msg.vertStat = 'air'
+    if fields[21] == 0 or fields[21] == "0":
+        msg.vertStat = "air"
     else:
-        msg.vertStat = 'gnd'
+        msg.vertStat = "gnd"
     msg.vertRate = int(fields[16]) if fields[16] else None
     msg.category = None
     msg.icaoAACC = None
     msg.velo = None
     msg.heading = None
     msg.supersonic = None
-    msg.clientName = config.ADSB_SOURCE['name']
+    msg.clientName = config.ADSB_SOURCE["name"]
     msg.lastClientName = msg.clientName
-    msg.dataOrigin = 'dump1090'
+    msg.dataOrigin = "dump1090"
     return msg
 
 
@@ -80,13 +80,15 @@ if __name__ == "__main__":
     while count_failed_connection < max_failed_connection:
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.connect((config.ADSB_SOURCE['host'], config.ADSB_SOURCE['port']))
+            sock.connect((config.ADSB_SOURCE["host"], config.ADSB_SOURCE["port"]))
             count_failed_connection = 1
             print("Connected to dump1090")
             break
         except socket.error:
             count_failed_connection += 1
-            print(f"Cannot connect to dump1090 main {count_failed_connection}/{max_failed_connection}: {traceback.format_exc()}")
+            print(
+                f"Cannot connect to dump1090 main {count_failed_connection}/{max_failed_connection}: {traceback.format_exc()}"
+            )
             time.sleep(5)
     else:
         quit()
@@ -121,7 +123,9 @@ if __name__ == "__main__":
                         break
                     except socket.error:
                         count_failed_connection += 1
-                        print(f"Cannot connect to dump1090 while {count_failed_connection}/{max_failed_connection}: {traceback.format_exc()}")
+                        print(
+                            f"Cannot connect to dump1090 while {count_failed_connection}/{max_failed_connection}: {traceback.format_exc()}"
+                        )
                         time.sleep(5)
                 else:
                     quit()
@@ -142,7 +146,7 @@ if __name__ == "__main__":
                         # AKA a "MSG,3" message and perhaps a "MSG,2" (Surface position)
                         if adsb_message.has_location():
                             print(adsb_message.to_dict())
-                            socketio.emit('message', adsb_message.to_dict())
+                            socketio.emit("message", adsb_message.to_dict())
                     # It's valid, reset stream message
                     data_str = ""
                 else:

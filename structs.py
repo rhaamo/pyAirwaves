@@ -86,7 +86,7 @@ class AdsbType(DefaultType):
         self.supersonic: bool = None
 
     def to_dict(self):
-        return {k: v for k, v in self.__dict__.items() if not (k.startswith('__') and k.endswith('__'))}
+        return {k: v for k, v in self.__dict__.items() if not (k.startswith("__") and k.endswith("__"))}
 
     def has_location(self):
         if self.lat and self.lon and self.alt:
