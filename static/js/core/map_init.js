@@ -19,7 +19,7 @@ function initMap() {
   
   // Attempt to detect user location if turned on
   if (useLocation) {
-    $.ajax( { url: '//freegeoip.net/json/', type: 'POST', dataType: 'jsonp',
+    $.ajax( { url: 'https://freegeoip.live/json/', type: 'POST', dataType: 'jsonp',
       success: function(location) {
         // update the lat and lng if we can detect them
         defaultLng = location.longitude;
