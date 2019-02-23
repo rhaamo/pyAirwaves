@@ -8,6 +8,7 @@ from flask import Flask, render_template, g, jsonify, request
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_socketio import SocketIO
+from models import db
 
 import texttable
 from flask_debugtoolbar import DebugToolbarExtension
@@ -64,9 +65,11 @@ def create_app(config_filename="config.py", app_name=None, register_blueprints=T
         app.logger.addHandler(file_handler)
 
     mail.init_app(app)
-    #migrate = Migrate(app, db)  # noqa: F841
+    migrate = Migrate(app, db)  # noqa: F841
     babel = Babel(app)  # noqa: F841
     toolbar = DebugToolbarExtension(app)  # noqa: F841
+
+    db.init_app(app)
 
     git_version = ""
     gitpath = os.path.join(os.getcwd(), ".git")
