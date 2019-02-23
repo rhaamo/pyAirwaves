@@ -20,17 +20,6 @@
     opacity: 0.85;
 }
 
-.dbgBx {
-    width: 100%;
-    border: 1px solid #000000;
-    background-color: #cccccc;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    opacity: 0.85;
-}
-
 .dbgActive {
     z-index: 9999;
 }
