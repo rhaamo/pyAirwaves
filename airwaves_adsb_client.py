@@ -5,7 +5,7 @@ blah
 
 import logging
 import traceback
-import re
+import config
 import socket
 import time
 import datetime
@@ -52,9 +52,9 @@ def get_adsb_message(fields):
     msg.alt = int(fields[11]) if fields[11] else None
     msg.lon = float(fields[15]) if fields[15] else None
     msg.lat = float(fields[14]) if fields[14] else None
-    msg.entryPoint = 'airwaves_client'
+    msg.entryPoint = 'airwaves_adsb_client'
     msg.dts = str(datetime.datetime.utcnow())
-    msg.src = 'patate'  # TODO from cfg
+    msg.src = config.PYAW_HOSTNAME
     msg.lastSrc = msg.src
     msg.data = ",".join(fields)
     msg.srcPos = False  # TODO add position support
@@ -68,8 +68,9 @@ def get_adsb_message(fields):
     msg.velo = None
     msg.heading = None
     msg.supersonic = None
-    msg.clientName = "dump1090_adsb"  # todo from cfg
+    msg.clientName = config.ADSB_SOURCE['name']
     msg.lastClientName = msg.clientName
+    msg.dataOrigin = 'dump1090'
     return msg
 
 
