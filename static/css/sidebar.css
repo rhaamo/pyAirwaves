@@ -12,124 +12,133 @@
 /* Button for the sidebar on the main page */
 #sidebar-icon {
     /* uses font-awesome chevron-left */
-    position:absolute;
-    right:10px;
-    top:50%;
-    font-size:30px;
-    color:#ff9900;
-    z-index:999;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    font-size: 30px;
+    color: #ff9900;
+    z-index: 999;
 }
 
 #sidebar-icon:hover {
-    color:#000000;
+    color: #000000;
 }
 
 /* Sidebar structure - main container and primary structure */
 #sidebar {
-    width:30%;
-    height:100%;
-    position:absolute;
-    right:0;
-    top:0;
-    z-index:998;
-    background-color:#ffffff;
-    padding:10px;
-    overflow:scroll;
+    width: 30%;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 998;
+    background-color: #ffffff;
+    padding: 10px;
+    overflow: scroll;
 }
 
 #sidebar h1 {
-    text-align:center;
-    font-size:18px;
-    margin:10px 0px 10px 0px;
+    text-align: center;
+    font-size: 18px;
+    margin: 10px 0 10px 0;
 }
 
 #sidebar-header {
-    width:100%;
-    border-bottom:1px solid #000000;
-    text-align:center;
-    }
+    width: 100%;
+    border-bottom: 1px solid #000000;
+    text-align: center;
+}
 
-#sidebar-body {}
+#sidebar-body {
+}
 
-#sidebar-footer {}
+#sidebar-footer {
+}
 
 /* Elements within #sidebar-header */
 .sidebar-button {
-    width:33%;
+    width: 33%;
     /*border:1px solid #000000;
     border-radius:3px;*/
-    margin:10px 0px 10px 0px;
-    font-size:24px;
-    cursor:pointer;
+    margin: 10px 0 10px 0;
+    font-size: 24px;
+    cursor: pointer;
 }
 
 .sidebar-button.active, .sidebar-button:hover {
-    color:#ff9900;
+    color: #ff9900;
 }
 
 /* Sub-containers within #sidebar-body */
 
-.sidebar-container {}
+.sidebar-container {
+}
 
 
 /* Vehicle List Container */
 
 .vehicle-table {
-    width:100%;
-    max-height:300px;
-    overflow:auto;
-    border-collapse:collapse;
+    width: 100%;
+    max-height: 300px;
+    overflow: auto;
+    border-collapse: collapse;
 }
 
 .vehicle-table tbody {
 }
 
 .vehicle-table th {
-    height:30px;
+    height: 30px;
 }
 
 .vehicle-table td {
-    padding:5px;
+    padding: 5px;
 }
 
 .vehicle-table-entry {
-    border-top:1px solid #e6e6e6;
+    border-top: 1px solid #e6e6e6;
 }
 
-tr.vehicle-table-entry:hover {background-color: #f2f2f2}
+tr.vehicle-table-entry:hover {
+    background-color: #f2f2f2
+}
 
-tr.vehicle-table-entry {cursor:pointer;}
+tr.vehicle-table-entry {
+    cursor: pointer;
+}
 
 .vehicle-table-detail {
-    display:none;
+    display: none;
 }
 
 /* MISC */
-.hide {display:none;}
+.hide {
+    display: none;
+}
 
 
 /* Imported from original gMaps info window table */
 .infoTable {
-  border: 0px;
+    border: 0;
 }
 
 .vehInfoHeader {
-  text-align: center;
-  font-weight: bold;
+    text-align: center;
+    font-weight: bold;
 }
 
 .tblHeader {
-  font-weight: bold;
-  border: 0px;
+    font-weight: bold;
+    border: 0;
 }
 
 .tblCell {
-  border: 0px;
+    border: 0;
 }
 
 .tblEmerg {
-  font-weight: bold;
-  border: 0px;
-  background-color: #ffff00;
-  color: #ff0000;
+    font-weight: bold;
+    border: 0;
+    background-color: #ffff00;
+    color: #ff0000;
 }

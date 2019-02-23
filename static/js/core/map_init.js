@@ -15,43 +15,48 @@
  **************************************************/
 // Initialize the map.
 function initMap() {
-  if(debug){console.log("Maps loading...");}
-  
-  // Attempt to detect user location if turned on
-  if (useLocation) {
-    $.ajax( { url: 'https://freegeoip.live/json/', type: 'POST', dataType: 'jsonp',
-      success: function(location) {
-        // update the lat and lng if we can detect them
-        defaultLng = location.longitude;
-        defaultLat = location.latitude;
-        if(debug){console.log("Got lat/lng: " + defaultLat + ", " + defaultLng);}
-      }
-    } );
-  }
+    if (debug) {
+        console.log("Maps loading...");
+    }
 
-  // Setup layers
-  let baseLayers = {
-    "Black and White": L.tileLayer.provider("OpenStreetMap.BlackAndWhite"),
-    "OpenStreetMap": L.tileLayer.provider('OpenStreetMap.Mapnik'),
-    "OpenTopo": L.tileLayer.provider('OpenTopoMap'),
-    "Stamen Terrain": L.tileLayer.provider('Stamen.Terrain'),
-    "Esri Ocean Basemap": L.tileLayer.provider('Esri.OceanBasemap')
-  };
+    // Attempt to detect user location if turned on
+    if (useLocation) {
+        $.ajax({
+            url: 'https://freegeoip.live/json/', type: 'POST', dataType: 'jsonp',
+            success: function (location) {
+                // update the lat and lng if we can detect them
+                defaultLng = location.longitude;
+                defaultLat = location.latitude;
+                if (debug) {
+                    console.log("Got lat/lng: " + defaultLat + ", " + defaultLng);
+                }
+            }
+        });
+    }
 
-  let overlaysLayers = {
-    "OpenSeaMap": L.tileLayer.provider('OpenSeaMap')
-  };
+    // Setup layers
+    let baseLayers = {
+        "Black and White": L.tileLayer.provider("OpenStreetMap.BlackAndWhite"),
+        "OpenStreetMap": L.tileLayer.provider('OpenStreetMap.Mapnik'),
+        "OpenTopo": L.tileLayer.provider('OpenTopoMap'),
+        "Stamen Terrain": L.tileLayer.provider('Stamen.Terrain'),
+        "Esri Ocean Basemap": L.tileLayer.provider('Esri.OceanBasemap')
+    };
 
-  layers = Object.assign({}, baseLayers, overlaysLayers);
+    let overlaysLayers = {
+        "OpenSeaMap": L.tileLayer.provider('OpenSeaMap')
+    };
 
-  // Set up the map object.
-  map = new L.Map(document.getElementById('map')).setView([defaultLat, defaultLng], defaultZoom);
-  map.addLayer(layers["Black and White"]);
-  map.addLayer(layers["OpenSeaMap"]);
+    layers = Object.assign({}, baseLayers, overlaysLayers);
 
-  // Add layers control
-  L.control.layers(baseLayers, overlaysLayers).addTo(map);
+    // Set up the map object.
+    map = new L.Map(document.getElementById('map')).setView([defaultLat, defaultLng], defaultZoom);
+    map.addLayer(layers["Black and White"]);
+    map.addLayer(layers["OpenSeaMap"]);
 
-  // The map loaded.
-  mapLoaded = true;
+    // Add layers control
+    L.control.layers(baseLayers, overlaysLayers).addTo(map);
+
+    // The map loaded.
+    mapLoaded = true;
 }

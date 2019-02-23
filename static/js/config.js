@@ -4,7 +4,7 @@
  *
  * Licensed under GPL V3
  * https://github.com/ThreeSixes/airSuck
- * 
+ *
  * Centralize configuration for airsuck javascript
  *
  * Deps: none, **required for all airsuck JS functions
@@ -18,7 +18,7 @@ var debug = true; // Do we want to have debugging data onscreen and in the conso
 /***************************************************
  * CUSTOM VEHICLES TO INCLUDE - from the js/vehicles directory
  **************************************************/
-var loadCustomVehicles = ['airSSR.js','airAIS.js'];//order determines the sidebar arrangement
+var loadCustomVehicles = ['airSSR.js', 'airAIS.js'];//order determines the sidebar arrangement
 
 /***************************************************
  * VEHICLE ARRAYS AND RELATED
@@ -33,7 +33,7 @@ var spinnerAnim = ["+", "&#45;", "&#92;", "&#124;", "&#47;", "&#42;"]; // Spinne
  **************************************************/
 var minimumAltitude = 0; // Altitude to set as the lowest color for the ramp (X,000 feet)
 var maximumAltitude = 45; // Altitude to set as the highest color for the ramp (X,000 feet)
-var spectrum = ['aqua','yellow','fuchsia','red']; // Colors defining the ramp, low at position [0], high at [3]
+var spectrum = ['aqua', 'yellow', 'fuchsia', 'red']; // Colors defining the ramp, low at position [0], high at [3]
 
 /***************************************************
  * MAPS GENERAL CONFIGURATION
