@@ -21,17 +21,19 @@ function initMap() {
 
     // Attempt to detect user location if turned on
     if (useLocation) {
-        $.ajax({
-            url: 'https://freegeoip.live/json/', type: 'POST', dataType: 'jsonp',
-            success: function (location) {
-                // update the lat and lng if we can detect them
-                defaultLng = location.longitude;
-                defaultLat = location.latitude;
-                if (debug) {
-                    console.log("Got lat/lng: " + defaultLat + ", " + defaultLng);
+        if ("geolocation" in navigator) {
+            // We can use it
+            navigator.geolocation.getCurrentPosition(function(position) {
+                window.defautLng = position.coords.longitude;
+                window.defaultLat = position.coords.latitude;
+            }, function(error) {
+                if (error.code === error.PERMISSION_DENIED) {
+                    console.log("GeoLocation denied, defaulting to server's one.")
                 }
-            }
-        });
+            })
+        } else {
+            console.log("GeoLocation deactivated, defaulting to server's one.")
+        }
     }
 
     // Setup layers
@@ -47,7 +49,7 @@ function initMap() {
         "OpenSeaMap": L.tileLayer.provider('OpenSeaMap')
     };
 
-    layers = Object.assign({}, baseLayers, overlaysLayers);
+    window.layers = Object.assign({}, baseLayers, overlaysLayers);
 
     // Set up the map object.
     map = new L.Map(document.getElementById('map')).setView([defaultLat, defaultLng], defaultZoom);
@@ -58,5 +60,5 @@ function initMap() {
     L.control.layers(baseLayers, overlaysLayers).addTo(map);
 
     // The map loaded.
-    mapLoaded = true;
+    window.mapLoaded = true;
 }
