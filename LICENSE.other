@@ -13,7 +13,6 @@ Files imported from AirSuck (https://github.com/ThreeSixes/airSuck) (not exhaust
  - static/css/sidebar.css
  - static/js/airsuckLoad.js
  - static/js/config.js
- - static/js/plugins/rainbowvis.js
  - static/js/core/sidebar.js
  - static/js/core/messages.js
  - static/js/core/map_init.js
