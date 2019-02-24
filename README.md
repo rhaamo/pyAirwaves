@@ -18,6 +18,7 @@ cd pyAirwaves
 pip install --user -r requirements.txt
 cp config.py.sample config.py
 $EDITOR config.py
+$EDITOR static/js/config.js
 createdb ...
 flask db upgrade
 flask import_aircrafts
