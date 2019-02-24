@@ -33,7 +33,7 @@ MAIL_USE_TLS = False
 MAIL_USE_SSL = False
 MAIL_USERNAME = None
 MAIL_PASSWORD = None
-MAIL_DEFAULT_SENDER = f"postmaster@{AP_DOMAIN}"
+MAIL_DEFAULT_SENDER = f"postmaster@yourdomain"
 
 # Development only options
 DEBUG = False
