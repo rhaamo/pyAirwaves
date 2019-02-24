@@ -50,8 +50,8 @@ def create_app(config_filename="config.py", app_name=None, register_blueprints=T
     if HAS_SENTRY:
         app.config["SENTRY_RELEASE"] = raven.fetch_git_sha(os.path.dirname(__file__))
         sentry = Sentry(app, dsn=app.config["SENTRY_DSN"])  # noqa: F841
-        print(" * Sentry support activated")
-        print(" * Sentry DSN: %s" % app.config["SENTRY_DSN"])
+        print("Sentry support activated")
+        print("Sentry DSN: %s" % app.config["SENTRY_DSN"])
 
     if app.config["DEBUG"] is True:
         app.jinja_env.auto_reload = True
