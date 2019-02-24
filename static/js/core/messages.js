@@ -55,19 +55,12 @@ function handleMessage(msgJSON) {
         let index;// we need an index to manually traverse the vehicleTypes associative array
         let length = vehicleTypes.length;
         for (index = 0; index < length; ++index) {
-
-            console.log('msgJson: ');
-            console.log(msgJSON);
-            console.log('msgJson END');
             if (msgJSON.type === vehicleTypes[index].protocol) {
                 if (debug) {
                     console.log('New vehicle found, type registered: ' + msgJSON.type);
                 }
                 // add the new vehicle (constructor should call registered update functions)
                 vehicles[vehName] = vehicleTypes[index].constructor(msgJSON);
-                console.log('vehicles vehName: ');
-                console.log(vehicles[vehName]);
-                console.log('vehicles vehName END');
 
                 // Add marker and listeners only if we have a Latitude and Longitude
                 // Cannot create a marker without geoposition datas

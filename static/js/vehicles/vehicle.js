@@ -258,7 +258,7 @@ Vehicle.prototype.createIcon = function () {
         //  strokeColor: (this.selected == true) ? this.vehColorSelected : ((this.active == true) ? this.vehColorActive : this.vehColorInactive),
         //  rotation: this.heading
         //});
-        console.log("TODO2");
+        console.log("TODO: heading");
         newIcon = new L.PlaneIcon({color: '#f4ff01', idleCircle: false, course: this.heading});
         newIcon.setHeading(this.heading);
     } else {
@@ -269,7 +269,7 @@ Vehicle.prototype.createIcon = function () {
         //  strokeWeight: 1.5,
         //  strokeColor: (this.selected == true) ? this.vehColorSelected : ((this.active == true) ? this.vehColorActive : this.vehColorInactive)
         //});
-        console.log("TODO3");
+        console.log("TODO: no heading");
         newIcon = new L.PlaneIcon({color: '#f4ff01', idleCircle: false});
     }
     // And return it.
