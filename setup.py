@@ -29,6 +29,7 @@ setup(
         "python-magic",
         "redis",
         "flask-socketio",
+        "pycurl"
     ],
     setup_requires=["pytest-runner"],
     tests_require=["pytest", "pytest-cov", "jsonschema"],
