@@ -11,8 +11,6 @@ my idea is that at some point the marker isn't created because of lat/lon missin
 
 - no pos -> then pos, no marker, sidebar toggle row dont work
 
-- Panel SSR click on plane row doesn't close
-
 - Change fill colors of markers
  active blue
  selected yellow
@@ -21,6 +19,7 @@ my idea is that at some point the marker isn't created because of lat/lon missin
 - Expiration timer: grey-ish old markers before deletion
 
 - F5, open sidebar, airAIS icon orange-ed, but displaying airSSR
+    doesn't seems to be a frequent issue...
 
 - Better planes icons
 
