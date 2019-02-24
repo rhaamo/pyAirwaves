@@ -60,4 +60,4 @@ services:
     image: postgres
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_DB=pyairwaves
+      - POSTGRES_DB=pyairwaves_test
