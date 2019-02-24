@@ -5,6 +5,7 @@ from os.path import splitext
 import csv
 import zipfile
 import pycurl
+import gzip
 
 from flask import current_app
 
@@ -125,7 +126,6 @@ def ingest_faa_aircrafts(file: str):
             # Then eat the datas
             # print(rows)
 
-
 def utils_download_and_ingest_faa():
     print("Downloading and ingesting FAA infos")
 
@@ -159,3 +159,106 @@ def utils_download_and_ingest_faa():
     # master_file = os.path.join(current_app.config["FAA_DL_TEMP_PATH"], "MASTER.txt")
 
     ingest_faa_aircrafts(aircrafts_file)
+
+
+def download_file(url: str, filename: str):
+    print(f"Downloading {url}...")
+    file_target = os.path.join(current_app.config['UPDATE_DB_TEMP_PATH'], filename)
+
+    try:
+        os.makedirs(current_app.config['UPDATE_DB_TEMP_PATH'])
+    except OSError:
+        None
+
+    with open(file_target, "wb") as zip_file:
+        crl = pycurl.Curl()
+        crl.setopt(crl.URL, url)
+        crl.setopt(crl.WRITEDATA, zip_file)
+        crl.setopt(crl.FOLLOWLOCATION, True)
+        crl.perform()
+        crl.close()
+
+    try:
+        if os.path.getsize(file_target) > 0:
+            print(f"Downloaded file to {file_target}")
+            return True
+        else:
+            return False
+    except OSError:
+        return False
+
+
+def gunzip(source_filepath, dest_filepath, block_size=65536):
+    with gzip.open(source_filepath, 'rb') as s_file, open(dest_filepath, 'wb') as d_file:
+        while True:
+            block = s_file.read(block_size)
+            if not block:
+                break
+            else:
+                d_file.write(block)
+        d_file.write(block)
+
+    return True
+
+
+def download_and_gunzip(url: str, f_source: str, f_target: str):
+    # Download file
+    downloaded = download_file(url, f_source)
+    if not downloaded:
+        return False
+
+    print(f"gunzip-ing file {f_source}...")
+    file_source = os.path.join(current_app.config['UPDATE_DB_TEMP_PATH'], f_source)
+    file_target = os.path.join(current_app.config['UPDATE_DB_TEMP_PATH'], f_target)
+
+    ret = gunzip(file_source, file_target)
+    if not ret:
+        return False
+
+    if os.path.exists(file_source):
+        os.remove(file_source)
+
+    try:
+        if os.path.getsize(file_target) > 0:
+            print(f"File extracted to {file_target}")
+            return True
+        else:
+            return False
+    except OSError:
+        return False
+
+
+def download_and_extract_zip(url: str, archive_name: str, filename: str):
+    # Download the file first
+    downloaded = download_file(url, archive_name)
+    if not downloaded:
+        return False
+
+    file_target = os.path.join(current_app.config['UPDATE_DB_TEMP_PATH'], filename)
+
+    print(f"Extracting {filename}...")
+
+    try:
+        zip_file = zipfile.ZipFile(file_target, "r")
+        zip_file.extract(filename, current_app.config['UPDATE_DB_TEMP_PATH'])
+    except zipfile.BadZipFile as e:
+        print(f"Error opening zip archive: {e}")
+        return False
+    except KeyError as e:
+        print(f"Error extracting file: {e}")
+        return False
+    finally:
+        zip_file.close()
+
+    if os.path.exists(file_target):
+        os.remove(file_target)
+
+    filename_final = os.path.join(current_app.config['UPDATE_DB_TEMP_PATH'], filename)
+    try:
+        if os.path.getsize(filename_final) > 0:
+            print(f"File extracted to {filename_final}")
+            return True
+        else:
+            return False
+    except OSError:
+        return False
