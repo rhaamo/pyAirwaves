@@ -4,6 +4,7 @@ from sqlalchemy import or_, create_engine, and_
 from flask import current_app
 import os
 import csv
+import datetime
 
 URLS = {
     "translation": {"url": "http://www.acarsd.org/download/translation.php", "md5": None, "filename": "translation.zip"},
@@ -150,7 +151,7 @@ def update_mode_s_ogn():
     csv_filename = os.path.join(current_app.config['UPDATE_DB_TEMP_PATH'], fname)
 
     # File format:
-    # #DEVICE_TYPE,DEVICE_ID,AIRCRAFT_MODEL,REGISTRATION,CN,TRACKED,IDENTIFIED
+    # DEVICE_TYPE,DEVICE_ID,AIRCRAFT_MODEL,REGISTRATION,CN,TRACKED,IDENTIFIED
     with open(csv_filename, "rt") as csv_file:
         for row in csv.reader(csv_file, delimiter=',', quotechar="'"):
             # Ignore comments in file
@@ -160,14 +161,36 @@ def update_mode_s_ogn():
             acm.mode_s = row[1]
             acm.registration = row[3]
             aircraft_name = row[2]
+
             # Check if we can find ICAO, else set it to GLID
             aircraft_name_split = aircraft_name.split(" ")
-            # TODO: needs to have "aircraft" table filled
+
+            q = Aircrafts.query.filter(Aircrafts.type.like(aircraft_name))
+
             if len(aircraft_name_split) > 1 and len(aircraft_name_split[1]) > 3:
-                search_more = None
+                q = Aircrafts.query.filter(and_(Aircrafts.type.like(aircraft_name),
+                                                Aircrafts.type.like(aircraft_name_split[0])))
+
+            aircraft = q.first()
+            if aircraft:
+                acm.icao_type_code = aircraft.icao
+
+            if acm.registration != '' and acm.registration != '0000' and acm.icao_type_code != '':
+                acm.last_modified = datetime.datetime.utcnow()
+                db.session.add(acm)
+
+    db.session.commit()
+
+    print("Cleaning again...")
+    # Remove data already in db from ACARS
+    q = db.session.query(AircraftModes.mode_s).filter(AircraftModes.source == 'ACARS')
+    db.session.query(AircraftModes).filter(and_(
+        AircraftModes.source == fname,
+        AircraftModes.mode_s.in_(q)
+    )).delete(synchronize_session='fetch')
 
 
 def update_all():
     # update_translation()  #  to be removed, or kept but we need more datas tables for it
     update_mode_s()
-    # update_mode_s_ogn()
+    update_mode_s_ogn()
