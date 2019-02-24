@@ -38,7 +38,7 @@ var spectrum = ['aqua', 'yellow', 'fuchsia', 'red']; // Colors defining the ramp
 /***************************************************
  * MAPS GENERAL CONFIGURATION
  **************************************************/
-var useLocation = true; // Whether to attempt to determine the user's location via browser
+var useLocation = false; // Whether to attempt to determine the user's location via browser
 var defaultLat = 49.033300; // Default latitude if useLocation=false or detection fails
 var defaultLng = 1.583300; // Default longitude if useLocation=false or detection fails
 var defaultZoom = 9; // Default zoom level of the map
