@@ -124,8 +124,8 @@ def update_mode_s():
             # Add Aircraft Owner only if not empty, and not Private individual
             if (
                 row["RegisteredOwners"] != ""
-                    and row["RegisteredOwners"] is not None
-                    and row["RegisteredOwners"] != "Private"
+                and row["RegisteredOwners"] is not None
+                and row["RegisteredOwners"] != "Private"
             ):
                 aco = AircraftOwner()
                 aco.registration = row["Registration"]
