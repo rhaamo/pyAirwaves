@@ -1,0 +1,14 @@
+[Unit]
+Description=AIS receiver and decoder
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/rtl_ais -d 0 -T
+Type=simple
+RestartSec=5
+Restart=on-failure
+User=dump1090
+StandardOutput=null
+
+[Install]
+WantedBy=multi-user.target

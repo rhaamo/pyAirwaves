@@ -1,0 +1,14 @@
+[Unit]
+Description=ADS-B receiver and decoder
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/dump1090 --device-index 1 --net --lat 49.42 --lon 1.42 --quiet
+Type=simple
+RestartSec=5
+Restart=on-failure
+User=dump1090
+StandardOutput=null
+
+[Install]
+WantedBy=multi-user.target
