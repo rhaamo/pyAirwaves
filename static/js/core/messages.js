@@ -104,3 +104,22 @@ function handleMessage(msgJSON) {
 
 // Register the message handler
 socket.on('message', handleMessage);
+
+function socketOk(msg) {
+    $("#socket_state").removeClass().addClass(["fa", "fa-check icon-socket-ok"]).prop('title', msg);
+    console.log("SocketIO OK: " + msg);
+}
+function socketNok(msg) {
+    $("#socket_state").removeClass().addClass(["fa", "fa-close icon-socket-nok"]).prop('title', msg);
+    console.log("SocketIO Err: " + msg);
+
+}
+
+// Error handling
+// https://socket.io/docs/client-api/#socket-connected
+socket.on('connect', function() {
+    socketOk("Websocket is connected");
+});
+socket.on('connect_error', function(error) {
+    socketNok("Websocket error", error);
+});

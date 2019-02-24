@@ -61,3 +61,11 @@ html, body {
 #header #right {
     float: right;
 }
+
+span.icon-socket-ok {
+    color: green;
+}
+
+span.icon-socket-nok {
+    color: red;
+}
