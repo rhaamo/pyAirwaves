@@ -66,13 +66,6 @@ $.getScript("static/js/vehicles/vehicle.js", function () {
             // setup the sidebar on successful load
             setupSidebar();
 
-            // load font-awesome for icons
-            $('<link/>', {
-                rel: 'stylesheet',
-                type: 'text/css',
-                href: 'static/css/font-awesome/css/font-awesome.min.css'
-            }).appendTo('head');
-
             // load sidebar CSS
             $('<link/>', {
                 rel: 'stylesheet',
