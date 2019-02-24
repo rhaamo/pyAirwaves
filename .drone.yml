@@ -23,7 +23,6 @@ pipeline:
       - pip install --cache-dir=/cache black
       - pip install --cache-dir=/cache -r requirements.txt
       - python setup.py install
-      - ./tests/install_audiowaveform.sh
       - black --check .
       - flake8 .
       - cp tests/config_test.py config.py
