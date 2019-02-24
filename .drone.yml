@@ -28,7 +28,7 @@ pipeline:
   migrations:
     image: python:3-alpine
     commands:
-      - apk -U add libmagic file-dev libffi libffi-dev postgresql-client add cmake gcc g++ make pkgconfig git boost-dev wget postgresql-dev curl curl-dev
+      - apk -U add libmagic file-dev libffi libffi-dev postgresql-client cmake gcc g++ make pkgconfig git boost-dev wget postgresql-dev curl curl-dev
       - pip install --upgrade pip setuptools
       - pip install --cache-dir=/cache -r requirements.txt
       - python setup.py install
