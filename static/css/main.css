@@ -46,3 +46,18 @@ html, body {
     font-size: 12px;
     z-index: 9999;
 }
+
+#header {
+    background-color: #dddddd;
+    height: 2em;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+#header #left {
+    float: left;
+}
+
+#header #right {
+    float: right;
+}
