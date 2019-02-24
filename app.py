@@ -15,6 +15,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from utils import InvalidUsage, utils_download_and_ingest_faa
 from update_db import update_all as update_all_db
+from update_db import update_aircrafts
 
 from pprint import pprint as pp
 
@@ -195,6 +196,11 @@ def create_app(config_filename="config.py", app_name=None, register_blueprints=T
     def update_db():
         """Downloads and ingest various datas"""
         update_all_db()
+
+    @app.cli.command()
+    def import_aircrafts():
+        """Ingest aircrafts"""
+        update_aircrafts()
 
     return app
 

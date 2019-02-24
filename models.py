@@ -22,6 +22,22 @@ class Translation(db.Model):
                               onupdate=datetime.datetime.utcnow)
 
 
+class Aircrafts(db.Model):
+    __tablename__ = "aircraft"
+
+    id = db.Column(db.Integer, primary_key=True)
+    icao = db.Column(db.String(10), nullable=False, unique=True)
+    type = db.Column(db.String(255), nullable=False)
+    manufacturer = db.Column(db.String(255), nullable=False)
+    official_page = db.Column(db.String(255), nullable=False)
+    aircraft_shadow = db.Column(db.String(255), default=None)
+    aircraft_description = db.Column(db.String(255), default=None)
+    engine_type = db.Column(db.String(255), default=None)
+    engine_count = db.Column(db.Integer, default=None)
+    wake_category = db.Column(db.String(10), default=None)
+    mfr = db.Column(db.String(255), default=None)
+
+
 class AircraftModes(db.Model):
     __tablename__ = "aircraft_modes"
 

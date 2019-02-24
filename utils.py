@@ -126,6 +126,7 @@ def ingest_faa_aircrafts(file: str):
             # Then eat the datas
             # print(rows)
 
+
 def utils_download_and_ingest_faa():
     print("Downloading and ingesting FAA infos")
 
@@ -170,12 +171,22 @@ def download_file(url: str, filename: str):
     except OSError:
         None
 
-    with open(file_target, "wb") as zip_file:
-        crl = pycurl.Curl()
-        crl.setopt(crl.URL, url)
-        crl.setopt(crl.WRITEDATA, zip_file)
-        crl.setopt(crl.FOLLOWLOCATION, True)
-        crl.perform()
+    try:
+        with open(file_target, "wb") as zip_file:
+            crl = pycurl.Curl()
+            crl.setopt(crl.URL, url)
+            crl.setopt(crl.WRITEDATA, zip_file)
+            crl.setopt(crl.FOLLOWLOCATION, True)
+            crl.perform()
+            code = crl.getinfo(pycurl.HTTP_CODE)
+            if code != 200:
+                print(f"Error, received code !200: {code}")
+                crl.close()
+                return False
+    except pycurl.error as e:
+        print(f"Error while downloading file: {e}")
+        return False
+    finally:
         crl.close()
 
     try:
