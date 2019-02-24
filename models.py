@@ -8,6 +8,7 @@ make_searchable(db.metadata)
 
 class Translation(db.Model):
     """Translation table for ACARSD"""
+
     __tablename__ = "translation"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -17,9 +18,9 @@ class Translation(db.Model):
     operator_correct = db.Column(db.String(20))
     source = db.Column(db.String(255))
     date_added = db.Column(db.DateTime(timezone=False), default=datetime.datetime.utcnow)
-    date_modified = db.Column(db.DateTime(timezone=False),
-                              default=datetime.datetime.utcnow,
-                              onupdate=datetime.datetime.utcnow)
+    date_modified = db.Column(
+        db.DateTime(timezone=False), default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow
+    )
 
 
 class Aircrafts(db.Model):
@@ -50,7 +51,7 @@ class AircraftModes(db.Model):
     icao_type_code = db.Column(db.String(4))
     type_flight = db.Column(db.String(50))
     source = db.Column(db.String(255))
-    source_type = db.Column(db.String(255), default='modes')
+    source_type = db.Column(db.String(255), default="modes")
 
 
 class AircraftOwner(db.Model):

@@ -164,10 +164,10 @@ def utils_download_and_ingest_faa():
 
 def download_file(url: str, filename: str):
     print(f"Downloading {url}...")
-    file_target = os.path.join(current_app.config['UPDATE_DB_TEMP_PATH'], filename)
+    file_target = os.path.join(current_app.config["UPDATE_DB_TEMP_PATH"], filename)
 
     try:
-        os.makedirs(current_app.config['UPDATE_DB_TEMP_PATH'])
+        os.makedirs(current_app.config["UPDATE_DB_TEMP_PATH"])
     except OSError:
         None
 
@@ -200,7 +200,7 @@ def download_file(url: str, filename: str):
 
 
 def gunzip(source_filepath, dest_filepath, block_size=65536):
-    with gzip.open(source_filepath, 'rb') as s_file, open(dest_filepath, 'wb') as d_file:
+    with gzip.open(source_filepath, "rb") as s_file, open(dest_filepath, "wb") as d_file:
         while True:
             block = s_file.read(block_size)
             if not block:
@@ -219,8 +219,8 @@ def download_and_gunzip(url: str, f_source: str, f_target: str):
         return False
 
     print(f"gunzip-ing file {f_source}...")
-    file_source = os.path.join(current_app.config['UPDATE_DB_TEMP_PATH'], f_source)
-    file_target = os.path.join(current_app.config['UPDATE_DB_TEMP_PATH'], f_target)
+    file_source = os.path.join(current_app.config["UPDATE_DB_TEMP_PATH"], f_source)
+    file_target = os.path.join(current_app.config["UPDATE_DB_TEMP_PATH"], f_target)
 
     ret = gunzip(file_source, file_target)
     if not ret:
@@ -245,13 +245,13 @@ def download_and_extract_zip(url: str, archive_name: str, filename: str):
     if not downloaded:
         return False
 
-    file_target = os.path.join(current_app.config['UPDATE_DB_TEMP_PATH'], filename)
+    file_target = os.path.join(current_app.config["UPDATE_DB_TEMP_PATH"], filename)
 
     print(f"Extracting {filename}...")
 
     try:
         zip_file = zipfile.ZipFile(file_target, "r")
-        zip_file.extract(filename, current_app.config['UPDATE_DB_TEMP_PATH'])
+        zip_file.extract(filename, current_app.config["UPDATE_DB_TEMP_PATH"])
     except zipfile.BadZipFile as e:
         print(f"Error opening zip archive: {e}")
         return False
@@ -264,7 +264,7 @@ def download_and_extract_zip(url: str, archive_name: str, filename: str):
     if os.path.exists(file_target):
         os.remove(file_target)
 
-    filename_final = os.path.join(current_app.config['UPDATE_DB_TEMP_PATH'], filename)
+    filename_final = os.path.join(current_app.config["UPDATE_DB_TEMP_PATH"], filename)
     try:
         if os.path.getsize(filename_final) > 0:
             print(f"File extracted to {filename_final}")
