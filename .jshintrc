@@ -1,0 +1,15 @@
+{
+    "esversion": 6,
+    "browser": true,
+    "strict": true,
+    "globals": {
+        "$": false,
+        "browser": false,
+        "L": false,
+        "map": false,
+        "useLocation": false,
+        "console": false,
+        "layers": false,
+        "debug": false
+    }
+}
