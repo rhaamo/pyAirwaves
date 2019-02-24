@@ -1,0 +1,17 @@
+Flask_Babelex==0.9.3
+psycopg2-binary==2.7.6.1
+texttable==1.5.0
+Unidecode==1.0.23
+python-magic==0.4.15
+flask==1.0.2
+python-slugify==2.0.1
+wtforms==2.2.1
+sqlalchemy==1.2.15
+bcrypt==3.1.5
+flask_mail==0.9.1
+flask_migrate==2.3.1
+sqlalchemy_searchable==1.0.3
+flask_debugtoolbar==0.10.1
+redis==3.0.1
+Bootstrap-Flask==1.0.9
+Flask-SocketIO==3.3.1
