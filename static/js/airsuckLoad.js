@@ -29,9 +29,26 @@ $.getScript("static/js/config.js", function () {
     window.messageBx = 'message';
 });
 
-// Load Socket.IO
-$.getScript("static/js/socket.io.js", function () {
-    window.socket = io();
+// Initiate Socket.IO, it will connect back to the server automatically
+window.socket = io();
+
+function socketOk(msg) {
+    $("#socket_state").removeClass().addClass(["fa", "fa-check icon-socket-ok"]).prop('title', msg);
+    console.log("SocketIO OK: " + msg);
+}
+function socketNok(msg) {
+    $("#socket_state").removeClass().addClass(["fa", "fa-close icon-socket-nok"]).prop('title', msg);
+    console.log("SocketIO Err: " + msg);
+
+}
+
+// Error handling
+// https://socket.io/docs/client-api/#Event-%E2%80%98connect%E2%80%99
+socket.on('connect', function() {
+    socketOk("Websocket is connected");
+});
+socket.on('connect_error', function(error) {
+    socketNok("Websocket error", error);
 });
 
 /***************************************************
