@@ -12,7 +12,21 @@ I rewrote my own backend because I feels the one from AirSuck is super messy.
 
 ## Setup
 
-To be written.
+```
+git clone https://github.com/rhaamo/pyAirwaves
+cd pyAirwaves
+pip install --user -r requirements.txt
+cp config.py.sample config.py
+$EDITOR config.py
+createdb ...
+flask db upgrade
+flask import_aircrafts
+flask update_db
+```
+
+Daemons:
+- `python airwaves_adsb_client.py` will connect to dump1090 and rtl-ais
+- `python app.py` will start the Flask-SocketIO server
 
 ## Docs
 
