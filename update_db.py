@@ -36,7 +36,8 @@ def update_aircrafts():
     # Eat the CSV file
 
     # File format:
-    # icao, type, manufacturer, official_page, aircraft_shadow, aircraft_description, engine_type, engine_count, wake_category, mfr
+    # icao, type, manufacturer, official_page, aircraft_shadow, aircraft_description, engine_type, engine_count,
+    # wake_category, mfr
     with open(file_path, "rt") as csv_file:
         for row in csv.reader(csv_file, delimiter=",", quotechar="'"):
             # Ignore comments in file
@@ -123,8 +124,8 @@ def update_mode_s():
             # Add Aircraft Owner only if not empty, and not Private individual
             if (
                 row["RegisteredOwners"] != ""
-                and row["RegisteredOwners"] is not None
-                and row["RegisteredOwners"] != "Private"
+                    and row["RegisteredOwners"] is not None
+                    and row["RegisteredOwners"] != "Private"
             ):
                 aco = AircraftOwner()
                 aco.registration = row["Registration"]
