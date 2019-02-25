@@ -114,63 +114,45 @@ function degreeToCardinal(degree) {
     switch (bearing) {
         case 0:
             return 'N';
-            break;
         case 1:
             return 'NNE';
-            break;
         case 2:
             return 'NE';
-            break;
         case 3:
             return 'ENE';
-            break;
         case 4:
             return 'E';
-            break;
         case 5:
             return 'ESE';
-            break;
         case 6:
             return 'SE';
-            break;
         case 7:
             return 'SSE';
-            break;
         case 8:
             return 'S';
-            break;
         case 9:
             return 'SSW';
-            break;
         case 10:
             return 'SW';
-            break;
         case 11:
             return 'WSW';
-            break;
         case 12:
             return 'W';
-            break;
         case 13:
             return 'WNW';
-            break;
         case 14:
             return 'NW';
-            break;
         case 15:
             return 'NNW';
-            break;
         case 16:
             return 'N';
-            break;
         default:
             if (debug) {
                 console.log('degreeToBearing: error in calculating bearing');
             }
             return null;
-            break;
     }
-};
+}
 
 /***************************************************
  * VEHICLE PROTOTYPE
