@@ -10,6 +10,11 @@ This project use the [AirSuck](https://github.com/ThreeSixes/airSuck) frontend f
 
 I rewrote my own backend because I feels the one from AirSuck is super messy.
 
+## Requirements
+- redis server
+- postgresql >= 10 (should work with lower but you are on your own)
+- python >= 3.6
+
 ## Setup
 
 ```
@@ -25,8 +30,9 @@ flask import_aircrafts
 flask update_db
 ```
 
-Daemons:
+Daemons/scripts:
 - `python airwaves_adsb_client.py` will connect to dump1090 and rtl-ais
+- `simulator.py` instead of connecting to a remote dump1090, it will replay 15minutes of ADS-B datas
 - `python app.py` will start the Flask-SocketIO server
 
 ## Docs
@@ -35,4 +41,4 @@ Various docs can be found in the `docs/` folder.
 
 ## Contact
 
-Dashie <dashie @ sigpipe . me>
+Dashie <dashie@sigpipe.me>
