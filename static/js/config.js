@@ -23,9 +23,7 @@ var loadCustomVehicles = ['airSSR.js', 'airAIS.js'];//order determines the sideb
 /***************************************************
  * VEHICLE ARRAYS AND RELATED
  **************************************************/
-var vehExpireCheckInterval = 1 * 1000; // Frequency to check for expired vehicles (miliseconds)
-var vehicleTypes = []; // Array for registering vehicle types (AIS, SSR)
-var vehicles = []; // Main array holding vehicles - replacing vehData array with vehicle objects
+var vehExpireCheckInterval = 1000; // Frequency to check for expired vehicles (miliseconds)
 var spinnerAnim = ["+", "&#45;", "&#92;", "&#124;", "&#47;", "&#42;"]; // Spinner animation.[0] is an initial state, and the final is a time out state.
 
 /***************************************************
@@ -42,7 +40,6 @@ var useLocation = false; // Whether to attempt to determine the user's location 
 var defaultLat = 49.033300; // Default latitude if useLocation=false or detection fails
 var defaultLng = 1.583300; // Default longitude if useLocation=false or detection fails
 var defaultZoom = 9; // Default zoom level of the map
-var map; // Make the map global
 
 /***************************************************
  * MAPS STYLES
