@@ -10,6 +10,9 @@
  *
  * Deps: jQuery
  **********************************************************/
+
+/* jshint multistr: true */
+
 // Register vehicle type
 if (debug) {
     console.log('Registering vehicle type: SSR');

@@ -11,6 +11,8 @@
  * Deps: jQuery, vehicles.js
  **********************************************************/
 
+/* jshint multistr: true */
+
 // Register vehicle type
 if (debug) {
     console.log('Registering vehicle type: AIS');
