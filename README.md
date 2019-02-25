@@ -9,11 +9,15 @@
 This project is licensed under AGPL v3, except a few files in `js` and `css` which are GPL v3 from AirSuck project.
 See `LICENSE.other` file.
 
-## Infos
+## What is it
 
-This project use the [AirSuck](https://github.com/ThreeSixes/airSuck) frontend for which I already did a conversion to Leaflets.
+This project use the [AirSuck](https://github.com/ThreeSixes/airSuck) frontend with new features, improvements and uses Leaflets maps.
 
-I rewrote my own backend because I feels the one from AirSuck is super messy.
+The entire backend haven't been kept and then entirely write from scratch.
+
+pyAirwaves will use `dump1090` and `rtl-ais` daemons to send real-time display of airplanes and boards to a maps for display.
+
+Some more features will be available like airplane picture, company, and statistics.
 
 ## Requirements
 - redis server
