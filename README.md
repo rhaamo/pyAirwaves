@@ -1,5 +1,9 @@
 # pyAirwaves
 
+<a href="https://dronegh.sigpipe.me/rhaamo/pyAirwaves"><img src="https://dronegh.sigpipe.me/api/badges/rhaamo/pyAirwaves/status.svg" alt="Build Status"/></a>
+<a href="https://github.com/rhaamo/pyAirwaves/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-AGPL3-green.svg"/></a>
+<img src="https://img.shields.io/badge/python-%3E%3D3.6-blue.svg"/> [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+
 ## Licensing
 
 This project is licensed under AGPL v3, except a few files in `js` and `css` which are GPL v3 from AirSuck project.
