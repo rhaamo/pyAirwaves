@@ -1,3 +1,8 @@
+"""
+This is a sample set of ADS-B messages from dump1090, SBS BaseStation format.
+They have been took continuously on a 15 minutes time period.
+"""
+
 REAL_DATA_ADSB = [
     "MSG,3,1,1,4CA6F1,1,2019/02/25,20:35:23.360,2019/02/25,20:35:23.400,,39000,,,48.79692,2.06620,,,0,,0,0",
     "MSG,3,1,1,4CA303,1,2019/02/25,20:35:23.581,2019/02/25,20:35:23.619,,37025,,,48.63675,2.50510,,,0,,0,0",
