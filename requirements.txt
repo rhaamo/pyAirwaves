@@ -12,7 +12,7 @@ flask_mail==0.9.1
 flask_migrate==2.3.1
 sqlalchemy_searchable==1.0.3
 flask_debugtoolbar==0.10.1
-redis==3.0.1
+redis==3.2.0
 Bootstrap-Flask==1.0.9
 Flask-SocketIO==3.3.1
 pycurl==7.43.0.2
