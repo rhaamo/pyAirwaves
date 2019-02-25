@@ -1,4 +1,4 @@
-"use strict";// overcome current Chrome and Firefox issues with ECMA6 stuff like classes
+"use strict"; // overcome current Chrome and Firefox issues with ECMA6 stuff like classes
 /***********************************************************
  * Airsuck JS Socket Message Handler
  * v. 0.1
@@ -49,7 +49,7 @@ function handleMessage(msgJSON) {
         vehicles[vehName].update(msgJSON);
     } else {
         // new vehicle, call the constructor, create marker and set listeners
-        let index;// we need an index to manually traverse the vehicleTypes associative array
+        let index; // we need an index to manually traverse the vehicleTypes associative array
         let length = vehicleTypes.length;
         for (index = 0; index < length; ++index) {
             if (msgJSON.type === vehicleTypes[index].protocol) {

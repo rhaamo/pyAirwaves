@@ -1,4 +1,4 @@
-"use strict";// overcome current Chrome and Firefox issues with ECMA6 stuff like classes
+"use strict"; // overcome current Chrome and Firefox issues with ECMA6 stuff like classes
 /***********************************************************
  * Airsuck JS vehicle-specific functions
  * v. 0.1
@@ -93,7 +93,7 @@ function vehicleTableRowClickListener(vehName) {
         }
         return false;
     } else if (vehName.substring(0, 2) !== 'veh') {
-        vehName = 'veh' + vehName;//missing veh at the beginning, add
+        vehName = 'veh' + vehName; //missing veh at the beginning, add
     }
     if (debug) {
         console.log('Changing marker for: ' + vehName);
@@ -165,12 +165,12 @@ class Vehicle {
         }
         this.spinState = 0; // This is just for tracking the spinner animation state.
         this.addr = msgJSON.addr;
-        this.protocol = protocol;// communications protocol used (AIS,SSR)
+        this.protocol = protocol; // communications protocol used (AIS,SSR)
         this.lastPos = "none";
         this.lastUpdate = new Date().getTime();
-        this.active = true;// set true if the vehicle is currently active
-        this.selected = false;// records whether the vehicle has been selected in the sidebar or by clicking the icon
-        this.maxAge = 1000;// default vehicle expiration time in milliseconds since last contact
+        this.active = true; // set true if the vehicle is currently active
+        this.selected = false; // records whether the vehicle has been selected in the sidebar or by clicking the icon
+        this.maxAge = 1000; // default vehicle expiration time in milliseconds since last contact
         // gMap icon stuff
         this.dirIcoPath = "m 0,0 -20,50 20,-20 20,20 -20,-50"; // Path we want to use for ADS-B targets we have direction data for.
         this.dirIcoScale = 0.15; // Current scale of the path
@@ -241,7 +241,11 @@ Vehicle.prototype.createIcon = function () {
         //  rotation: this.heading
         //});
         console.log("TODO: heading");
-        newIcon = new L.PlaneIcon({color: '#f4ff01', idleCircle: false, course: this.heading});
+        newIcon = new L.PlaneIcon({
+            color: '#f4ff01',
+            idleCircle: false,
+            course: this.heading
+        });
         newIcon.setHeading(this.heading);
     } else {
         // Create our icon for a vehicle without heading data.
@@ -252,7 +256,10 @@ Vehicle.prototype.createIcon = function () {
         //  strokeColor: (this.selected == true) ? this.vehColorSelected : ((this.active == true) ? this.vehColorActive : this.vehColorInactive)
         //});
         console.log("TODO: no heading");
-        newIcon = new L.PlaneIcon({color: '#f4ff01', idleCircle: false});
+        newIcon = new L.PlaneIcon({
+            color: '#f4ff01',
+            idleCircle: false
+        });
     }
     // And return it.
     return newIcon;
@@ -327,7 +334,9 @@ Vehicle.prototype.movePosition = function () {
         // push back to the polyline
         this.pathPoly.setLatLngs(pathObject);
         // set the polyline color
-        this.pathPoly.setStyle({color: this.stkColor});
+        this.pathPoly.setStyle({
+            color: this.stkColor
+        });
 
         // Update the marker
         // Modify the icon to have the correct rotation, and to indicate there is bearing data.
@@ -491,10 +500,10 @@ Vehicle.prototype.checkExpiration = function () {
 function registerVehicleType(newProtocol, newDomName, newFaIcon, newConstructor, newTableHeader) {
     // TO DO: validate input
     vehicleTypes.push({
-        protocol: newProtocol,// the name to look for in the type field of incoming data
-        domName: newDomName,// the name used for this vehicle type in the DOM
-        faIcon: newFaIcon,// the icon used for this vehicle type in the sidebar and menus
-        constructor: newConstructor,// constructor function for this vehicle type
-        buildTable: newTableHeader// header row to use for this vehicle type in its' data table
+        protocol: newProtocol, // the name to look for in the type field of incoming data
+        domName: newDomName, // the name used for this vehicle type in the DOM
+        faIcon: newFaIcon, // the icon used for this vehicle type in the sidebar and menus
+        constructor: newConstructor, // constructor function for this vehicle type
+        buildTable: newTableHeader // header row to use for this vehicle type in its' data table
     });
 }

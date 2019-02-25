@@ -1,4 +1,4 @@
-"use strict";// overcome current Chrome and Firefox issues with ECMA6 stuff like classes
+"use strict"; // overcome current Chrome and Firefox issues with ECMA6 stuff like classes
 /***********************************************************
  * Airsuck Maps system setup
  * v. 0.1
@@ -25,11 +25,11 @@ function initMap() {
     if (useLocation) {
         if ("geolocation" in navigator) {
             // We can use it
-            navigator.geolocation.getCurrentPosition(function(position) {
+            navigator.geolocation.getCurrentPosition(function (position) {
                 window.defautLng = position.coords.longitude;
                 window.defaultLat = position.coords.latitude;
                 console.log("GeoLocation authorized, coords used.");
-            }, function(error) {
+            }, function (error) {
                 if (error.code === error.PERMISSION_DENIED) {
                     console.log("GeoLocation denied, defaulting to server's one.");
                 }

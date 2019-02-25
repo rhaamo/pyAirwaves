@@ -1,4 +1,4 @@
-"use strict";// overcome current Chrome and Firefox issues with ECMA6 stuff like let
+"use strict"; // overcome current Chrome and Firefox issues with ECMA6 stuff like let
 /***********************************************************
  * Airsuck User Interface Sidebar
  * v. 0.1
@@ -106,7 +106,9 @@ function setupSidebar() {
                 $('#sidebar-icon').removeClass('fa-chevron-left');
                 $('#sidebar-icon').addClass('fa-chevron-right');
                 // TO-DO, don't hardcode the movement at 32%
-                $('#sidebar-icon').animate({right: "31%"});
+                $('#sidebar-icon').animate({
+                    right: "31%"
+                });
                 // by default, show the SSR vehicle list
                 //loadVehicleLists('#container-list-AIS','#container-list-SSR'); // remove
                 $('#container-list-SSR').show();
@@ -115,10 +117,14 @@ function setupSidebar() {
                 $('#sidebar-icon').removeClass('fa-chevron-right');
                 $('#sidebar-icon').addClass('fa-chevron-left');
                 // TO-DO, don't hardcode the movement at 10px
-                $('#sidebar-icon').animate({right: "10px"});
+                $('#sidebar-icon').animate({
+                    right: "10px"
+                });
             }
             // slide out or in the sidebar
-            $('#sidebar').animate({width: "toggle"});
+            $('#sidebar').animate({
+                width: "toggle"
+            });
         });
 
         // Flag sidebar as loaded.
