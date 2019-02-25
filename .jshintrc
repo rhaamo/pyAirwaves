@@ -6,10 +6,8 @@
         "$": false,
         "browser": false,
         "L": false,
-        "map": false,
-        "useLocation": false,
         "console": false,
-        "layers": false,
-        "debug": false
+        "io": false,
+        "Rainbow": false
     }
 }

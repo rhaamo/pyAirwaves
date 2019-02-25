@@ -13,6 +13,7 @@
  **********************************************************/
 
 /* exported sidebarLoaded, vehicleTypes, vehicles */
+/* global debug, socket, mapLoaded, vehExpireCheckInterval, expireVehicles */
 
 /***************************************************
  * GLOBALS
