@@ -95,7 +95,7 @@ $.getScript("static/js/vehicles/vehicle.js", function () {
                 href: 'static/css/sidebar.css'
             }).appendTo('head');
         });
-    }, 0.1);
+    }, 0.5);
 
 });
 
