@@ -35,9 +35,6 @@ function handleMessage(msgJSON) {
         $('#' + messageBx).attr('value', JSON.stringify(msgJSON, null, 10));
     }
 
-    // JSONify the JSON string.
-    //let msgJSON = JSON.parse();
-
     // Return early - don't continue processing the keepalive.
     if ('keepalive' in msgJSON) {
         return;
@@ -97,4 +94,3 @@ function handleMessage(msgJSON) {
 
 // Register the message handler
 socket.on('message', handleMessage);
-
