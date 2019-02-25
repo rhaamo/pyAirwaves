@@ -6,7 +6,7 @@ import time
 from flask_socketio import SocketIO
 import config as cfg
 
-DELAY_MESSAGES = 1  # second
+DELAY_MESSAGES = 0.5  # second
 
 socketio = SocketIO(message_queue=cfg.SOCKETIO_MESSAGE_QUEUE)
 
