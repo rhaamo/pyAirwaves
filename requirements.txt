@@ -9,7 +9,7 @@ wtforms==2.2.1
 sqlalchemy==1.2.18
 bcrypt==3.1.5
 flask_mail==0.9.1
-flask_migrate==2.3.1
+flask_migrate==2.4.0
 sqlalchemy_searchable==1.0.3
 flask_debugtoolbar==0.10.1
 redis==3.2.0
