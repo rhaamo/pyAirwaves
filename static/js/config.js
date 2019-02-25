@@ -10,6 +10,9 @@
  * Deps: none, **required for all airsuck JS functions
  **********************************************************/
 
+/* exported debug, loadCustomVehicles, vehExpireCheckInterval, spinnerAnim, minimumAltitude, maximumAltitude */
+/* exported spectrum, useLocation, defaultLat, defaultLng, defaultZoom, pathStrokeOpacity, pathStrokeWeight, pathzIndex */
+
 /***************************************************
  * DEBUG
  **************************************************/

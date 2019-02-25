@@ -9,6 +9,8 @@
  * Deps: jQuery, Leaflet JS API loaded
  **********************************************************/
 
+/* global defaultLat, defaultLng, defaultZoom, map, layers */
+
 /***************************************************
  * INITIALIZE MAPS
  * Using Leaflet, no Google Map available
