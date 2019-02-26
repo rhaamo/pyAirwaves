@@ -105,6 +105,19 @@ function vehicleTableRowClickListener(vehName) {
  * MISC HELPERS
  **************************************************/
 
+function bearingFromTwoCoordinates(lat1, lon1, lat2, lon2) {
+    if (debug) {
+        console.log("Bearing from " + lat1 + "," + lon1 + " to " + lat2 + "," + lon2);
+    }
+
+    let dLon = (lon2 - lon1);
+    let y = Math.sin(dLon) * Math.cos(lat2);
+    let x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+    let radBrng = Math.atan2(y, x);
+    let brng = radBrng * 180 / Math.PI;
+    return 360 - ((brng + 360) % 360)
+}
+
 // Converts a heading from degrees to a cardinal direction, 16 settings
 function degreeToCardinal(degree) {
     let bearing;
@@ -167,6 +180,8 @@ class Vehicle {
         this.addr = msgJSON.addr;
         this.protocol = protocol; // communications protocol used (AIS,SSR)
         this.lastPos = "none";
+        this.lastLat = null;
+        this.lastLon = null;
         this.lastUpdate = new Date().getTime();
         this.active = true; // set true if the vehicle is currently active
         this.selected = false; // records whether the vehicle has been selected in the sidebar or by clicking the icon
@@ -340,9 +355,8 @@ Vehicle.prototype.movePosition = function () {
 
         // Update the marker
         // Modify the icon to have the correct rotation, and to indicate there is bearing data.
-        console.log("TODO FIXME set icon w/ bearing rotation");
-        console.log(this.marker);
-        console.log(this);
+        this.heading = bearingFromTwoCoordinates(this.lastLat, this.lastLon, this.lat, this.lon);
+
         this.marker.setIcon(this.createIcon());
         // Move the marker.
         this.marker.setLatLng(new L.LatLng(this.lat, this.lon));
@@ -385,6 +399,10 @@ Vehicle.prototype.updateTableEntry = function () {
 };
 
 Vehicle.prototype.update = function (msgJSON) {
+    // Set old lat and lon
+    this.lastLat = this.lat;
+    this.lastLon = this.lon;
+
     // update data in the object
     $.extend(true, this, msgJSON);
     // if not set to active, reactivate
