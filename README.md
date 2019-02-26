@@ -26,6 +26,8 @@ Some more features will be available like airplane picture, company, and statist
 
 ## Setup
 
+Best to use `pyenv` in production.
+
 ```
 git clone https://github.com/rhaamo/pyAirwaves
 cd pyAirwaves
@@ -36,12 +38,14 @@ $EDITOR static/js/config.js
 createdb ...
 flask db upgrade
 flask import_aircrafts
+flask import_registrations
 flask update_db
 ```
 
 Daemons/scripts:
 - `python airwaves_adsb_client.py` will connect to dump1090 and rtl-ais
 - `simulator.py` instead of connecting to a remote dump1090, it will replay 15minutes of ADS-B datas
+- `simulator2.py` instead of connecting to a remote dump1090, it will replay three planes looping somewhere in the USA
 - `python app.py` will start the Flask-SocketIO server
 
 ## Docs
