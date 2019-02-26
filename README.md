@@ -37,9 +37,9 @@ $EDITOR config.py
 $EDITOR static/js/config.js
 createdb ...
 flask db upgrade
-flask import_aircrafts
-flask import_registrations
-flask update_db
+flask import-aircrafts
+flask import-registrations
+flask update-db
 ```
 
 Daemons/scripts:
