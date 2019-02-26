@@ -23,7 +23,7 @@ function expireVehicles() {
     let key;
     for (key in vehicles) {
         // Get the state of the vehicle and take appropriate action
-        // Don't run the check on nulled objects because JS ECMAScript 6 doesn't allow delete...
+        // Since we `delete ...` we shouldn't have null keys but in case of...
         if (vehicles[key] != null) {
             switch (vehicles[key].checkExpiration()) {
                 case 'Halflife':
@@ -39,8 +39,8 @@ function expireVehicles() {
                     }
                     // Vehicle expired, cleanup the vehicles things...
                     vehicles[key].destroy();
-                    // Nullify the entry since ECMAScript 6 doesn't let us use destroy
-                    vehicles[key] = null;
+                    // Then destroy the key
+                    delete vehicles[key];
                     break;
                 default:
                     // Do nothing on active or other
@@ -475,7 +475,6 @@ Vehicle.prototype.destroy = function () {
     if (map.hasLayer(this.marker)) {
         map.removeLayer(this.marker);
     }
-    //vehicles[this.addr] = null;// invalidate this object, can't fully delete since its gone in ECMAScript 6...
 };
 
 /***************************************************
