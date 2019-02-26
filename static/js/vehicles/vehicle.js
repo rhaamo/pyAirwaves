@@ -366,9 +366,6 @@ Vehicle.prototype.movePosition = function () {
         });
 
         // Update the marker
-        // Modify the icon to have the correct rotation, and to indicate there is bearing data.
-        this.heading = bearingFromTwoCoordinates(this.lastLat, this.lastLon, this.lat, this.lon);
-
         this.marker.setIcon(this.createIcon());
         // Move the marker.
         this.marker.setLatLng(new L.LatLng(this.lat, this.lon));
@@ -438,6 +435,9 @@ Vehicle.prototype.update = function (msgJSON) {
         // Reset counter at 1. We do this to make sure we have > 1 frame from the target.
         this.spinState = 1;
     }
+
+    // Modify the icon to have the correct rotation, and to indicate there is bearing data.
+    this.heading = bearingFromTwoCoordinates(this.lastLat, this.lastLon, this.lat, this.lon);
 
     // update the last update parameter
     this.lastUpdate = Date.now();

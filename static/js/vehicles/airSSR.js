@@ -85,6 +85,10 @@ Aircraft.prototype.update = function (msgJSON) {
   if (this.alt !== 'undefined' && this.alt != null) {
     this.stkColor = "#" + polyRamp.colourAt(this.alt / 1000); // Color of the path
   }
+
+  // Modify the icon to have the correct rotation, and to indicate there is bearing data.
+  this.heading = bearingFromTwoCoordinates(this.lastLat, this.lastLon, this.lat, this.lon);
+
   // update the last update parameter
   this.lastUpdate = Date.now();
   // update the vehicle entry in its' table
