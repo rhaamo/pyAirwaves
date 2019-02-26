@@ -2,12 +2,20 @@ import datetime
 
 
 class DefaultType:
+    """
+    Default type for messages structures
+    """
+
     def __init__(self):
         # Incoming data type – airAIS or airSSR
         self.type: str = None
 
 
 class AdsbType(DefaultType):
+    """
+    Type for ADS-B messages
+    """
+
     def __init__(self):
         DefaultType.__init__(self)
         self.type: str = "airSSR"

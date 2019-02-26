@@ -163,6 +163,12 @@ def utils_download_and_ingest_faa():
 
 
 def download_file(url: str, filename: str):
+    """
+    Download a file
+    :param url: File URL to download
+    :param filename:  Filename to download to
+    :return: Bool, download succeeded or not
+    """
     print(f"Downloading {url}...")
     file_target = os.path.join(current_app.config["UPDATE_DB_TEMP_PATH"], filename)
 
@@ -213,6 +219,13 @@ def gunzip(source_filepath, dest_filepath, block_size=65536):
 
 
 def download_and_gunzip(url: str, f_source: str, f_target: str):
+    """
+    Download and gunzip file
+    :param url: File URL to download
+    :param f_source: Filename to download to
+    :param f_target: Filename after decompression
+    :return: Bool, Download and/or decompression succeded
+    """
     # Download file
     downloaded = download_file(url, f_source)
     if not downloaded:
@@ -240,6 +253,13 @@ def download_and_gunzip(url: str, f_source: str, f_target: str):
 
 
 def download_and_extract_zip(url: str, archive_name: str, filename: str):
+    """
+    Download and extract ZIP
+    :param url: File URL to download
+    :param archive_name: Filename to download to
+    :param filename:  Filename to extract
+    :return: Bool, download and/or extraction succeeded or not
+    """
     # Download the file first
     downloaded = download_file(url, archive_name)
     if not downloaded:

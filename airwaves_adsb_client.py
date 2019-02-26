@@ -11,67 +11,10 @@ import time
 import datetime
 from flask_socketio import SocketIO
 import config as cfg
-from structs import AdsbType
+from libPyAirwaves.adsb import is_valid_adsb_message, get_adsb_message
 
 count_failed_connection = 0
 max_failed_connection = 10
-
-
-# Do some basic checks on the ADS-B received message
-# http://woodair.net/sbs/article/barebones42_socket_data.htm
-def is_valid_adsb_message(fields):
-    is_valid = False
-
-    if len(fields) == 22:
-        is_valid = True
-
-    if fields[0].upper() in ["MSG", "STA", "ID", "AIR", "SEL", "CLK"]:
-        is_valid = True
-    else:
-        logging.error(f"Field 1 invalid : '{fields[0]}'")
-        logging.error(f"Invalid ADSB Message: '{fields}'")
-
-    if int(fields[1]) in [1, 2, 3, 4, 5, 6, 7, 8]:
-        is_valid = True
-    else:
-        logging.error(f"Field 2 invalid: '{fields[1]}'")
-        logging.error(f"Invalid ADSB Message: '{fields}'")
-
-    if not is_valid:
-        logging.error(f"Invalid ADSB Message: '{fields}'")
-
-    return is_valid
-
-
-def get_adsb_message(fields):
-    # Remember that fields start at 1 but python array at 0, so field 3 (session ID) is at position 2
-    msg = AdsbType()
-    msg.addr = fields[4]  # int(fields[4], 16)
-    msg.idInfo = fields[3]
-    msg.aSquawk = fields[17]
-    msg.alt = int(fields[11]) if fields[11] else None
-    msg.lon = float(fields[15]) if fields[15] else None
-    msg.lat = float(fields[14]) if fields[14] else None
-    msg.entryPoint = "airwaves_adsb_client"
-    msg.dts = str(datetime.datetime.utcnow())
-    msg.src = config.PYAW_HOSTNAME
-    msg.lastSrc = msg.src
-    msg.data = ",".join(fields)
-    msg.srcPos = False  # TODO add position support
-    if fields[21] == 0 or fields[21] == "0":
-        msg.vertStat = "air"
-    else:
-        msg.vertStat = "gnd"
-    msg.vertRate = int(fields[16]) if fields[16] else None
-    msg.category = None
-    msg.icaoAACC = None
-    msg.velo = None
-    msg.heading = None
-    msg.supersonic = None
-    msg.clientName = config.ADSB_SOURCE["name"]
-    msg.lastClientName = msg.clientName
-    msg.dataOrigin = "dump1090"
-    return msg
 
 
 if __name__ == "__main__":
@@ -82,11 +25,11 @@ if __name__ == "__main__":
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.connect((config.ADSB_SOURCE["host"], config.ADSB_SOURCE["port"]))
             count_failed_connection = 1
-            print("Connected to dump1090")
+            logging.info("Connected to dump1090")
             break
         except socket.error:
             count_failed_connection += 1
-            print(
+            logging.error(
                 f"Cannot connect to dump1090 main {count_failed_connection}/{max_failed_connection}: {traceback.format_exc()}"
             )
             time.sleep(5)
@@ -110,7 +53,7 @@ if __name__ == "__main__":
                 pass
 
             if len(message) == 0:
-                print(ts, "No broadcast received. Attempting to reconnect")
+                logging.warning(ts, "No broadcast received. Attempting to reconnect")
                 time.sleep(5)
                 sock.close()
 
@@ -119,11 +62,11 @@ if __name__ == "__main__":
                         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         sock.connect(("fenouil", 30003))
                         count_failed_connection = 1
-                        print("Connected to dump1090")
+                        logging.info("Connected to dump1090")
                         break
                     except socket.error:
                         count_failed_connection += 1
-                        print(
+                        logging.error(
                             f"Cannot connect to dump1090 while {count_failed_connection}/{max_failed_connection}: {traceback.format_exc()}"
                         )
                         time.sleep(5)
@@ -145,7 +88,11 @@ if __name__ == "__main__":
                         # Emit Socket.IO message only if altitude, latitude and longitude are set
                         # AKA a "MSG,3" message and perhaps a "MSG,2" (Surface position)
                         if adsb_message.has_location():
-                            print(adsb_message.to_dict())
+                            adsb_message.entryPoint = "airwaves_adsb_client"
+                            adsb_message.src = config.PYAW_HOSTNAME
+                            adsb_message.clientName = config.ADSB_SOURCE["name"]
+                            adsb_message.dataOrigin = "dump1090"
+                            logging.debug(adsb_message.to_dict())
                             socketio.emit("message", adsb_message.to_dict())
                     # It's valid, reset stream message
                     data_str = ""
@@ -155,5 +102,5 @@ if __name__ == "__main__":
                     continue
 
     except KeyboardInterrupt:
-        print("Closing socket connection")
+        logging.info("Closing socket connection")
         sock.close()
