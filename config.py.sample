@@ -29,6 +29,8 @@ PYAW_HOSTNAME = 'potato'
 ADSB_SOURCE = {"host": "patate", "port": 30003, "name": "patate", "reconnect_delay": 5, "thread_timeout": 30}
 AIS_SOURCE = {'host': 'patate', 'port': 10110, "name": "patate", "reconnect_delay": 5, "thread_timeout": 30}
 
+SECRET_KEY = "pls fill me"
+
 # Mail setup
 MAIL_SERVER = "localhost"
 MAIL_PORT = 25
