@@ -58,8 +58,13 @@ class Aircraft extends Vehicle {
  * OVERRIDES DEFAULT TO USE COLOR RAMP
  **************************************************/
 Aircraft.prototype.update = function (msgJSON) {
-  // update data in the object **do this first**
+  // Set old lat and lon
+  this.lastLat = this.lat;
+  this.lastLon = this.lon;
+
+  // then update data in the object
   $.extend(true, this, msgJSON);
+
   // if not set to active, reactivate
   if (this.active === false) {
     this.active = true;

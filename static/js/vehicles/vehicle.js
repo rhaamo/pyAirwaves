@@ -105,17 +105,29 @@ function vehicleTableRowClickListener(vehName) {
  * MISC HELPERS
  **************************************************/
 
+function toRadians(deg) {
+    return deg * Math.PI / 180;
+}
+function toDeg(rad) {
+    return rad * 180 / Math.PI;
+}
+
 function bearingFromTwoCoordinates(lat1, lon1, lat2, lon2) {
     if (debug) {
         console.log("Bearing from " + lat1 + "," + lon1 + " to " + lat2 + "," + lon2);
     }
 
-    let dLon = (lon2 - lon1);
-    let y = Math.sin(dLon) * Math.cos(lat2);
-    let x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
-    let radBrng = Math.atan2(y, x);
-    let brng = radBrng * 180 / Math.PI;
-    return 360 - ((brng + 360) % 360)
+    let startLat = toRadians(lat1);
+    let startLon = toRadians(lon1);
+    let destLat = toRadians(lat2);
+    let destLon = toRadians(lon2);
+
+    let y = Math.sin(destLon - startLon) * Math.cos(destLat);
+    let x = Math.cos(startLat) * Math.sin(destLat) - Math.sin(startLat) * Math.cos(destLat) * Math.cos(destLon - startLon);
+    let brng = Math.atan2(y, x);
+    brng = toDeg(brng);
+    return (brng + 360) % 360;
+
 }
 
 // Converts a heading from degrees to a cardinal direction, 16 settings
@@ -402,6 +414,12 @@ Vehicle.prototype.update = function (msgJSON) {
     // Set old lat and lon
     this.lastLat = this.lat;
     this.lastLon = this.lon;
+
+    console.log("vehicle update");
+    console.log(this.lastLat);
+    console.log(this.lastLon);
+    console.log(this.lat);
+    console.log(this.lon);
 
     // update data in the object
     $.extend(true, this, msgJSON);
