@@ -3,6 +3,7 @@
 blah
 """
 
+import logging
 import traceback
 import config
 import socket
@@ -91,7 +92,7 @@ if __name__ == "__main__":
                             adsb_message.src = config.PYAW_HOSTNAME
                             adsb_message.clientName = config.ADSB_SOURCE["name"]
                             adsb_message.dataOrigin = "dump1090"
-                            print())
+                            print(adsb_message.to_dict())
                             socketio.emit("message", adsb_message.to_dict())
                     # It's valid, reset stream message
                     data_str = ""
