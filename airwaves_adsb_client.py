@@ -12,11 +12,14 @@ from flask_socketio import SocketIO
 import config as cfg
 from libPyAirwaves.adsb import is_valid_adsb_message
 from libPyAirwaves.structs import AdsbType
-from models import db, Aircrafts, AircraftModes, AircraftOwner
+from models import db, Aircrafts, AircraftModes, AircraftOwner, AircraftRegistration
+from app import create_app
 
 count_failed_connection = 0
 max_failed_connection = 10
 
+app = create_app()
+app.app_context().push()
 
 if __name__ == "__main__":
     socketio = SocketIO(message_queue=cfg.SOCKETIO_MESSAGE_QUEUE)
@@ -106,13 +109,18 @@ if __name__ == "__main__":
                                     Aircrafts.engine_count,
                                     AircraftOwner.registration,
                                     AircraftOwner.owner,
+                                    AircraftRegistration.country,
+                                    AircraftRegistration.prefix
                                 )
                                 .filter(AircraftModes.mode_s == adsb_message.addr)
                                 .join(Aircrafts, Aircrafts.icao == AircraftModes.icao_type_code)
                                 .join(AircraftOwner, AircraftOwner.registration == AircraftModes.registration)
+                                .join(AircraftRegistration, AircraftRegistration.country == AircraftModes.mode_s_country)
                                 .first()
                             )
-                            # TODO : AircraftRegistration
+
+                            adsb_message.icaoAACC = sqlcraft.prefix
+                            adsb_message.category = sqlcraft.aircraft_description
 
                             print(adsb_message.to_dict())
                             socketio.emit("message", adsb_message.to_dict())

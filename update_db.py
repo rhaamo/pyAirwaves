@@ -82,6 +82,7 @@ def update_registrations():
             if row[0].startswith("#"):
                 continue
             acr = AircraftRegistration()
+            print(row[1])
             acr.country = row[0]
             acr.prefix = row[1]
             db.session.add(acr)
