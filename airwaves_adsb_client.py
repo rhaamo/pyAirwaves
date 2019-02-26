@@ -12,6 +12,7 @@ from flask_socketio import SocketIO
 import config as cfg
 from libPyAirwaves.adsb import is_valid_adsb_message
 from libPyAirwaves.structs import AdsbType
+from models import db, Aircrafts, AircraftModes, AircraftOwner
 
 count_failed_connection = 0
 max_failed_connection = 10
@@ -93,6 +94,26 @@ if __name__ == "__main__":
                             adsb_message.src = config.PYAW_HOSTNAME
                             adsb_message.clientName = config.ADSB_SOURCE["name"]
                             adsb_message.dataOrigin = "dump1090"
+
+                            # Get more datas from SQL
+                            sqlcraft = (
+                                db.session.query(
+                                    AircraftModes.icao_type_code,
+                                    Aircrafts.type,
+                                    Aircrafts.manufacturer,
+                                    Aircrafts.aircraft_description,
+                                    Aircrafts.engine_type,
+                                    Aircrafts.engine_count,
+                                    AircraftOwner.registration,
+                                    AircraftOwner.owner,
+                                )
+                                .filter(AircraftModes.mode_s == adsb_message.addr)
+                                .join(Aircrafts, Aircrafts.icao == AircraftModes.icao_type_code)
+                                .join(AircraftOwner, AircraftOwner.registration == AircraftModes.registration)
+                                .first()
+                            )
+                            # TODO : AircraftRegistration
+
                             print(adsb_message.to_dict())
                             socketio.emit("message", adsb_message.to_dict())
                     # It's valid, reset stream message

@@ -64,3 +64,11 @@ class AircraftOwner(db.Model):
     date_first_reg = db.Column(db.DateTime(timezone=False), default=None)
     source = db.Column(db.String(255), nullable=False)
     is_private = db.Column(db.Boolean, default=False)
+
+
+class AircraftRegistration(db.Model):
+    __tablename__ = "aircraft_registration"
+
+    id = db.Column(db.Integer, primary_key=True)
+    country = db.Column(db.String(255), nullable=False)
+    prefix = db.Column(db.String(10), nullable=False)

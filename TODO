@@ -24,3 +24,5 @@ my idea is that at some point the marker isn't created because of lat/lon missin
 - Better planes icons
 
 - javascript cleanup needed
+
+- Aicraftxx ModeSCountry is empty for some, should not

@@ -1,4 +1,4 @@
-from models import db, Translation, AircraftModes, AircraftOwner, Aircrafts
+from models import db, Translation, AircraftModes, AircraftOwner, Aircrafts, AircraftRegistration
 from utils import download_file, download_and_extract_zip, download_and_gunzip
 from sqlalchemy import or_, create_engine, and_
 from flask import current_app
@@ -55,6 +55,36 @@ def update_aircrafts():
             ac.wake_category = row[8]
             ac.mfr = row[9]
             db.session.add(ac)
+        db.session.commit()
+
+    print("Done.")
+
+
+def update_registrations():
+    print("Importing Aircrafts registrations datas...")
+    fname = "registrations.csv"  # don't change it !
+    file_path = os.path.join(os.getcwd(), "datas", fname)
+    if not os.path.isfile(file_path):
+        print(f"Error: file at path {file_path} doesn't exist !")
+        return False
+
+    print("Cleaning old datas...")
+    # Remove old datas
+    db.session.query(AircraftRegistration).delete()
+
+    # Eat the CSV file
+
+    # File format:
+    # country, prefix
+    with open(file_path, "rt") as csv_file:
+        for row in csv.reader(csv_file, delimiter=",", quotechar="'"):
+            # Ignore comments in file
+            if row[0].startswith("#"):
+                continue
+            acr = AircraftRegistration()
+            acr.country = row[0]
+            acr.prefix = row[1]
+            db.session.add(acr)
         db.session.commit()
 
     print("Done.")
