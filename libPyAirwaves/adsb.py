@@ -45,6 +45,7 @@ def get_adsb_message(fields: list_of_strings):
     :param fields: List of strings containing the ADS-B message, splitted on ','
     :return: an AdsbType structure
     """
+    # TODO: Move that to a function in AdsbType class
     # Remember that fields start at 1 but python array at 0, so field 3 (session ID) is at position 2
     msg = AdsbType()
     msg.addr = fields[4]  # int(fields[4], 16)
@@ -54,7 +55,6 @@ def get_adsb_message(fields: list_of_strings):
     msg.lon = float(fields[15]) if fields[15] else None
     msg.lat = float(fields[14]) if fields[14] else None
     msg.dts = str(datetime.datetime.utcnow())
-    msg.lastSrc = msg.src
     msg.data = ",".join(fields)
     msg.srcPos = False  # TODO add position support
     if fields[21] == 0 or fields[21] == "0":
@@ -67,5 +67,4 @@ def get_adsb_message(fields: list_of_strings):
     msg.velo = None
     msg.heading = None
     msg.supersonic = None
-    msg.lastClientName = msg.clientName
     return msg
