@@ -37,22 +37,22 @@ for msg in REAL_DATA_ADSB:
             AircraftOwner.registration,
             AircraftOwner.owner,
             AircraftRegistration.country,
-            AircraftRegistration.prefix
+            AircraftRegistration.prefix,
         )
-            .filter(AircraftModes.mode_s == adsb_msg.addr)
-            .join(Aircrafts, Aircrafts.icao == AircraftModes.icao_type_code)
-            .join(AircraftOwner, AircraftOwner.registration == AircraftModes.registration)
-            .join(AircraftRegistration, AircraftRegistration.country == AircraftModes.mode_s_country)
-            .first()
+        .filter(AircraftModes.mode_s == adsb_msg.addr)
+        .join(Aircrafts, Aircrafts.icao == AircraftModes.icao_type_code)
+        .join(AircraftOwner, AircraftOwner.registration == AircraftModes.registration)
+        .join(AircraftRegistration, AircraftRegistration.country == AircraftModes.mode_s_country)
+        .first()
     )
 
     try:
-        adsb_message.icaoAACC = sqlcraft.country
+        adsb_msg.icaoAACC = sqlcraft.country
     except AttributeError:
         None
 
     try:
-        adsb_message.category = sqlcraft.aircraft_description
+        adsb_msg.category = sqlcraft.aircraft_description
     except AttributeError:
         None
 

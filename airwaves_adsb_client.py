@@ -110,12 +110,14 @@ if __name__ == "__main__":
                                     AircraftOwner.registration,
                                     AircraftOwner.owner,
                                     AircraftRegistration.country,
-                                    AircraftRegistration.prefix
+                                    AircraftRegistration.prefix,
                                 )
                                 .filter(AircraftModes.mode_s == adsb_message.addr)
                                 .join(Aircrafts, Aircrafts.icao == AircraftModes.icao_type_code)
                                 .join(AircraftOwner, AircraftOwner.registration == AircraftModes.registration)
-                                .join(AircraftRegistration, AircraftRegistration.country == AircraftModes.mode_s_country)
+                                .join(
+                                    AircraftRegistration, AircraftRegistration.country == AircraftModes.mode_s_country
+                                )
                                 .first()
                             )
 
