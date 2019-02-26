@@ -93,6 +93,12 @@ class AdsbType(DefaultType):
         # True if aircraft is moving at supersonic speeds
         self.supersonic: bool = None
 
+    def populate_from_list(self, fields):
+        pass
+
+    def populate_from_string(self, msg):
+        self.populate_from_list(msg.split(","))
+
     def to_dict(self):
         """
         :return: All variables except `__thoses__` ones, and transform `_things` into `things`
