@@ -119,7 +119,7 @@ if __name__ == "__main__":
                                 .first()
                             )
 
-                            adsb_message.icaoAACC = sqlcraft.prefix
+                            adsb_message.icaoAACC = sqlcraft.country
                             adsb_message.category = sqlcraft.aircraft_description
 
                             print(adsb_message.to_dict())
