@@ -21,6 +21,8 @@ from pprint import pprint as pp
 
 from version import VERSION
 
+from config import LISTEN_HOST, LISTEN_PORT
+
 __VERSION__ = VERSION
 
 try:
@@ -214,4 +216,4 @@ if __name__ == "__main__":
     import eventlet
 
     eventlet.monkey_patch()
-    socketio.run(create_app())
+    socketio.run(create_app(), host=LISTEN_HOST, port=LISTEN_PORT)

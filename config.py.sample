@@ -1,6 +1,9 @@
 # Website translations
 BABEL_DEFAULT_LOCALE = "en"
 
+LISTEN_HOST = '127.0.0.1'
+LISTEN_PORT = '5000'
+
 # If using sentry, set a DSN
 SENTRY_USER_ATTRS = ['name', 'email']
 SENTRY_DSN = ""
