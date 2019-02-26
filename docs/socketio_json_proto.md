@@ -34,6 +34,10 @@ SBS Reference: http://woodair.net/sbs/article/barebones42_socket_data.htm
 |supersonic|True if aircraft is moving at supersonic speeds|bool| |
 |clientName|Data source name|string| |dump1090_ant_b|
 |fs|Flight status bit|int|
+|regTail|Registration number|string| |
+|regAuthority|Country registration|string| |
+|regName|Registration owner|string| |
+|regAircraft|Manufacturer year, model, name|string| |
 
 
 ## AIS (rtl-ais)
