@@ -3,7 +3,6 @@
 blah
 """
 
-import logging
 import traceback
 import config
 import socket
@@ -11,7 +10,8 @@ import time
 import datetime
 from flask_socketio import SocketIO
 import config as cfg
-from libPyAirwaves.adsb import is_valid_adsb_message, get_adsb_message
+from libPyAirwaves.adsb import is_valid_adsb_message
+from libPyAirwaves.structs import AdsbType
 
 count_failed_connection = 0
 max_failed_connection = 10
@@ -84,7 +84,8 @@ if __name__ == "__main__":
                 # we need 22 items to be a valid looking message
                 if len(line) == 22:
                     if is_valid_adsb_message(line):
-                        adsb_message = get_adsb_message(line)
+                        adsb_message = AdsbType()
+                        adsb_message.populate_from_list(line)
                         # Emit Socket.IO message only if altitude, latitude and longitude are set
                         # AKA a "MSG,3" message and perhaps a "MSG,2" (Surface position)
                         if adsb_message.has_location():

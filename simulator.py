@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from real_datas_test import REAL_DATA_ADSB
-from libPyAirwaves.adsb import get_adsb_message
+from libPyAirwaves.structs import AdsbType
 import time
 from flask_socketio import SocketIO
 import config as cfg
@@ -13,7 +13,8 @@ socketio = SocketIO(message_queue=cfg.SOCKETIO_MESSAGE_QUEUE)
 print("Sending messages...")
 
 for msg in REAL_DATA_ADSB:
-    adsb_msg = get_adsb_message(msg.split(","))
+    adsb_msg = AdsbType()
+    adsb_msg.populate_from_string(msg)
     adsb_msg.entryPoint = "simulator"
     adsb_msg.src = cfg.PYAW_HOSTNAME
     adsb_msg.clientName = "sim_host"

@@ -93,23 +93,50 @@ class AdsbType(DefaultType):
         # True if aircraft is moving at supersonic speeds
         self.supersonic: bool = None
 
+    # Populate class with datas
+
+    # Remember that fields start at 1 but python array at 0, so field 3 (session ID) is at position 2
     def populate_from_list(self, fields):
-        pass
+        self.addr = fields[4]  # int(fields[4], 16)
+        self.idInfo = fields[3]
+        self.aSquawk = fields[17]
+        self.alt = int(fields[11]) if fields[11] else None
+        self.lon = float(fields[15]) if fields[15] else None
+        self.lat = float(fields[14]) if fields[14] else None
+        self.dts = str(datetime.datetime.utcnow())
+        self.data = ",".join(fields)
+        self.srcPos = False  # TODO add position support
+        if fields[21] == 0 or fields[21] == "0":
+            self.vertStat = "air"
+        else:
+            self.vertStat = "gnd"
+        self.vertRate = int(fields[16]) if fields[16] else None
+        self.category = None
+        self.icaoAACC = None
+        self.velo = None
+        self.heading = None
+        self.supersonic = None
 
     def populate_from_string(self, msg):
         self.populate_from_list(msg.split(","))
+
+    # Various functions
 
     def to_dict(self):
         """
         :return: All variables except `__thoses__` ones, and transform `_things` into `things`
         """
-        return {k.replace("_", ""): v for k, v in self.__dict__.items() if not (k.startswith("__") and k.endswith("__"))}
+        return {
+            k.replace("_", ""): v for k, v in self.__dict__.items() if not (k.startswith("__") and k.endswith("__"))
+        }
 
     def has_location(self):
         if self.lat and self.lon and self.alt:
             return True
         else:
             return False
+
+    # Setters and Getters
 
     def set_src(self, value):
         self._src = value
