@@ -46,8 +46,15 @@ for msg in REAL_DATA_ADSB:
             .first()
     )
 
-    adsb_msg.icaoAACC = sqlcraft.country
-    adsb_msg.category = sqlcraft.aircraft_description
+    try:
+        adsb_message.icaoAACC = sqlcraft.country
+    except AttributeError:
+        None
+
+    try:
+        adsb_message.category = sqlcraft.aircraft_description
+    except AttributeError:
+        None
 
     socketio.emit("message", adsb_msg.to_dict())
     time.sleep(DELAY_MESSAGES)

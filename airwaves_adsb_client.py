@@ -119,8 +119,15 @@ if __name__ == "__main__":
                                 .first()
                             )
 
-                            adsb_message.icaoAACC = sqlcraft.country
-                            adsb_message.category = sqlcraft.aircraft_description
+                            try:
+                                adsb_message.icaoAACC = sqlcraft.country
+                            except AttributeError:
+                                None
+
+                            try:
+                                adsb_message.category = sqlcraft.aircraft_description
+                            except AttributeError:
+                                None
 
                             print(adsb_message.to_dict())
                             socketio.emit("message", adsb_message.to_dict())
