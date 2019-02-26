@@ -55,17 +55,11 @@ class Aircraft extends Vehicle {
 }
 
 /* Add altitude to array and remove old ones */
-/* TODO: we needs to also store time */
 Aircraft.prototype.addLastAlt = function (alt) {
   if (this.lastAltitudes.length >= 5) {
     this.lastAltitudes.shift();
   }
   this.lastAltitudes.push(alt);
-};
-
-/* Compute climb rate */
-Aircraft.prototype.computeClimbRate = function () {
-  /* Magic goes here */
 };
 
 /***************************************************
@@ -105,8 +99,6 @@ Aircraft.prototype.update = function (msgJSON) {
 
   // Modify the icon to have the correct rotation, and to indicate there is bearing data.
   this.heading = bearingFromTwoCoordinates(this.lastLat, this.lastLon, this.lat, this.lon);
-
-  this.vertRate = this.computeClimbRate();
 
   // update the last update parameter
   this.lastUpdate = Date.now();
