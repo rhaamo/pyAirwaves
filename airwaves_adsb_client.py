@@ -3,7 +3,6 @@
 blah
 """
 
-import logging
 import traceback
 import config
 import socket
@@ -25,11 +24,11 @@ if __name__ == "__main__":
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.connect((config.ADSB_SOURCE["host"], config.ADSB_SOURCE["port"]))
             count_failed_connection = 1
-            logging.info("Connected to dump1090")
+            print("Connected to dump1090")
             break
         except socket.error:
             count_failed_connection += 1
-            logging.error(
+            print(
                 f"Cannot connect to dump1090 main {count_failed_connection}/{max_failed_connection}: {traceback.format_exc()}"
             )
             time.sleep(5)
@@ -53,7 +52,7 @@ if __name__ == "__main__":
                 pass
 
             if len(message) == 0:
-                logging.warning(ts, "No broadcast received. Attempting to reconnect")
+                print(ts, "No broadcast received. Attempting to reconnect")
                 time.sleep(5)
                 sock.close()
 
@@ -62,11 +61,11 @@ if __name__ == "__main__":
                         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                         sock.connect(("fenouil", 30003))
                         count_failed_connection = 1
-                        logging.info("Connected to dump1090")
+                        print("Connected to dump1090")
                         break
                     except socket.error:
                         count_failed_connection += 1
-                        logging.error(
+                        print(
                             f"Cannot connect to dump1090 while {count_failed_connection}/{max_failed_connection}: {traceback.format_exc()}"
                         )
                         time.sleep(5)
@@ -92,7 +91,7 @@ if __name__ == "__main__":
                             adsb_message.src = config.PYAW_HOSTNAME
                             adsb_message.clientName = config.ADSB_SOURCE["name"]
                             adsb_message.dataOrigin = "dump1090"
-                            logging.debug(adsb_message.to_dict())
+                            print())
                             socketio.emit("message", adsb_message.to_dict())
                     # It's valid, reset stream message
                     data_str = ""
@@ -102,5 +101,5 @@ if __name__ == "__main__":
                     continue
 
     except KeyboardInterrupt:
-        logging.info("Closing socket connection")
+        print("Closing socket connection")
         sock.close()

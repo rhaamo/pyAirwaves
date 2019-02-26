@@ -1,11 +1,9 @@
-import logging
 from typing import List
 from libPyAirwaves.structs import AdsbType
 import datetime
 
 # List Of String type
 list_of_strings = List[str]
-
 
 # Do some basic checks on the ADS-B received message
 # http://woodair.net/sbs/article/barebones42_socket_data.htm
@@ -26,17 +24,17 @@ def is_valid_adsb_message(fields: list_of_strings):
     if fields[0].upper() in ["MSG", "STA", "ID", "AIR", "SEL", "CLK"]:
         is_valid = True
     else:
-        logging.error(f"Field 1 invalid : '{fields[0]}'")
-        logging.error(f"Invalid ADSB Message: '{fields}'")
+        print(f"Field 1 invalid : '{fields[0]}'")
+        print(f"Invalid ADSB Message: '{fields}'")
 
     if int(fields[1]) in [1, 2, 3, 4, 5, 6, 7, 8]:
         is_valid = True
     else:
-        logging.error(f"Field 2 invalid: '{fields[1]}'")
-        logging.error(f"Invalid ADSB Message: '{fields}'")
+        print(f"Field 2 invalid: '{fields[1]}'")
+        print(f"Invalid ADSB Message: '{fields}'")
 
     if not is_valid:
-        logging.error(f"Invalid ADSB Message: '{fields}'")
+        print(f"Invalid ADSB Message: '{fields}'")
 
     return is_valid
 
