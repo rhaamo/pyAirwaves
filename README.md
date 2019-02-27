@@ -26,21 +26,7 @@ Some more features will be available like airplane picture, company, and statist
 
 ## Setup
 
-Best to use `pyenv` in production.
-
-```
-git clone https://github.com/rhaamo/pyAirwaves
-cd pyAirwaves
-pip install --user -r requirements.txt
-cp config.py.sample config.py
-$EDITOR config.py
-$EDITOR static/js/config.js
-createdb ...
-flask db upgrade
-flask import-aircrafts
-flask import-registrations
-flask update-db
-```
+See `docs/install.md`
 
 Daemons/scripts:
 - `python airwaves_adsb_client.py` will connect to dump1090 and rtl-ais
