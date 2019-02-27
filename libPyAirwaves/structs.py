@@ -94,12 +94,12 @@ class AdsbType(DefaultType):
         self.supersonic: bool = None
 
     # Populate class with datas
-
+    # TODO: add remaining fields of the ADS-B transmission message
     # Remember that fields start at 1 but python array at 0, so field 3 (session ID) is at position 2
     def populate_from_list(self, fields):
         self.addr = fields[4]  # int(fields[4], 16)
         self.idInfo = fields[3]
-        self.aSquawk = fields[17]
+        self.aSquawk = int(fields[17]) if fields[17] else None
         self.alt = int(fields[11]) if fields[11] else None
         self.lon = float(fields[15]) if fields[15] else None
         self.lat = float(fields[14]) if fields[14] else None
