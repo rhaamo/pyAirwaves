@@ -114,14 +114,32 @@ class ArchiveAdsbMessage(db.Model):
     entry_point = db.Column(db.String(255))
 
     def raw(self):
-        return ",".join([
-            self.message_type, self.transmission_type, self.session_id,
-            self.aircraft_id, self.hex_ident, self.flight_id, self.date_msg_gen,
-            self.time_msg_gen, self.date_msg_log, self.time_msg_log, self.callsign,
-            self.altitude, self.ground_speed, self.track, self.latitude, self.longitude,
-            self.vertical_rate, self.squawk, self.alert, self.emergency, self.spi_ident,
-            self.is_on_ground
-        ])
+        return ",".join(
+            [
+                self.message_type,
+                self.transmission_type,
+                self.session_id,
+                self.aircraft_id,
+                self.hex_ident,
+                self.flight_id,
+                self.date_msg_gen,
+                self.time_msg_gen,
+                self.date_msg_log,
+                self.time_msg_log,
+                self.callsign,
+                self.altitude,
+                self.ground_speed,
+                self.track,
+                self.latitude,
+                self.longitude,
+                self.vertical_rate,
+                self.squawk,
+                self.alert,
+                self.emergency,
+                self.spi_ident,
+                self.is_on_ground,
+            ]
+        )
 
     def vert_stat(self):
         return "air" if self.is_on_ground else "gnd"
