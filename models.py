@@ -72,3 +72,35 @@ class AircraftRegistration(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     country = db.Column(db.String(255), nullable=False)
     prefix = db.Column(db.String(10), nullable=False)
+
+
+class ArchiveMessage(db.Model):
+    __tablename__ = "archive_message"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    message_type = db.Column(db.String("5"), nullable=False)
+    transmission_type = db.Column(db.Integer, nullable=False)
+    session_id = db.Column(db.String(20))
+    aircraft_id = db.Column(db.String(20))
+    hex_ident = db.Column(db.String(20))  # ModeS ident
+    flight_id = db.Column(db.String(20))
+    date_msg_gen = db.Column(db.String(20))
+    time_msg_gen = db.Column(db.String(20))
+    msg_gen = db.Column(db.DateTime(timezone=False))
+    date_msg_log = db.Column(db.String(20))
+    time_msg_log = db.Column(db.String(20))
+    msg_log = db.Column(db.DateTime(timezone=False))
+
+    callsign = db.Column(db.String(20))
+    altitude = db.Column(db.Integer)
+    ground_speed = db.Column(db.Integer)
+    track = db.Column(db.String(20))
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+    vertical_rate = db.Column(db.Integer)
+    squawk = db.Column(db.Integer)
+    alert = db.Column(db.String(20))
+    emergency = db.Column(db.String(20))
+    spi_ident = db.Column(db.String(20))
+    is_on_ground = db.Column(db.Boolean, default=False)
