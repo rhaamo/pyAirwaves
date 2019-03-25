@@ -18,9 +18,9 @@ pipeline:
     commands:
       - apk -U add libmagic file-dev libffi libffi-dev cmake gcc g++ make pkgconfig git boost-dev wget postgresql-dev curl curl-dev
       - pip install --upgrade pip setuptools
-      - pip install --cache-dir=/cache flake8
-      - pip install --cache-dir=/cache black
-      - pip install --cache-dir=/cache -r requirements.txt
+      - pip install --cache-dir=.cache flake8
+      - pip install --cache-dir=.cache black
+      - pip install --cache-dir=.cache -r requirements.txt
       - python setup.py install
       - black --check .
       - flake8 .
@@ -30,7 +30,7 @@ pipeline:
     commands:
       - apk -U add libmagic file-dev libffi libffi-dev postgresql-client cmake gcc g++ make pkgconfig git boost-dev wget postgresql-dev curl curl-dev
       - pip install --upgrade pip setuptools
-      - pip install --cache-dir=/cache -r requirements.txt
+      - pip install --cache-dir=.cache -r requirements.txt
       - python setup.py install
       - psql -U postgres -h database -w -c 'CREATE DATABASE pyairwaves'
       - cp config.py.sample config.py
