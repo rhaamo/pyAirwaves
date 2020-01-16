@@ -15,5 +15,5 @@ flask_debugtoolbar==0.10.1
 redis==3.2.1
 Bootstrap-Flask==1.0.10
 Flask-SocketIO==4.0.0
-pycurl==7.43.0.2
+pycurl==7.43.0.4
 eventlet==0.24.1
