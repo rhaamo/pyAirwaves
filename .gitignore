@@ -10,3 +10,4 @@
 /errors_app.log
 .coverage
 /.ropeproject
+/venv
