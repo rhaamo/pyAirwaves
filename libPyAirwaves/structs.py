@@ -160,6 +160,7 @@ class AdsbType(DefaultType):
 class AisType(DefaultType):
     """
     Type for AIS messages
+    https://www.navcen.uscg.gov/?pageName=AISMessages
     """
 
     def __init__(self):
@@ -225,6 +226,12 @@ class AisType(DefaultType):
         # Heading data
         self.heading: float = None
 
+        # Course Over Ground whatev
+        self.courseOverGnd: float = None
+
+        # Rate of Turn
+        self.turnRt: float = None
+
         # Vehicle address – will be a ICAO aircraft address or MMSI
         self.addr: str = None
 
@@ -277,6 +284,8 @@ class AisType(DefaultType):
         self.lon = decoded['lon']
         self.lat = decoded['lat']
         self.heading = decoded['heading']
+        self.courseOverGnd = decoded['course']
+        self.turnRt = decoded['turn']
         self.mmsi = decoded['mmsi']
         self.addr = self.mmsi
         self.posAcc = decoded['accuracy']
