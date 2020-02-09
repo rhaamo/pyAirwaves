@@ -269,6 +269,9 @@ class AisType(DefaultType):
         except pyais.exceptions.InvalidChecksumException as e:
             print("Invalid checksum", e)
             return False
+        except pyais.exceptions.InvalidNMEAMessageException as e:
+            print("Invalid NMEA Message", e)
+            return False
         # {'type': 1, 'repeat': 0, 'mmsi': 228022900, 'status': <NavigationStatus.UnderWayUsingEngine: 0>,
         # 'turn': 0, 'speed': 0.0, 'accuracy': False, 'lon': 0.11188333333333333, 'lat': 49.48478333333333,
         # 'course': 337.0, 'heading': 255, 'second': 31, 'maneuver': <ManeuverIndicator.NotAvailable: 0>,
