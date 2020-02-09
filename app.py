@@ -120,21 +120,21 @@ def create_app(config_filename="config.py", app_name=None, register_blueprints=T
 
     @app.errorhandler(404)
     def page_not_found(msg):
-        return jsonify({"error": "Not Found", "e": msg}), 404
+        return jsonify({"error": "Not Found"}), 404
 
     @app.errorhandler(403)
     def err_forbidden(msg):
-        return jsonify({"error": "Access forbidden", "e": msg}), 404
+        return jsonify({"error": "Access forbidden"}), 404
 
     @app.errorhandler(410)
     def err_gone(msg):
-        return jsonify({"error": "Gone", "e": msg}), 404
+        return jsonify({"error": "Gone"}), 404
 
     if not app.debug:
 
         @app.errorhandler(500)
         def err_failed(msg):
-            return jsonify({"error": "Something is broken", "e": msg}), 404
+            return jsonify({"error": "Something is broken"}), 404
 
     @app.after_request
     def set_x_powered_by(response):
