@@ -3,7 +3,7 @@ Description=pyAirwaves webserver
 After=network.target
 
 [Service]
-ExecStart=/home/pyairwaves/.pyenv/shims/python /home/pyairwaves/pyAirwaves/app.py
+ExecStart=/home/pyairwaves/venv/bin/python /home/pyairwaves/pyAirwaves/app.py
 Type=simple
 RestartSec=5
 Restart=on-failure

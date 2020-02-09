@@ -3,7 +3,7 @@ Description=pyAirwaves ADS-B and AIS client
 After=network.target
 
 [Service]
-ExecStart=/home/pyairwaves/.pyenv/shims/python /home/pyairwaves/pyAirwaves/airwaves_adsb_client.py
+ExecStart=/home/pyairwaves/venv/bin/python /home/pyairwaves/pyAirwaves/airwaves_adsb_client.py
 Type=simple
 RestartSec=5
 Restart=on-failure
