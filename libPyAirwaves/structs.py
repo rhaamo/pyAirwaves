@@ -166,5 +166,123 @@ class AisType(DefaultType):
         DefaultType.__init__(self)
         self.type: str = "airAIS"
 
+        # Connector component the data arrived in the stack from
+        self.entryPoint: str = None
+
+        # Data origin describes the software source of the data (dump1090/aisConn)
+        self.dataOrigin: str = None
+
+        # Date/time stamp data hits system or is generated
+        self.dts: datetime = None
+
+        # Name of source host.
+        self._src: str = None
+        # Equals to src
+        self.lastSrc: str = None
+
+        # Raw data frame.
+        self.data: str = None
+
+        # Unknown (message is fragmented ?)
+        self.isFrag: bool = None
+
+        # Unknown
+        self.fragCount: int = None
+
+        # Unknown
+        self.fragNumber: int = None
+
+        # Unknown (isAssembled == True then isFrag == false)
+        self.isAssembled: bool = None
+
+        # Data source latitude
+        self.srcLat: float = None
+
+        # Data source longitude
+        self.srcLon: float = None
+
+        # Metadata about how srcLat and srcLon are derived.
+        self.srcPosMeta: str = None
+
+        # Unknown
+        self.messageId: int = None
+
+        # The AIS channel (A or B), for dual channel transponders it must match the channel used
+        self.channel: str = None
+
+        # Unknown (The AIS datas ?)
+        self.payload: str = None
+
+        # number of padding bits included in the sentence (related to len==2==CRC)
+        self.padBits: int = None
+
+        # Decoded longitude
+        self.lon: float = None
+
+        # Decoded latitude
+        self.lat: float = None
+
+        # Heading data
+        self.heading: float = None
+
+        # Vehicle address – will be a ICAO aircraft address or MMSI
+        self.addr: str = None
+
+        # Maritime Mobile Service Identity ID
+        self.mmsi: int = None
+
+        # Position Accuracy ?
+        self.posAcc: bool = None
+
+        # FIXME (libAirSuck/aisParse.py:616)
+        self.maneuver: int = None
+
+        # Unknown
+        self.raim: bool = None
+
+        # Radio status
+        self.radioStatus: int = None
+
+    def to_dict(self):
+        """
+        :return: All variables except `__thoses__` ones, and transform `_things` into `things`
+        """
+        return {
+            k.replace("_", ""): v for k, v in self.__dict__.items() if not (k.startswith("__") and k.endswith("__"))
+        }
+
     def populate_from_string(self, msg):
-        message = NMEAMessage(msg)
+        message = NMEAMessage.from_string(msg)
+        try:
+            decoded = message.decode()
+        except IndexError as e:
+            print("Message is invalid:", e)
+            return False
+        # {'type': 1, 'repeat': 0, 'mmsi': 228022900, 'status': <NavigationStatus.UnderWayUsingEngine: 0>,
+        # 'turn': 0, 'speed': 0.0, 'accuracy': False, 'lon': 0.11188333333333333, 'lat': 49.48478333333333,
+        # 'course': 337.0, 'heading': 255, 'second': 31, 'maneuver': <ManeuverIndicator.NotAvailable: 0>,
+        # 'raim': False, 'radio': 20664}
+        self.dts = str(datetime.datetime.utcnow())
+        self.data = message.raw
+        # Fragmentation is not handled
+        if message.is_multi:
+            print("Unhandled fragment !!!")
+        self.isFrag = message.is_multi
+        self.fragCount = message.fragment_count
+        self.fragNumber = message.count
+        self.isAssembled = False
+        # EOF
+        self.channel = message.channel
+        self.payload = message.data  # not sure at all
+        self.lon = decoded['lon']
+        self.lat = decoded['lat']
+        self.heading = decoded['heading']
+        self.mmsi = decoded['mmsi']
+        self.addr = self.mmsi
+        self.posAcc = decoded['accuracy']
+        if decoded['maneuver']:
+            self.maneuver = decoded['maneuver'].numerator
+        self.raim = decoded['raim']
+        self.radioStatus = decoded['radio']
+
+        return True

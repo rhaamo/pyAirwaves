@@ -120,40 +120,21 @@ def create_app(config_filename="config.py", app_name=None, register_blueprints=T
 
     @app.errorhandler(404)
     def page_not_found(msg):
-        pcfg = {
-            "title": gettext("Whoops, something failed."),
-            "error": 404,
-            "message": gettext("Page not found"),
-            "e": msg,
-        }
-        return render_template("error_page.jinja2", pcfg=pcfg), 404
+        return jsonify({"error": "Not Found", "e": msg}), 404
 
     @app.errorhandler(403)
     def err_forbidden(msg):
-        pcfg = {
-            "title": gettext("Whoops, something failed."),
-            "error": 403,
-            "message": gettext("Access forbidden"),
-            "e": msg,
-        }
-        return render_template("error_page.jinja2", pcfg=pcfg), 403
+        return jsonify({"error": "Access forbidden", "e": msg}), 404
 
     @app.errorhandler(410)
     def err_gone(msg):
-        pcfg = {"title": gettext("Whoops, something failed."), "error": 410, "message": gettext("Gone"), "e": msg}
-        return render_template("error_page.jinja2", pcfg=pcfg), 410
+        return jsonify({"error": "Gone", "e": msg}), 404
 
     if not app.debug:
 
         @app.errorhandler(500)
         def err_failed(msg):
-            pcfg = {
-                "title": gettext("Whoops, something failed."),
-                "error": 500,
-                "message": gettext("Something is broken"),
-                "e": msg,
-            }
-            return render_template("error_page.jinja2", pcfg=pcfg), 500
+            return jsonify({"error": "Something is broken", "e": msg}), 404
 
     @app.after_request
     def set_x_powered_by(response):

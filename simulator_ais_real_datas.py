@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from real_datas_test import REAL_DATA_ADSB
+from real_datas_test import REAL_DATA_AIS
 from libPyAirwaves.structs import AisType
 import time
 from flask_socketio import SocketIO
@@ -17,9 +17,12 @@ socketio = SocketIO(message_queue=cfg.SOCKETIO_MESSAGE_QUEUE)
 print("Sending messages...")
 
 try:
-    for msg in REAL_DATA_ADSB:
+    for msg in REAL_DATA_AIS[0:4]:
+        print(msg)
         ais_msg = AisType()
-        ais_msg.populate_from_string(msg)
+        if not ais_msg.populate_from_string(msg):
+            print("invalid message")
+            continue
         ais_msg.entryPoint = "simulator"
         ais_msg.src = cfg.PYAW_HOSTNAME
         ais_msg.clientName = "sim_host"

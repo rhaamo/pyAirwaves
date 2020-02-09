@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect
 from flask_babelex import gettext
 
 bp_main = Blueprint("bp_main", __name__)
@@ -14,4 +14,4 @@ def home():
 
 @bp_main.route("/about")
 def about():
-    return render_template("about.jinja2")
+    return redirect("https://github.com/rhaamo/pyAirwaves/")
