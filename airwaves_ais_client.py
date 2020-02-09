@@ -90,9 +90,10 @@ if __name__ == "__main__":
                         ais_message.clientName = config.AIS_SOURCE["name"]
                         ais_message.dataOrigin = "rtl-ais"
 
-                        # Valid message
-                        print(ais_message.to_dict())
-                        socketio.emit("message", ais_message.to_dict())
+                        # Valid message and emit if lat/lon are present
+                        if ais_message.lat and ais_message.lon:
+                            print(ais_message.to_dict())
+                            socketio.emit("message", ais_message.to_dict())
                     # It's valid, reset stream message
                     data_str = ""
 
