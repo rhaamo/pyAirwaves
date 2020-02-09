@@ -17,7 +17,7 @@ socketio = SocketIO(message_queue=cfg.SOCKETIO_MESSAGE_QUEUE)
 print("Sending messages...")
 
 try:
-    for msg in REAL_DATA_AIS[0:4]:
+    for msg in REAL_DATA_AIS[0:20]:
         print(msg)
         ais_msg = AisType()
         if not ais_msg.populate_from_string(msg):

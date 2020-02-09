@@ -64,7 +64,7 @@ if __name__ == "__main__":
                 while count_failed_connection < max_failed_connection:
                     try:
                         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                        sock.connect(("fenouil", 30003))
+                        sock.connect((config.ADSB_SOURCE["host"], config.ADSB_SOURCE["port"]))
                         count_failed_connection = 1
                         print("Connected to dump1090")
                         break
