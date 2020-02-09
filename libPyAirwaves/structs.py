@@ -1,4 +1,5 @@
 import datetime
+from pyais import NMEAMessage
 
 
 class DefaultType:
@@ -154,3 +155,16 @@ class AdsbType(DefaultType):
 
     src = property(get_src, set_src)
     clientName = property(get_client_name, set_client_name)
+
+
+class AisType(DefaultType):
+    """
+    Type for AIS messages
+    """
+
+    def __init__(self):
+        DefaultType.__init__(self)
+        self.type: str = "airAIS"
+
+    def populate_from_string(self, msg):
+        message = NMEAMessage(msg)
