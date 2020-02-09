@@ -3,8 +3,8 @@ import logging
 import os
 import subprocess
 from logging.handlers import RotatingFileHandler
-from flask_babelex import gettext, Babel
-from flask import Flask, render_template, g, jsonify, request
+from flask_babelex import Babel
+from flask import Flask, g, jsonify, request
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_socketio import SocketIO

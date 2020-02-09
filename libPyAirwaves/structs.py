@@ -1,6 +1,7 @@
 import datetime
 import pyais
 
+
 class DefaultType:
     """
     Default type for messages structures
@@ -284,19 +285,19 @@ class AisType(DefaultType):
         # EOF
         self.channel = message.channel
         self.payload = message.data  # not sure at all
-        self.lon = decoded['lon']
-        self.lat = decoded['lat']
-        if decoded['heading']:
-            self.heading = round(decoded['heading'], 3)
-        if decoded['course']:
-            self.courseOverGnd = round(decoded['course'], 3)
-        self.turnRt = decoded['turn']
-        self.mmsi = decoded['mmsi']
+        self.lon = decoded["lon"]
+        self.lat = decoded["lat"]
+        if decoded["heading"]:
+            self.heading = round(decoded["heading"], 3)
+        if decoded["course"]:
+            self.courseOverGnd = round(decoded["course"], 3)
+        self.turnRt = decoded["turn"]
+        self.mmsi = decoded["mmsi"]
         self.addr = self.mmsi
-        self.posAcc = decoded['accuracy']
-        if decoded['maneuver']:
-            self.maneuver = decoded['maneuver'].numerator
-        self.raim = decoded['raim']
-        self.radioStatus = decoded['radio']
+        self.posAcc = decoded["accuracy"]
+        if decoded["maneuver"]:
+            self.maneuver = decoded["maneuver"].numerator
+        self.raim = decoded["raim"]
+        self.radioStatus = decoded["radio"]
 
         return True
