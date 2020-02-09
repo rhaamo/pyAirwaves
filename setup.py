@@ -29,7 +29,6 @@ setup(
         "python-magic",
         "redis",
         "flask-socketio",
-        "pycurl",
         "eventlet",
     ],
     setup_requires=["pytest-runner"],

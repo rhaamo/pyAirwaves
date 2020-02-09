@@ -4,8 +4,9 @@ import os
 from os.path import splitext
 import csv
 import zipfile
-import pycurl
+import urllib.request
 import gzip
+import shutil
 
 from flask import current_app
 
@@ -139,12 +140,8 @@ def utils_download_and_ingest_faa():
     except OSError:
         None
 
-    with open(file_target, "wb") as zip_file:
-        crl = pycurl.Curl()
-        crl.setopt(crl.URL, current_app.config["FAA_ARCHIVE_URL"])
-        crl.setopt(crl.WRITEDATA, zip_file)
-        crl.perform()
-        crl.close()
+    with urllib.request.urlopen(current_app.config["FAA_ARCHIVE_URL"]) as response, open(file_target, "wb") as zip_file:
+        shutil.copyfileobj(response, zip_file)
 
     print("Extracting files...")
 
@@ -177,23 +174,8 @@ def download_file(url: str, filename: str):
     except OSError:
         None
 
-    try:
-        with open(file_target, "wb") as zip_file:
-            crl = pycurl.Curl()
-            crl.setopt(crl.URL, url)
-            crl.setopt(crl.WRITEDATA, zip_file)
-            crl.setopt(crl.FOLLOWLOCATION, True)
-            crl.perform()
-            code = crl.getinfo(pycurl.HTTP_CODE)
-            if code != 200:
-                print(f"Error, received code !200: {code}")
-                crl.close()
-                return False
-    except pycurl.error as e:
-        print(f"Error while downloading file: {e}")
-        return False
-    finally:
-        crl.close()
+    with urllib.request.urlopen(url) as response, open(file_target, "wb") as zip_file:
+        shutil.copyfileobj(response, zip_file)
 
     try:
         if os.path.getsize(file_target) > 0:

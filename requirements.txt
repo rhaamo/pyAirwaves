@@ -14,7 +14,6 @@ sqlalchemy_searchable==1.0.3
 flask_debugtoolbar==0.10.1
 redis==3.2.1
 Bootstrap-Flask==1.0.10
-pycurl
 pyais==1.0.0
 Flask-SocketIO==4.2.1
 eventlet==0.25.1

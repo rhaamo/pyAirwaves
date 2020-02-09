@@ -1,12 +1,5 @@
 # Installation
 
-# OSX Specificities
-Uses:
-
-    PYCURL_SSL_LIBRARY=openssl LDFLAGS="-L/usr/local/opt/openssl/lib" CPPFLAGS="-I/usr/local/opt/openssl/include" pip install --no-cache-dir pycurl
-    
-To install pycurl before the requirements.
-
 # Prerequirements
 
     sudo apt install build-essential libcurl4-openssl-dev libssl-dev libncursesw5-dev libsqlite3-dev libbz2-dev zlib1g-dev

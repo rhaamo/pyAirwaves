@@ -29,6 +29,8 @@ def update_aircrafts():
         print(f"Error: file at path {file_path} doesn't exist !")
         return False
 
+    ingested = 0
+
     print("Cleaning old datas...")
     # Remove old datas
     db.session.query(Aircrafts).delete()
@@ -55,9 +57,11 @@ def update_aircrafts():
             ac.wake_category = row[8]
             ac.mfr = row[9]
             db.session.add(ac)
+            ingested += 1
         db.session.commit()
 
     print("Done.")
+    print(f"Ingested {ingested} items.")
 
 
 def update_registrations():
@@ -67,6 +71,8 @@ def update_registrations():
     if not os.path.isfile(file_path):
         print(f"Error: file at path {file_path} doesn't exist !")
         return False
+
+    ingested = 0
 
     print("Cleaning old datas...")
     # Remove old datas
@@ -85,12 +91,18 @@ def update_registrations():
             acr.country = row[0]
             acr.prefix = row[1]
             db.session.add(acr)
+            ingested += 1
         db.session.commit()
 
     print("Done.")
+    print(f"Ingested {ingested} items.")
 
 
 def update_translation():
+    """
+    FIXME: finish this function
+    :return:
+    """
     print("Downloading ACARS translations...")
     dl_infos = URLS["translation"]
     downloaded = download_and_extract_zip(dl_infos["url"], dl_infos["filename"], "translation.csv")
@@ -123,6 +135,8 @@ def update_mode_s():
         print("An error occured while downloading ModeS datas")
         return False
 
+    ingested = 0
+
     print("Cleaning old datas...")
 
     # Remove old datas
@@ -150,6 +164,7 @@ def update_mode_s():
             acm.source = fname
             acm.type_flight = "military" if row["UserString4"] == "M" else None
             db.session.add(acm)
+            ingested += 1
 
             # Add Aircraft Owner only if not empty, and not Private individual
             if (
@@ -174,6 +189,7 @@ def update_mode_s():
     )
 
     print("Done.")
+    print(f"Ingested {ingested} items.")
 
 
 def update_mode_s_ogn():
@@ -184,6 +200,8 @@ def update_mode_s_ogn():
     if not downloaded:
         print("An error occured while downloading ModeS OGN datas")
         return False
+
+    ingested = 0
 
     print("Cleaning old datas...")
     # Remove old datas
@@ -223,6 +241,7 @@ def update_mode_s_ogn():
             if acm.registration != "" and acm.registration != "0000" and acm.icao_type_code != "":
                 acm.last_modified = datetime.datetime.utcnow()
                 db.session.add(acm)
+                ingested += 1
 
     db.session.commit()
 
@@ -232,6 +251,7 @@ def update_mode_s_ogn():
     db.session.query(AircraftModes).filter(and_(AircraftModes.source == fname, AircraftModes.mode_s.in_(q))).delete(
         synchronize_session="fetch"
     )
+    print(f"Ingested {ingested} items.")
 
 
 def update_all():
