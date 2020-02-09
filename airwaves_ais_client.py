@@ -85,6 +85,11 @@ if __name__ == "__main__":
                 if line.startswith("!"):
                     ais_message = AisType()
                     if ais_message.populate_from_string(line):
+                        ais_message.entryPoint = "airwaves_ais_client"
+                        ais_message.src = config.PYAW_HOSTNAME
+                        ais_message.clientName = config.AIS_SOURCE["name"]
+                        ais_message.dataOrigin = "rtl-ais"
+
                         # Valid message
                         print(ais_message.to_dict())
                         socketio.emit("message", ais_message.to_dict())

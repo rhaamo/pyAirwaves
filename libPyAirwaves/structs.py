@@ -1,6 +1,5 @@
 import datetime
-from pyais import NMEAMessage
-
+import pyais
 
 class DefaultType:
     """
@@ -259,11 +258,15 @@ class AisType(DefaultType):
         }
 
     def populate_from_string(self, msg):
-        message = NMEAMessage.from_string(msg)
+        print("GOT:", msg)
         try:
+            message = pyais.NMEAMessage.from_string(msg)
             decoded = message.decode()
         except IndexError as e:
             print("Message is invalid:", e)
+            return False
+        except pyais.exceptions.InvalidChecksumException as e:
+            print("Invalid checksum", e)
             return False
         # {'type': 1, 'repeat': 0, 'mmsi': 228022900, 'status': <NavigationStatus.UnderWayUsingEngine: 0>,
         # 'turn': 0, 'speed': 0.0, 'accuracy': False, 'lon': 0.11188333333333333, 'lat': 49.48478333333333,
@@ -283,8 +286,10 @@ class AisType(DefaultType):
         self.payload = message.data  # not sure at all
         self.lon = decoded['lon']
         self.lat = decoded['lat']
-        self.heading = decoded['heading']
-        self.courseOverGnd = decoded['course']
+        if decoded['heading']:
+            self.heading = round(decoded['heading'], 3)
+        if decoded['course']:
+            self.courseOverGnd = round(decoded['course'], 3)
         self.turnRt = decoded['turn']
         self.mmsi = decoded['mmsi']
         self.addr = self.mmsi
