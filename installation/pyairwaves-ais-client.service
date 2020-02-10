@@ -1,0 +1,14 @@
+[Unit]
+Description=pyAirwaves AIS client
+After=network.target
+
+[Service]
+ExecStart=/home/pyairwaves/venv/bin/python /home/pyairwaves/pyAirwaves/airwaves_ais_client.py
+Type=simple
+RestartSec=5
+Restart=on-failure
+User=pyairwaves
+WorkingDirectory=/home/pyairwaves/pyAirwaves
+
+[Install]
+WantedBy=multi-user.target

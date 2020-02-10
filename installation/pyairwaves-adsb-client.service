@@ -1,5 +1,5 @@
 [Unit]
-Description=pyAirwaves ADS-B and AIS client
+Description=pyAirwaves ADS-B client
 After=network.target
 
 [Service]
