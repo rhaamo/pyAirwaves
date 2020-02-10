@@ -47,7 +47,7 @@ def create_app(config_filename="config.py"):
     app = Flask(__name__)
     app.config.from_pyfile(config_filename)
 
-    socketio.init_app(app, message_queue=app.config["SOCKETIO_MESSAGE_QUEUE"])
+    socketio.init_app(app, message_queue=app.config["SOCKETIO_MESSAGE_QUEUE"], cors_allowed_origins=app.config['SOCKETIO_CORS_ALLOWED_ORIGINS'])
 
     app.jinja_env.add_extension("jinja2.ext.with_")
     app.jinja_env.add_extension("jinja2.ext.do")
