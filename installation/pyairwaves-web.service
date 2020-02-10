@@ -3,7 +3,7 @@ Description=pyAirwaves webserver
 After=network.target
 
 [Service]
-ExecStart=/home/pyairwaves/venv/bin/gunicorn --worker-class eventlet -w 2 --chdir=/home/pyairwaves/pyAirwaves -b 0.0.0.0:5000 "app:create_app()"
+ExecStart=/home/pyairwaves/venv/bin/gunicorn --worker-class eventlet -w 4 --error-logfile=error.log --access-logfile=access.log --chdir=/home/pyairwaves/pyAirwaves -b 0.0.0.0:5000 "app:create_app()"
 Type=simple
 RestartSec=5
 Restart=on-failure
