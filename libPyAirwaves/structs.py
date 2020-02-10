@@ -263,7 +263,7 @@ class AisType(DefaultType):
         try:
             message = pyais.NMEAMessage.from_string(msg)
             decoded = message.decode()
-        except IndexError as e:
+        except (IndexError, ValueError) as e:
             print("Message is invalid:", e)
             return False
         except pyais.exceptions.InvalidChecksumException as e:

@@ -9,6 +9,7 @@ from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_socketio import SocketIO
 from models import db
+import eventlet
 
 import texttable
 from flask_debugtoolbar import DebugToolbarExtension
@@ -16,6 +17,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from utils import InvalidUsage, utils_download_and_ingest_faa
 from update_db import update_all as update_all_db
 from update_db import update_aircrafts, update_registrations
+from controllers.main import bp_main
 
 from pprint import pprint as pp
 
@@ -35,13 +37,14 @@ except ImportError:
     print(" * No Sentry support")
     HAS_SENTRY = False
 
+eventlet.monkey_patch()
 mail = Mail()
 socketio = SocketIO()
 
 
-def create_app(config_filename="config.py", app_name=None, register_blueprints=True):
+def create_app(config_filename="config.py"):
     # App configuration
-    app = Flask(app_name or __name__)
+    app = Flask(__name__)
     app.config.from_pyfile(config_filename)
 
     socketio.init_app(app, message_queue=app.config["SOCKETIO_MESSAGE_QUEUE"])
@@ -113,10 +116,7 @@ def create_app(config_filename="config.py", app_name=None, register_blueprints=T
         response.status_code = error.status_code
         return response
 
-    if register_blueprints:
-        from controllers.main import bp_main
-
-        app.register_blueprint(bp_main)
+    app.register_blueprint(bp_main)
 
     @app.errorhandler(404)
     def page_not_found(msg):
@@ -194,7 +194,4 @@ def create_app(config_filename="config.py", app_name=None, register_blueprints=T
 
 
 if __name__ == "__main__":
-    import eventlet
-
-    eventlet.monkey_patch()
     socketio.run(create_app(), host=LISTEN_HOST, port=LISTEN_PORT)
