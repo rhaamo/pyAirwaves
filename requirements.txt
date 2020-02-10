@@ -13,7 +13,7 @@ flask_migrate==2.5.2
 sqlalchemy_searchable==1.1.0
 flask_debugtoolbar==0.10.1
 redis==3.4.1
-Bootstrap-Flask==1.0.10
+Bootstrap-Flask==1.2.0
 pyais==1.0.0
 Flask-SocketIO==4.2.1
 eventlet==0.25.1
