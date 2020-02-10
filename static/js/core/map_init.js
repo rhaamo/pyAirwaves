@@ -41,8 +41,8 @@ function initMap() {
 
     // Setup layers
     let baseLayers = {
-        "CartoDB Positron": L.tileLayer.provider("CartoDB.Positron"),
         "OpenStreetMap": L.tileLayer.provider('OpenStreetMap.Mapnik'),
+        "Esri World Imagery": L.tileLayer.provider('Esri.WorldImagery'),
         "OpenTopo": L.tileLayer.provider('OpenTopoMap'),
         "Stamen Terrain": L.tileLayer.provider('Stamen.Terrain'),
         "Esri Ocean Basemap": L.tileLayer.provider('Esri.OceanBasemap')
@@ -56,7 +56,7 @@ function initMap() {
 
     // Set up the map object.
     window.map = new L.Map(document.getElementById('map')).setView([defaultLat, defaultLng], defaultZoom);
-    map.addLayer(layers["CartoDB Positron"]);
+    map.addLayer(layers["OpenStreetMap"]);
     map.addLayer(layers["OpenSeaMap"]);
 
     // Add layers control
