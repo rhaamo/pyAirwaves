@@ -39,7 +39,7 @@ except ImportError:
 
 eventlet.monkey_patch()
 mail = Mail()
-socketio = SocketIO()
+socketio = SocketIO(cors_allowed_origins="*")
 
 
 def create_app(config_filename="config.py"):
