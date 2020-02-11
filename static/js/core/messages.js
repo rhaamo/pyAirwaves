@@ -62,7 +62,9 @@ function handleMessage(msgJSON) {
                 // Add marker and listeners only if we have a Latitude and Longitude
                 // Cannot create a marker without geoposition datas
                 if (vehicles[vehName].lat && vehicles[vehName].lon) {
-                    console.log("we have a lat lon for: " + vehicles[vehName].addr);
+                    if (debug) {
+                        console.log("we have a lat lon for: " + vehicles[vehName].addr);
+                    }
 
                     // create a marker icon for the vehicle (may move to the constructor)
                     vehicles[vehName].setMarker();

@@ -346,11 +346,15 @@ Vehicle.prototype.setMarkerUnselected = function () {
  * FUNCTION MOVES THE VEHICLE MARKER AND INFO POSITIONS
  **************************************************/
 Vehicle.prototype.movePosition = function () {
-    console.log(this);
+    if (debug) {
+        console.log(this);
+    }
 
     // We can do this only if we have a non-null non-undefined lat and lon
     if (this.lat && this.lon) {
-        console.log(this);
+        if (debug) {
+            console.log(this);
+        }
         // Figure out where we are in 2D space
         let thisPos = this.lat + "," + this.lon;
         // Update the path object with the new position
@@ -411,12 +415,6 @@ Vehicle.prototype.update = function (msgJSON) {
     // Set old lat and lon
     this.lastLat = this.lat;
     this.lastLon = this.lon;
-
-    console.log("vehicle update");
-    console.log(this.lastLat);
-    console.log(this.lastLon);
-    console.log(this.lat);
-    console.log(this.lon);
 
     // update data in the object
     $.extend(true, this, msgJSON);
