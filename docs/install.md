@@ -34,10 +34,16 @@ Please makes sure your postgresql is in UTF8 ! In doubt uses `-E UTF8` when doin
     flask db upgrade
     
     # Import datas in database (offline ones)
+    # expected around 2693 items
     flask import-aircrafts
+    # expected around 234 items
     flask import-registrations
     
     # Import more datas (online)
+    # expected:
+    # mode_s aco ~94924
+    # mode_s acm ~176708
+    # mode_s ogn ~16240
     flask update-db
 
 # Automatic run

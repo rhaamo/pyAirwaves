@@ -61,7 +61,7 @@ def update_aircrafts():
         db.session.commit()
 
     print("Done.")
-    print(f"Ingested {ingested} items.")
+    print(f"(update_aircrafts) Ingested {ingested} items.")
 
 
 def update_registrations():
@@ -95,7 +95,7 @@ def update_registrations():
         db.session.commit()
 
     print("Done.")
-    print(f"Ingested {ingested} items.")
+    print(f"(update_registrations) Ingested {ingested} items.")
 
 
 def update_translation():
@@ -135,7 +135,8 @@ def update_mode_s():
         print("An error occured while downloading ModeS datas")
         return False
 
-    ingested = 0
+    ingested_acm = 0
+    ingested_aco = 0
 
     print("Cleaning old datas...")
 
@@ -164,7 +165,7 @@ def update_mode_s():
             acm.source = fname
             acm.type_flight = "military" if row["UserString4"] == "M" else None
             db.session.add(acm)
-            ingested += 1
+            ingested_acm += 1
 
             # Add Aircraft Owner only if not empty, and not Private individual
             if (
@@ -178,6 +179,7 @@ def update_mode_s():
                 aco.owner = row["RegisteredOwners"]
                 aco.is_private = False  # may be useful one day
                 db.session.add(aco)
+                ingested_aco += 1
     # Commit Aircraft Mode S and Owner datas
     db.session.commit()
 
@@ -189,7 +191,8 @@ def update_mode_s():
     )
 
     print("Done.")
-    print(f"Ingested {ingested} items.")
+    print(f"(update_mode_s aco) Ingested {ingested_aco} items.")
+    print(f"(update_mode_s acm) Ingested {ingested_acm} items.")
 
 
 def update_mode_s_ogn():
@@ -251,7 +254,7 @@ def update_mode_s_ogn():
     db.session.query(AircraftModes).filter(and_(AircraftModes.source == fname, AircraftModes.mode_s.in_(q))).delete(
         synchronize_session="fetch"
     )
-    print(f"Ingested {ingested} items.")
+    print(f"(update_mode_s_ogn) Ingested {ingested} items.")
 
 
 def update_all():
