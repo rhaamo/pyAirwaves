@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, redirect
-from flask_babelex import gettext
 
 bp_main = Blueprint("bp_main", __name__)
 
@@ -7,7 +6,7 @@ bp_main = Blueprint("bp_main", __name__)
 # Show public logbooks
 @bp_main.route("/")
 def home():
-    pcfg = {"title": gettext("Home")}
+    pcfg = {"title": "Home"}
 
     return render_template("home.jinja2", pcfg=pcfg)
 
