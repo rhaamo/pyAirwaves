@@ -6,10 +6,10 @@ repos:
             language: system
             entry: python3 -m black
             types: [python]
-            files: ^api/
+            files: .
           - id: flake8
             name: flake8
             language: system
             entry: flake8
             types: [python]
-            files: ^api/
+            files: .
