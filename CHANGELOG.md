@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Javascript libraries updated
 - Maps changed from B&W OSM to only OSM ones plus ESRI World View
 - Cleanup some unused python libs
+- airSSR & airAIS, headings etc. are now fixed to two decimals
 
 ### Fixed
 - Debug/console.log cleanups

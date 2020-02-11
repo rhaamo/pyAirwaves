@@ -196,7 +196,7 @@ Aircraft.prototype.createTableEntry = function () {
         <td class="tblHeader">Supersonic</td>\
         <td class="tblCell">' + ((typeof this.supersonic === "undefined") ? '--' : ((this.supersonic === true) ? 'Yes' : 'No')) + '</td>\
         <td class="tblHeader">Heading</td>\
-        <td class="tblCell">' + ((this.heading == null) ? '--' : this.heading + ' deg') + '</td>\
+        <td class="tblCell">' + ((this.heading == null) ? '--' : this.heading.toFixed(2) + ' deg') + '</td>\
       </tr>\
       <tr>\
         <td class="tblHeader">Climb rate</td>\
@@ -307,7 +307,7 @@ Aircraft.prototype.updateTableEntry = function () {
         <td class="tblHeader">Supersonic</td>\
         <td class="tblCell">' + ((typeof this.supersonic === "undefined") ? '--' : ((this.supersonic === true) ? 'Yes' : 'No')) + '</td>\
         <td class="tblHeader">Heading</td>\
-        <td class="tblCell">' + ((this.heading == null) ? '--' : this.heading + ' deg') + '</td>\
+        <td class="tblCell">' + ((this.heading == null) ? '--' : this.heading.toFixed(2) + ' deg') + '</td>\
       </tr>\
       <tr>\
         <td class="tblHeader">Climb rate</td>\
