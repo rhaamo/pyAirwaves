@@ -425,6 +425,7 @@ class AisType(DefaultType):
             self.maneuver = decoded["maneuver"].numerator
         self.raim = decoded["raim"]
         self.radioStatus = decoded["radio"]
+        self.srcPos = False  # TODO add position support
 
         # Extract MMSI Datas
         mmsiMeta = self.__getMMSIMeta()
@@ -434,3 +435,28 @@ class AisType(DefaultType):
             self.mmsiType = mmsiMeta["mmsiType"]
 
         return True
+
+    def has_location(self):
+        if self.lat and self.lon:
+            return True
+        else:
+            return False
+
+    # Setters and Getters
+
+    def set_src(self, value):
+        self._src = value
+        self.lastSrc = value
+
+    def get_src(self):
+        return self._src
+
+    def set_client_name(self, value):
+        self._clientName = value
+        self.lastClientName = value
+
+    def get_client_name(self):
+        return self._clientName
+
+    src = property(get_src, set_src)
+    clientName = property(get_client_name, set_client_name)
