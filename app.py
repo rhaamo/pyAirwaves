@@ -3,9 +3,7 @@ import logging
 import os
 import subprocess
 from logging.handlers import RotatingFileHandler
-from flask_babelex import Babel
-from flask import Flask, g, jsonify, request
-from flask_mail import Mail
+from flask import Flask, g, jsonify
 from flask_migrate import Migrate
 from flask_socketio import SocketIO
 from models import db
@@ -38,7 +36,6 @@ except ImportError:
     HAS_SENTRY = False
 
 eventlet.monkey_patch()
-mail = Mail()
 socketio = SocketIO(cors_allowed_origins="*")
 
 
@@ -74,9 +71,7 @@ def create_app(config_filename="config.py"):
         file_handler.setFormatter(formatter)
         app.logger.addHandler(file_handler)
 
-    mail.init_app(app)
     migrate = Migrate(app, db)  # noqa: F841
-    babel = Babel(app)  # noqa: F841
     toolbar = DebugToolbarExtension(app)  # noqa: F841
 
     db.init_app(app)
@@ -87,23 +82,6 @@ def create_app(config_filename="config.py"):
         git_version = subprocess.check_output(["git", "rev-parse", "--short", "HEAD"])
         if git_version:
             git_version = git_version.strip().decode("UTF-8")
-
-    @babel.localeselector
-    def get_locale():
-        # if a user is logged in, use the locale from the user settings
-        identity = getattr(g, "identity", None)
-        if identity is not None and identity.id:
-            return identity.user.locale
-        # otherwise try to guess the language from the user accept
-        # header the browser transmits.  We support fr/en in this
-        # example.  The best match wins.
-        return request.accept_languages.best_match(["fr", "en"])
-
-    @babel.timezoneselector
-    def get_timezone():
-        identity = getattr(g, "identity", None)
-        if identity is not None and identity.id:
-            return identity.user.timezone
 
     @app.before_request
     def before_request():

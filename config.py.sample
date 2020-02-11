@@ -32,15 +32,6 @@ AIS_SOURCE = {'host': 'patate', 'port': 10110, "name": "patate", "reconnect_dela
 
 SECRET_KEY = "pls fill me"
 
-# Mail setup
-MAIL_SERVER = "localhost"
-MAIL_PORT = 25
-MAIL_USE_TLS = False
-MAIL_USE_SSL = False
-MAIL_USERNAME = None
-MAIL_PASSWORD = None
-MAIL_DEFAULT_SENDER = f"postmaster@yourdomain"
-
 # Development only options
 DEBUG = False
 TESTING = False
@@ -56,12 +47,3 @@ SQLALCHEMY_RECORD_QUERIES = True
 SECURITY_CHANGEABLE = True
 # Password hash algorithm
 SECURITY_PASSWORD_HASH = 'bcrypt'
-
-SECURITY_SEND_REGISTER_EMAIL = True
-SECURITY_SEND_PASSWORD_CHANGE_EMAIL = True
-SECURITY_SEND_PASSWORD_RESET_NOTICE_EMAIL = True
-
-BOOTSTRAP_USE_MINIFIED = True
-BOOTSTRAP_SERVE_LOCAL = True
-BOOTSTRAP_QUERYSTRING_REVVING = True
-BABEL_DEFAULT_TIMEZONE = "UTC"
