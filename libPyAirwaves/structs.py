@@ -433,8 +433,28 @@ class AisType(DefaultType):
             self.mmsiCC = mmsiMeta["mmsiCC"]
         if "mmsiType" in mmsiMeta:
             self.mmsiType = mmsiMeta["mmsiType"]
+        # Extract Ship Type
+        self.shipTypeMeta = self.__getAISShipType(decoded["type"])
 
         return True
+
+    def __getAISShipType(self, shipType):
+        """
+        Get the text description of a given AIS ship type
+        :param shipType: int, ship type
+        :return: str, ship type name
+        """
+
+        retVal = ""
+
+        try:
+            retVal = datas_ais.shipTypes[shipType]
+        except (IndexError, TypeError):
+            pass
+        except Exception as e:
+            raise e
+
+        return retVal
 
     def has_location(self):
         if self.lat and self.lon:

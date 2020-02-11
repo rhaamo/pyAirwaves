@@ -17,3 +17,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 - Debug/console.log cleanups
 - lastClientName and lastSrc report properly
+- shipTypeMeta now reported
