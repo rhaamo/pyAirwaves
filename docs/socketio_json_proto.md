@@ -39,6 +39,25 @@ SBS Reference: http://woodair.net/sbs/article/barebones42_socket_data.htm
 |regName|Registration owner|string| |
 |regAircraft|Manufacturer year, model, name|string| |
 
+|UI Text|Json Field|Type|Description|
+|-------|----------|----|-----------|
+|     table list    ||||
+|ID|
+|Cat.|
+|Flag|
+|Altitude|
+|Velocity|
+|Heading|
+|Pos|
+|Sig|
+|     details     ||||
+|Air / Gnd|
+|Supersonic|
+|Climb rate|
+|Position|
+|Data src.|
+|Flight status|
+|Heading|
 
 ## AIS (rtl-ais)
 
@@ -63,3 +82,26 @@ This is currently untested.
 |channel|Channel 1 or 2 (A or B)|string|
 |payload|payload string|string|
 |padBits|number of padding bits included in the sentence (related to len==2==CRC)|int|
+
+
+|UI Text|Json Field|Type|Description|
+|-------|----------|----|-----------|
+|     table list    ||||
+|ID|name|   |Name of the boat|
+|Flag|mmsiCC|   |MMSI Country|
+|Velocity|velo|    |Velocity|
+|Course|courseOverGnd|    |Course|
+|Destination|destination|    |Destination|
+|     details     ||||
+|MMSI Type|mmsiType|    |    |
+|COG / Hdg|courseOverGnd & heading|    |    |
+|Callsign|callsign|    |    |
+|Pos. type|epfdMeta|    |    |
+|Ship type|shipTypeMeta|string|Ship type description|
+|Position|lat & lon|foat & float|Latitude and Longitude|
+|Nav. Stat.|navStatMeta|string|Navigation status|
+|Data src.|lastClientName & lastSrc|    |    |
+|Dim.|dimToBow & dimToStern & dimToPort & dimToStarboard|all int|    |
+|Turn rate|unused ?|    |    |
+|Draught|draught|    |    |
+|ETA|etaStr|    |    |

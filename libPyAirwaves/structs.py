@@ -1,5 +1,6 @@
 import datetime
 import pyais
+from libPyAirwaves import datas_ais
 
 
 class DefaultType:
@@ -250,6 +251,12 @@ class AisType(DefaultType):
         # Radio status
         self.radioStatus: int = None
 
+        # Ship type
+        self.mmsiType: str = None
+
+        # Ship Country
+        self.mmsiCC: str = None
+
     def to_dict(self):
         """
         :return: All variables except `__thoses__` ones, and transform `_things` into `things`
@@ -257,6 +264,122 @@ class AisType(DefaultType):
         return {
             k.replace("_", ""): v for k, v in self.__dict__.items() if not (k.startswith("__") and k.endswith("__"))
         }
+
+    def isoCCtoCountry(self, isoCC):
+        """
+        Convert a given ISO country code string to a country name
+        :param isoCC:
+        :return: Country name as dict
+        """
+        retVal = {}
+
+        try:
+            retVal = datas_ais.isoCC2country[isoCC]
+        except KeyError:
+            pass
+
+        return retVal
+
+    def __getMMSIMeta(self, cc2Country=False):
+        """
+        Get metatdata from a given MMSI address. This is based on the following table:
+        http://www.vtexplorer.com/vessel-tracking-mmsi-mid-codes.html
+
+        :param cc2Country: True to only return the country name
+        :return: A dict with MMSI Metadatas
+        """
+
+        retVal = {}
+
+        # The character at which our MID starts
+        midCursor = 0
+
+        # Type of MMSI address. Defaults to ship.
+        mmsiType = "Ship"
+
+        if not self.mmsi:
+            return {"mmsiType": mmsiType}
+
+        # Figure out if we have certain types of MMSI address.
+        if (self.mmsi >= 800000000) and (self.mmsi <= 899999999):
+            mmsiType = "Diver's radio"
+
+            # Where does the MID start?
+            midCursor = 1
+
+        if (self.mmsi >= 10000000) and (self.mmsi <= 99999999):
+            mmsiType = "Group of ships"
+
+            # Where does the MID start?
+            midCursor = 0
+
+        if (self.mmsi >= 1000000) and (self.mmsi <= 9999999):
+            mmsiType = "Coastal station"
+
+            # Where does the MID start?
+            midCursor = 0
+
+        if (self.mmsi >= 111000000) and (self.mmsi <= 111999999):
+            mmsiType = "SAR aircraft"
+
+            # Where does the MID start?
+            midCursor = 3
+
+        if (self.mmsi >= 990000000) and (self.mmsi <= 999999999):
+            mmsiType = "Aid to Navigation"
+
+            # Where does the MID start?
+            midCursor = 2
+
+        if (self.mmsi >= 980000000) and (self.mmsi <= 989999999):
+            mmsiType = "Craft w/ parent ship"
+
+            # Where does the MID start?
+            midCursor = 2
+
+        if (self.mmsi >= 970000000) and (self.mmsi <= 970999999):
+            mmsiType = "SART (Search and Rescue Xmitter)"
+
+            # Where does the MID start?
+            midCursor = 3
+
+        if (self.mmsi >= 972000000) and (self.mmsi <= 972999999):
+            mmsiType = "MOB (Man Overboard) device"
+
+            # Where does the MID start?
+            midCursor = 3
+
+        if (self.mmsi >= 974000000) and (self.mmsi <= 974999999):
+            mmsiType = "EPIRB"
+
+            # Where does the MID start?
+            midCursor = 3
+
+        # Set the mmsiType.
+        retVal.update({"mmsiType": mmsiType})
+
+        try:
+            # Get the MID portion of the MMSI.
+            midStr = str(self.mmsi)[midCursor : (midCursor + 3)]
+            midCtry = datas_ais.mid2isoCC[midStr]
+
+            # Set the country data.
+            retVal.update({"mmsiCC": midCtry["isoCC"]})
+
+            # If we explicitly want the country name...
+            if cc2Country:
+                retVal.update({"mmsiCountry": self.isoCCtoCountry(midCtry["isoCC"])})
+
+        except KeyError:
+            # Do nothing because sometimes there's a bad value.
+            pass
+
+        except Exception as e:
+            # Pass the exception back up the stack.
+            raise e
+
+            # Send the data back along.
+        return retVal
 
     def populate_from_string(self, msg):
         print("GOT:", msg)
@@ -302,5 +425,12 @@ class AisType(DefaultType):
             self.maneuver = decoded["maneuver"].numerator
         self.raim = decoded["raim"]
         self.radioStatus = decoded["radio"]
+
+        # Extract MMSI Datas
+        mmsiMeta = self.__getMMSIMeta()
+        if "mmsiCC" in mmsiMeta:
+            self.mmsiCC = mmsiMeta["mmsiCC"]
+        if "mmsiType" in mmsiMeta:
+            self.mmsiType = mmsiMeta["mmsiType"]
 
         return True
