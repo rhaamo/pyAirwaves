@@ -122,8 +122,8 @@ Ship.prototype.createTableEntry = function () {
           </tr>\
           <tr>\
             <td class="tblHeader">COG / Hdg</td>\
-            <td class="tblCell">' + ((this.courseOverGnd == null) ? '--' : this.courseOverGnd) + ' / ' + ((this.heading == null || this.heading == 511) ? '--' : this.heading + ' deg') + '</td>\
-            <td class="tblHeader">Turn rate</td>\
+            <td class="tblCell">' + ((this.courseOverGnd == null) ? '--' : this.courseOverGnd) + ' / ' + ((this.heading == null || this.heading == 511) ? '--' : this.heading.toFixed(2) + ' deg') + '</td>\
+            <td class="tblHeader">Turn headingrate</td>\
             <td class="tblCell">' + '--' + '</td>\
           </tr>\
           <tr>\
@@ -249,7 +249,7 @@ Ship.prototype.updateTableEntry = function () {
         </tr>\
         <tr>\
           <td class="tblHeader">COG / Hdg</td>\
-          <td class="tblCell">' + ((this.courseOverGnd == null) ? '--' : this.courseOverGnd) + ' / ' + ((this.heading == null || this.heading == 511) ? '--' : this.heading + ' deg') + '</td>\
+          <td class="tblCell">' + ((this.courseOverGnd == null) ? '--' : this.courseOverGnd) + ' / ' + ((this.heading == null || this.heading == 511) ? '--' : this.heading.toFixed(2) + ' deg') + '</td>\
           <td class="tblHeader">Turn rate</td>\
           <td class="tblCell">' + '--' + '</td>\
         </tr>\

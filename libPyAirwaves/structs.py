@@ -182,20 +182,11 @@ class AisType(DefaultType):
         # Equals to src
         self.lastSrc: str = None
 
-        # Raw data frame.
+        # vdm[vdm] Raw data frame.
         self.data: str = None
 
-        # Unknown (message is fragmented ?)
-        self.isFrag: bool = None
-
-        # Unknown
-        self.fragCount: int = None
-
-        # Unknown
-        self.fragNumber: int = None
-
-        # Unknown (isAssembled == True then isFrag == false)
-        self.isAssembled: bool = None
+        # Is this an assembled packet from multiple fragments ?
+        self.isAssembled: bool = False
 
         # Data source latitude
         self.srcLat: float = None
@@ -205,18 +196,6 @@ class AisType(DefaultType):
 
         # Metadata about how srcLat and srcLon are derived.
         self.srcPosMeta: str = None
-
-        # Unknown
-        self.messageId: int = None
-
-        # The AIS channel (A or B), for dual channel transponders it must match the channel used
-        self.channel: str = None
-
-        # Unknown (The AIS datas ?)
-        self.payload: str = None
-
-        # number of padding bits included in the sentence (related to len==2==CRC)
-        self.padBits: int = None
 
         # Decoded longitude
         self.lon: float = None
@@ -257,13 +236,103 @@ class AisType(DefaultType):
         # Ship Country
         self.mmsiCC: str = None
 
+        # Ship destination
+        self.destination: str = None
+
+        # Ship callsign
+        self.callsign: str = None
+
+        # Ship EPFD Type (positioning device)
+        self.epfdMeta: str = None
+
+        # Ship Navigation Status
+        self.navStatMeta: str = None
+
+        # Ship dimensions
+        self.dimToBow: int = None
+        self.dimToStern: int = None
+        self.dimToPort: int = None
+        self.dimToStarboard: int = None
+
+        # ?
+        self.draught: float = None
+
+        # Ship ETA
+        self.etaStr: str = None
+
+        # Ship type
+        self.shipTypeMeta: str = None
+
     def to_dict(self):
         """
-        :return: All variables except `__thoses__` ones, and transform `_things` into `things`
+        :return: All variables except `__thoses__` ones or "" or None, and transform `_things` into `things`
         """
         return {
-            k.replace("_", ""): v for k, v in self.__dict__.items() if not (k.startswith("__") and k.endswith("__"))
+            k.replace("_", ""): v
+            for k, v in self.__dict__.items()
+            if not ((k.startswith("__") and k.endswith("__")) or v == "" or v is None)
         }
+
+    def populateFromParsedVdm(self, message: pyais.messages.AISMessage):
+        # Populate fields from VDM
+
+        # Raw VDM looks like
+        # {'ais_id': 1, 'raw': '!AIVDM,1,1,,B,13HOI<PP0000kQ6LCo574OwN0D1e,0*59', 'talker': 'AI', 'msg_type': 'VDM',
+        # 'count': 1, 'index': 1, 'seq_id': '', 'channel': 'B', 'data': '13HOI<PP0000kQ6LCo574OwN0D1e',
+        # 'checksum': 89, 'bit_array': 'xxx'}
+        # Raw AIS single packet
+        # {'type': 1, 'repeat': 0, 'mmsi': 227006770, 'status': <NavigationStatus.UnderWayUsingEngine: 0>,
+        # 'turn': -128, 'speed': 0.0, 'accuracy': False, 'lon': 0.175845, 'lat': 49.47587333333333, 'course': 180.9,
+        # 'heading': 511, 'second': 47, 'maneuver': <ManeuverIndicator.NotAvailable: 0>, 'raim': False, 'radio': 82029}
+        # Raw fragmented
+        # {'type': 4, 'repeat': 0, 'mmsi': 2276010, 'year': 2020, 'month': 2, 'day': 11, 'hour': 17, 'minute': 39,
+        # 'second': 50, 'accuracy': True, 'lon': 0.23283333333333334, 'lat': 49.42783333333333,
+        # 'epfd': <EpfdType.Surveyed: 7>, 'raim': False, 'radio': 34683}
+        # {'type': 5, 'repeat': 0, 'mmsi': 228022900, 'ais_version': 0, 'imo': 9420423, 'callsign': 'FIDP',
+        # 'shipname': 'ETRETAT', 'shiptype': <ShipType.Passenger_NoAdditionalInformation: 69>, 'to_bow': 24,
+        # 'to_stern': 163, 'to_port': 8, 'to_starboard': 18, 'epfd': <EpfdType.GPS: 1>, 'month': 2, 'day': 13,
+        # 'hour': 17, 'minute': 30, 'draught': 6.0, 'destination': 'SANTANDER', 'dte': False}
+        print("chomp chomp AIS VDM")
+
+        self.dts = str(datetime.datetime.utcnow())
+
+        self.lon = message["lon"]
+        self.lat = message["lat"]
+        if message["heading"]:
+            self.heading = round(message["heading"], 3)
+        if message["course"]:
+            self.courseOverGnd = round(message["course"], 3)
+        self.turnRt = message["turn"]
+        self.mmsi = message["mmsi"]
+        self.addr = self.mmsi
+        self.posAcc = message["accuracy"]
+        if message["maneuver"]:
+            self.maneuver = message["maneuver"].numerator
+        self.raim = message["raim"]
+        self.radioStatus = message["radio"]
+        self.srcPos = False  # TODO add source position support
+
+        # Extract MMSI Datas
+        mmsiMeta = self.__getMMSIMeta()
+        self.mmsiCC = mmsiMeta.get("mmsiCC", "")
+        self.mmsiType = mmsiMeta.get("mmsiType", "")
+        # Extract Ship Type
+        if message["shiptype"]:
+            self.shipTypeMeta = self.__getAISShipType(message["shiptype"])
+        self.name = message["shipname"]
+
+        self.destination = message["destination"]
+        self.callsign = message["callsign"]
+
+        if message["epfd"]:
+            self.epfdMeta = self.__getEPFDMeta(message["epfd"])
+        if message["status"]:
+            self.navStatMeta = self.__getAISNavStat(message["status"])
+        self.dimToBow = message["to_bow"]
+        self.dimToStern = message["to_stern"]
+        self.dimToPort = message["to_port"]
+        self.dimToStarboard = message["to_starboard"]
+        self.draught = message["draught"]
 
     def isoCCtoCountry(self, isoCC):
         """
@@ -277,6 +346,60 @@ class AisType(DefaultType):
             retVal = datas_ais.isoCC2country[isoCC]
         except KeyError:
             pass
+
+        return retVal
+
+    def __getAISNavStat(self, navstat):
+        """
+        Accepts a 4-bit number representing navigation status
+        :param navstat: 4-bit navigation status
+        :return: navigation status text
+        """
+        retVal = "Invalid"
+        if (navstat >= 0) or (navstat <= 15):
+            statArray = [
+                "Underway using engine",
+                "Anchored",
+                "Not under command",
+                "Restricted maneuverability",
+                "Constrained by draught",
+                "Moored",
+                "Aground",
+                "Fishing",
+                "Underway sailing",
+                "Reserved (HSC)",
+                "Reserved (WIG)",
+                "Reserved",
+                "Reserved",
+                "Reserved",
+                "AIS-SART (lifeboat)",
+                "Not defined",
+            ]
+            retVal = statArray[navstat]
+        return retVal
+
+    def __getEPFDMeta(self, epfd):
+        """
+        Get EPFD metadata given an EPFD value.
+        :param epfd: EPFD value
+        :return: string
+        """
+        retVal = ""
+        epfdDesc = [
+            "Undefined",
+            "GPS",
+            "GLONASS",
+            "GPS + GLONASS",
+            "Loran-C",
+            "Chayka",
+            "Integrated nav system",
+            "Surveyed",
+            "Galileo",
+        ]
+        if epfd <= 8:
+            retVal = epfdDesc[epfd]
+        else:
+            retVal = "Unknown"
 
         return retVal
 
@@ -381,63 +504,6 @@ class AisType(DefaultType):
             # Send the data back along.
         return retVal
 
-    def populate_from_string(self, msg):
-        print("GOT:", msg)
-        try:
-            message = pyais.NMEAMessage.from_string(msg)
-            decoded = message.decode()
-        except (IndexError, ValueError) as e:
-            print("Message is invalid:", e)
-            return False
-        except pyais.exceptions.InvalidChecksumException as e:
-            print("Invalid checksum", e)
-            return False
-        except pyais.exceptions.InvalidNMEAMessageException as e:
-            print("Invalid NMEA Message", e)
-            return False
-        # {'type': 1, 'repeat': 0, 'mmsi': 228022900, 'status': <NavigationStatus.UnderWayUsingEngine: 0>,
-        # 'turn': 0, 'speed': 0.0, 'accuracy': False, 'lon': 0.11188333333333333, 'lat': 49.48478333333333,
-        # 'course': 337.0, 'heading': 255, 'second': 31, 'maneuver': <ManeuverIndicator.NotAvailable: 0>,
-        # 'raim': False, 'radio': 20664}
-        self.dts = str(datetime.datetime.utcnow())
-        self.data = message.raw
-        # Fragmentation is not handled
-        if message.is_multi:
-            print("Unhandled fragment !!!")
-        self.isFrag = message.is_multi
-        self.fragCount = message.fragment_count
-        self.fragNumber = message.count
-        self.isAssembled = False
-        # EOF
-        self.channel = message.channel
-        self.payload = message.data  # not sure at all
-        self.lon = decoded["lon"]
-        self.lat = decoded["lat"]
-        if decoded["heading"]:
-            self.heading = round(decoded["heading"], 3)
-        if decoded["course"]:
-            self.courseOverGnd = round(decoded["course"], 3)
-        self.turnRt = decoded["turn"]
-        self.mmsi = decoded["mmsi"]
-        self.addr = self.mmsi
-        self.posAcc = decoded["accuracy"]
-        if decoded["maneuver"]:
-            self.maneuver = decoded["maneuver"].numerator
-        self.raim = decoded["raim"]
-        self.radioStatus = decoded["radio"]
-        self.srcPos = False  # TODO add position support
-
-        # Extract MMSI Datas
-        mmsiMeta = self.__getMMSIMeta()
-        if "mmsiCC" in mmsiMeta:
-            self.mmsiCC = mmsiMeta["mmsiCC"]
-        if "mmsiType" in mmsiMeta:
-            self.mmsiType = mmsiMeta["mmsiType"]
-        # Extract Ship Type
-        self.shipTypeMeta = self.__getAISShipType(decoded["type"])
-
-        return True
-
     def __getAISShipType(self, shipType):
         """
         Get the text description of a given AIS ship type
@@ -446,12 +512,14 @@ class AisType(DefaultType):
         """
 
         retVal = ""
-
+        print("ship type")
         try:
             retVal = datas_ais.shipTypes[shipType]
         except (IndexError, TypeError):
+            print("???")
             pass
         except Exception as e:
+            print(e)
             raise e
 
         return retVal

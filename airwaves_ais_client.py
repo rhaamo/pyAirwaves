@@ -3,15 +3,12 @@
 blah
 """
 
-import traceback
 import config
-import socket
-import time
-import datetime
 from flask_socketio import SocketIO
 import config as cfg
 from libPyAirwaves.structs import AisType
 from app import create_app
+import pyais
 
 count_failed_connection = 0
 max_failed_connection = 10
@@ -19,84 +16,44 @@ max_failed_connection = 10
 app = create_app()
 app.app_context().push()
 
+
+def broadcast(msg: pyais.messages.NMEAMessage):
+    is_fragmented = msg.count > 1
+    if is_fragmented:
+        print("Fragmented packet:", msg)
+    else:
+        print("Single packet:", msg)
+
+    ais_message = AisType()
+    ais_message.entryPoint = "airwaves_ais_client"
+    ais_message.src = config.PYAW_HOSTNAME
+    ais_message.clientName = config.AIS_SOURCE["name"]
+    ais_message.dataOrigin = "rtl-ais"
+    ais_message.raw = msg.raw
+    ais_message.payload = msg.data
+
+    ais_parsed = msg.decode()
+
+    if is_fragmented:
+        ais_message.isAssembled = True
+
+    # Populate the structure from parsed VDM
+    ais_message.populateFromParsedVdm(ais_parsed)
+
+    # Valid message and emit if lat/lon are present
+    # if ais_message.lat and ais_message.lon:
+    print(ais_message.to_dict())
+    socketio.emit("message", ais_message.to_dict())
+
+
 if __name__ == "__main__":
     socketio = SocketIO(message_queue=cfg.SOCKETIO_MESSAGE_QUEUE)
 
-    while count_failed_connection < max_failed_connection:
+    while True:
         try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.connect((config.AIS_SOURCE["host"], config.AIS_SOURCE["port"]))
-            count_failed_connection = 1
-            print("Connected to rtl-ais")
-            break
-        except socket.error:
-            count_failed_connection += 1
-            print(
-                f"Cannot connect to rtl-ais main {count_failed_connection}/{max_failed_connection}: {traceback.format_exc()}"
-            )
-            time.sleep(5)
-    else:
-        quit()
-
-    data_str = ""
-    start_time = datetime.datetime.utcnow()
-    last_time = start_time
-
-    try:
-        while True:
-            cur_time = datetime.datetime.utcnow()
-            ds = cur_time.isoformat()
-            ts = cur_time.strftime("%H:%M:%S")
-
-            try:
-                message = sock.recv(512)
-                data_str += message.decode().strip("\n")
-            except socket.error:
-                pass
-
-            if len(message) == 0:
-                print(ts, "No broadcast received. Attempting to reconnect")
-                time.sleep(5)
-                sock.close()
-
-                while count_failed_connection < max_failed_connection:
-                    try:
-                        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                        sock.connect((config.AIS_SOURCE["host"], config.AIS_SOURCE["port"]))
-                        count_failed_connection = 1
-                        print("Connected to rtl-ais")
-                        break
-                    except socket.error:
-                        count_failed_connection += 1
-                        print(
-                            f"Cannot connect to rtl-ais while {count_failed_connection}/{max_failed_connection}: {traceback.format_exc()}"
-                        )
-                        time.sleep(5)
-                else:
-                    quit()
-
-                continue
-
-            # split if multiple messages have been received
-            data = data_str.split("\n")
-
-            for line in data:
-                line = line.strip()
-                if line.startswith("!"):
-                    ais_message = AisType()
-                    if ais_message.populate_from_string(line):
-                        ais_message.entryPoint = "airwaves_ais_client"
-                        ais_message.src = config.PYAW_HOSTNAME
-                        ais_message.clientName = config.AIS_SOURCE["name"]
-                        ais_message.dataOrigin = "rtl-ais"
-
-                        # Valid message and emit if lat/lon are present
-                        if ais_message.lat and ais_message.lon:
-                            print(ais_message.to_dict())
-                            socketio.emit("message", ais_message.to_dict())
-                    # It's valid, reset stream message
-                    data_str = ""
-
-    except KeyboardInterrupt:
-        print("Closing socket connection")
-        sock.close()
+            for msg in pyais.TCPStream(config.AIS_SOURCE["host"], port=config.AIS_SOURCE["port"]):
+                decoded_message = msg.decode()
+                broadcast(msg)
+        except Exception as e:
+            print("Got an exception, reconnecting...", e)
+            pass

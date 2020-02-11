@@ -14,6 +14,8 @@
 
 Create an user and database.
 
+Please makes sure your postgresql is in UTF8 ! In doubt uses `-E UTF8` when doing `createdb`.
+
 # Install
 
     sudo su - pyairwaves
