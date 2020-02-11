@@ -29,10 +29,12 @@ Some more features will be available like airplane picture, company, and statist
 See `docs/install.md`
 
 Daemons/scripts:
-- `python airwaves_adsb_client.py` will connect to dump1090 and rtl-ais
-- `simulator.py` instead of connecting to a remote dump1090, it will replay 15minutes of ADS-B datas
-- `simulator2.py` instead of connecting to a remote dump1090, it will replay three planes looping somewhere in the USA
-- `python app.py` will start the Flask-SocketIO server
+- `airwaves_adsb_client.py` will connect to dump1090
+- `airwaves_ais_client.py` will connect to rtl-ais
+- `simulator_adsb_real_datas.py` instead of connecting to a remote dump1090, it will replay 15minutes of ADS-B datas
+- `simulator_adsb_coordinates.py` instead of connecting to a remote dump1090, it will replay three planes looping somewhere in the USA
+- `simulator_ais_real_datas.py` instead of connecting to a remote rtl-ais, it will replay a few minutes of AIS datas
+- `flask run` will start the Flask-SocketIO server for development
 
 ## Docs
 
