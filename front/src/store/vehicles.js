@@ -13,10 +13,12 @@ export default {
         if (!state.aisVehicles[data.addr] && data.lat && data.lon) {
           createMarker = true
         }
+        // beware, data.addr is a string in the dict
         state.aisVehicles[data.addr] = data
+        state.aisVehicles[data.addr].lastUpdate = Date.now()
         state.countAisVehicles = Object.keys(state.aisVehicles).length
         if (createMarker) {
-          state.markers.push({ address: data.address, latlng: L.latLng([data.lat, data.lon]) })
+          state.markers.push({ addr: data.addr, latlng: L.latLng([data.lat, data.lon]) })
         }
       } else if (data.type === 'airSSR') {
         console.error('airSSR not handled')
