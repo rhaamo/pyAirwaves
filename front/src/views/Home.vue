@@ -13,6 +13,7 @@
         :url="url"
         :attribution="attribution"
       />
+      <l-marker v-for="marker in markers" :lat-lng="marker.latlng" :key="marker.address"></l-marker>
     </l-map>
   </div>
 </template>
@@ -38,6 +39,11 @@ export default {
       }
     }
   },
+  computed: {
+    markers () {
+      return this.$store.state.vehicles.markers
+    }
+  },
   methods: {
     zoomUpdate (zoom) {
       this.currentZoom = zoom
@@ -47,11 +53,6 @@ export default {
     },
     innerClick () {
       alert('Click!')
-    }
-  },
-  actions: {
-    addMarker ({ data }) {
-      console.log('meow ?')
     }
   }
 }
