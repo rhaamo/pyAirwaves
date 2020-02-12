@@ -1,8 +1,25 @@
 export default {
   state: {
-
+    aisVehicles: {},
+    countAisVehicles: 0
+  },
+  mutations: {
+    'saveVehicle' (state, data) {
+      if (data.type === 'airAIS') {
+        state.aisVehicles[data.addr] = data
+        state.countAisVehicles = Object.keys(state.aisVehicles).length
+      } else if (data.type === 'airSSR') {
+        console.error('airSSR not handled')
+      } else {
+        console.error(`message type ${data.type} is not handled`)
+      }
+    }
   },
   actions: {
+    'SOCKET_message' ({ dispatch, commit }, payload) {
+      commit('saveVehicle', payload)
+      dispatch('/Home/addMarker', payload)
+    },
     'SOCKET_oops' (state, server) {
       console.log('oops', server)
     },
@@ -11,9 +28,6 @@ export default {
     },
     'SOCKET_info' (state, server) {
       console.log('info', server)
-    },
-    'SOCKET_message' (state, server) {
-      console.log('message received, pls handle')
     }
   }
 }

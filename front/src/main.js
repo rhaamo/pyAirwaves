@@ -13,7 +13,7 @@ Vue.component('l-tile-layer', LTileLayer)
 Vue.component('l-marker', LMarker)
 
 Vue.use(new VueSocketIO({
-  debug: true,
+  debug: false,
   connection: 'http://192.168.10.167:5000/',
   vuex: {
     store,
@@ -34,7 +34,7 @@ new Vue({
       console.log('webchaussette disconnected')
     },
     message: function (data) {
-      console.log('message can be handled from there too...')
+      // console.log('message can be handled from there too...')
     }
   }
 }).$mount('#app')

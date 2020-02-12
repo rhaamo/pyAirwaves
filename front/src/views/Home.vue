@@ -48,6 +48,11 @@ export default {
     innerClick () {
       alert('Click!')
     }
+  },
+  actions: {
+    addMarker ({ data }) {
+      console.log('meow ?')
+    }
   }
 }
 </script>
