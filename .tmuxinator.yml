@@ -1,0 +1,11 @@
+# .tmuxinator.yml
+
+name: dev
+root: .
+
+windows:
+  - backend:
+      - source venv/bin/activate
+      - export FLASK_ENV=development
+      - gunicorn --worker-class eventlet -w 1 -b 0.0.0.0:5000 "app:create_app()"
+
