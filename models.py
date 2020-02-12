@@ -45,10 +45,10 @@ class AircraftModes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_created = db.Column(db.DateTime(timezone=False), default=datetime.datetime.utcnow)
     last_modified = db.Column(db.DateTime(timezone=False))
-    mode_s = db.Column(db.String(6), nullable=False)
-    mode_s_country = db.Column(db.String(40))  # originally 24 chars
-    registration = db.Column(db.String(20))
-    icao_type_code = db.Column(db.String(4))
+    mode_s = db.Column(db.String(6), nullable=False, index=True)
+    mode_s_country = db.Column(db.String(40), index=True)  # originally 24 chars
+    registration = db.Column(db.String(20), index=True)
+    icao_type_code = db.Column(db.String(4), index=True)
     type_flight = db.Column(db.String(50))
     source = db.Column(db.String(255))
     source_type = db.Column(db.String(255), default="modes")
@@ -58,7 +58,7 @@ class AircraftOwner(db.Model):
     __tablename__ = "aircraft_owner"
 
     id = db.Column(db.Integer, primary_key=True)
-    registration = db.Column(db.String(255), nullable=False)
+    registration = db.Column(db.String(255), nullable=False, index=True)
     base = db.Column(db.String(255), default=None)
     owner = db.Column(db.String(255))
     date_first_reg = db.Column(db.DateTime(timezone=False), default=None)
@@ -70,7 +70,7 @@ class AircraftRegistration(db.Model):
     __tablename__ = "aircraft_registration"
 
     id = db.Column(db.Integer, primary_key=True)
-    country = db.Column(db.String(255), nullable=False)
+    country = db.Column(db.String(255), nullable=False, index=True)
     prefix = db.Column(db.String(10), nullable=False)
 
 
@@ -80,7 +80,7 @@ class ArchiveAdsbMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     # Common part of ADS-B message
-    message_type = db.Column(db.String("5"), nullable=False)
+    message_type = db.Column(db.String(5), nullable=False)
     transmission_type = db.Column(db.Integer, nullable=False)
     session_id = db.Column(db.String(20))
     aircraft_id = db.Column(db.String(20))
