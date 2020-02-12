@@ -1,30 +1,37 @@
 import L from 'leaflet'
+import Vue from 'vue'
 
 export default {
   state: {
     aisVehicles: {},
-    countAisVehicles: 0,
-    markers: []
+    countAisVehicles: 0
   },
   mutations: {
     'saveVehicle' (state, data) {
-      if (data.type === 'airAIS') {
+      if (data.type === 'airAIS' && data.addr) {
+        const vehName = 'veh' + data.addr
         let createMarker = false
-        if (!state.aisVehicles[data.addr] && data.lat && data.lon) {
+        if (!state.aisVehicles[vehName] && !!data.lat && !!data.lon) {
           createMarker = true
         }
-        // beware, data.addr is a string in the dict
-        state.aisVehicles[data.addr] = data
-        state.aisVehicles[data.addr].lastUpdate = Date.now()
+        // We can't uses object[index] = thing or Vue won't be able to detect the change
+        Vue.set(state.aisVehicles, vehName, data)
+        state.aisVehicles[vehName].lastUpdate = Date.now()
+        state.aisVehicles[vehName].showMarker = (!!data.lat && !!data.lon)
         state.countAisVehicles = Object.keys(state.aisVehicles).length
         if (createMarker) {
-          state.markers.push({ addr: data.addr, latlng: L.latLng([data.lat, data.lon]) })
+          state.aisVehicles[vehName].latlng = L.latLng([data.lat, data.lon])
         }
       } else if (data.type === 'airSSR') {
         console.error('airSSR not handled')
       } else {
         console.error(`message type ${data.type} is not handled`)
       }
+    }
+  },
+  getters: {
+    mapMarkers: state => {
+      return Object.values(state.aisVehicles).filter(x => x.showMarker)
     }
   },
   actions: {

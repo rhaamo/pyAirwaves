@@ -46,14 +46,15 @@ export default {
   },
   computed: {
     markers () {
-      return this.$store.state.vehicles.markers
+      // return this.$store.state.vehicles.markers
+      return this.$store.getters.mapMarkers
     }
   },
   created () {
     logger.default.info('Setting up the vehicle purge poller')
     this.purgeVehiclesPoller = setInterval(() => {
       this.purgeVehicles()
-    }, 1000)
+    }, 5000) // 5s
   },
   beforeDestroy () {
     clearInterval(this.purgeVehiclesPoller)
@@ -65,16 +66,8 @@ export default {
         // Compute the time delta
         const vehDelta = Date.now() - vehicle.lastUpdate
         if (vehDelta >= 1000) {
-          logger.default.info(`Vehicle ${vehicle.addr} Expired`)
-          // remove from markers
-          for (const markerIndex in this.$store.state.vehicles.markers) {
-            const marker = this.$store.state.vehicles.markers[markerIndex]
-            if (String(marker.addr) === address) {
-              logger.default.info(`we have to delete marker index ${markerIndex}`)
-              this.$store.state.vehicles.markers.splice(markerIndex, 1)
-            }
-          }
-          // remove from vehicles
+          logger.default.info(`Vehicle ${address} Expired`)
+          // remove vehicle
           delete this.$store.state.vehicles.aisVehicles[address]
         } else {
           return
