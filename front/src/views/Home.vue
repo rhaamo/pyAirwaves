@@ -55,6 +55,7 @@ export default {
   },
   beforeDestroy () {
     clearInterval(this.purgeVehiclesPoller)
+    console.log('purge vehicules poller deactivated')
   },
   methods: {
     purgeVehicles () {
