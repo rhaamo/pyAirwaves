@@ -7,6 +7,7 @@
       :options="mapOptions"
       @update:center="centerUpdate"
       @update:zoom="zoomUpdate"
+      @update:bounds="boundsUpdated"
       id="map"
     >
       <l-tile-layer
@@ -34,6 +35,7 @@ export default {
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       currentZoom: 10,
       currentCenter: latLng(49.432413, 0.164795),
+      bounds: null,
       mapOptions: {
         zoomSnap: 0.5
       },
@@ -83,8 +85,8 @@ export default {
     centerUpdate (center) {
       this.currentCenter = center
     },
-    innerClick () {
-      alert('Click!')
+    boundsUpdated (bounds) {
+      this.bounds = bounds
     }
   }
 }
