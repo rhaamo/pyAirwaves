@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import logger from '@/logging'
+
 import { latLng } from 'leaflet'
 
 export default {
@@ -48,28 +50,27 @@ export default {
     }
   },
   created () {
-    console.log('setting up the purge vehicules poller')
+    logger.default.info('Setting up the vehicle purge poller')
     this.purgeVehiclesPoller = setInterval(() => {
       this.purgeVehicles()
     }, 1000)
   },
   beforeDestroy () {
     clearInterval(this.purgeVehiclesPoller)
-    console.log('purge vehicules poller deactivated')
+    logger.default.info('Vehicle purge poller deactivated')
   },
   methods: {
     purgeVehicles () {
-      console.log('purgeVehicles running')
       for (const [address, vehicle] of Object.entries(this.$store.state.vehicles.aisVehicles)) {
         // Compute the time delta
         const vehDelta = Date.now() - vehicle.lastUpdate
         if (vehDelta >= 1000) {
-          console.log(`Vehicle ${vehicle.addr} Expired`)
+          logger.default.info(`Vehicle ${vehicle.addr} Expired`)
           // remove from markers
           for (const markerIndex in this.$store.state.vehicles.markers) {
             const marker = this.$store.state.vehicles.markers[markerIndex]
             if (String(marker.addr) === address) {
-              console.log(`we have to delete marker index ${markerIndex}`)
+              logger.default.info(`we have to delete marker index ${markerIndex}`)
               this.$store.state.vehicles.markers.splice(markerIndex, 1)
             }
           }

@@ -4857,6 +4857,11 @@ jest-worker@^25.1.0:
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
 
+js-logger@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/js-logger/-/js-logger-1.6.0.tgz#7abae5cfaf208c965f3ef20754533bb9e79c7aef"
+  integrity sha512-K4kt2AdD0jUYINbe00BPPpsL65u/rdYOgfaBBVWm/mid+ANk7qxDnoXgKI5ilm49Sjmach2Dzlc+5VxKdRA3tw==
+
 js-message@1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/js-message/-/js-message-1.0.5.tgz#2300d24b1af08e89dd095bc1a4c9c9cfcb892d15"
