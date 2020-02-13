@@ -14,7 +14,9 @@
         :url="url"
         :attribution="attribution"
       />
-      <l-marker v-for="marker in markers" :lat-lng="marker.latlng" :key="marker.addr"></l-marker>
+      <l-marker v-for="marker in markers" :lat-lng="marker.latlng" :key="marker.addr">
+        <l-popup>{{marker.addr}}</l-popup>
+      </l-marker>
     </l-map>
   </div>
 </template>
