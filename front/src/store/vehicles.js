@@ -5,6 +5,7 @@ export default {
   state: {
     aisVehicles: [],
     countAisVehicles: 0,
+    countSsrVehicles: 0,
     ssrVehicles: []
   },
   mutations: {
@@ -33,6 +34,7 @@ export default {
         Vue.set(state.ssrVehicles, vehName, data)
         state.ssrVehicles[vehName].lastUpdate = Date.now()
         state.ssrVehicles[vehName].showMarker = (!!data.lat && !!data.lon)
+        state.countSsrVehicles = Object.keys(state.ssrVehicles).length
         if (createMarker) {
           state.ssrVehicles[vehName].latlng = L.latLng([data.lat, data.lon])
         }
