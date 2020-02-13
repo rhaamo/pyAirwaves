@@ -23,7 +23,8 @@ Icon.Default.mergeOptions({
 
 Vue.use(new VueSocketIO({
   debug: false,
-  connection: 'http://192.168.10.167:5000/',
+  // connection: 'http://192.168.10.167:5000/',
+  connection: 'http://station.adrasec76.org/',
   vuex: {
     store,
     actionPrefix: 'SOCKET_'

@@ -4,7 +4,8 @@ import Vue from 'vue'
 export default {
   state: {
     aisVehicles: [],
-    countAisVehicles: 0
+    countAisVehicles: 0,
+    ssrVehicles: []
   },
   mutations: {
     'saveVehicle' (state, data) {
@@ -23,7 +24,18 @@ export default {
           state.aisVehicles[vehName].latlng = L.latLng([data.lat, data.lon])
         }
       } else if (data.type === 'airSSR') {
-        console.error('airSSR not handled')
+        const vehName = 'veh' + data.addr
+        let createMarker = false
+        if (!state.ssrVehicles[vehName] && !!data.lat && !!data.lon) {
+          createMarker = true
+        }
+        // We can't uses object[index] = thing or Vue won't be able to detect the change
+        Vue.set(state.ssrVehicles, vehName, data)
+        state.ssrVehicles[vehName].lastUpdate = Date.now()
+        state.ssrVehicles[vehName].showMarker = (!!data.lat && !!data.lon)
+        if (createMarker) {
+          state.ssrVehicles[vehName].latlng = L.latLng([data.lat, data.lon])
+        }
       } else {
         console.error(`message type ${data.type} is not handled`)
       }
@@ -32,6 +44,9 @@ export default {
   getters: {
     mapMarkers: state => {
       return Object.values(state.aisVehicles).filter(x => x.showMarker)
+    },
+    ssrMarkers: state => {
+      return Object.values(state.ssrVehicles).filter(x => x.showMarker)
     }
   },
   actions: {

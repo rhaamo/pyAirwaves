@@ -17,6 +17,9 @@
       <l-marker v-for="marker in markers" :lat-lng="marker.latlng" :key="marker.addr">
         <l-popup>{{marker.addr}}</l-popup>
       </l-marker>
+      <l-marker v-for="marker in ssrMarkers" :lat-lng="marker.latlng" :key="marker.addr">
+        <l-popup>{{marker.addr}}</l-popup>
+      </l-marker>
     </l-map>
   </div>
 </template>
@@ -49,13 +52,16 @@ export default {
   computed: {
     markers () {
       return this.$store.getters.mapMarkers
+    },
+    ssrMarkers () {
+      return this.$store.getters.ssrMarkers
     }
   },
   created () {
     logger.default.info('Setting up the vehicle purge poller')
     this.purgeVehiclesPoller = setInterval(() => {
       this.purgeVehicles()
-    }, 5000) // 5s
+    }, 10000) // 5s
   },
   beforeDestroy () {
     clearInterval(this.purgeVehiclesPoller)
@@ -71,6 +77,18 @@ export default {
           // remove vehicle
           delete this.$store.state.vehicles.aisVehicles[address]
           this.$store.state.vehicles.aisVehicles.splice(address, 1)
+        } else {
+          return
+        }
+      }
+      for (const [address, vehicle] of Object.entries(this.$store.state.vehicles.ssrVehicles)) {
+        // Compute the time delta
+        const vehDelta = Date.now() - vehicle.lastUpdate
+        if (vehDelta >= 1000) {
+          logger.default.info(`Vehicle ${address} Expired`)
+          // remove vehicle
+          delete this.$store.state.vehicles.ssrVehicles[address]
+          this.$store.state.vehicles.ssrVehicles.splice(address, 1)
         } else {
           return
         }
