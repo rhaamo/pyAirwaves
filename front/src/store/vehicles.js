@@ -3,7 +3,7 @@ import Vue from 'vue'
 
 export default {
   state: {
-    aisVehicles: {},
+    aisVehicles: [],
     countAisVehicles: 0
   },
   mutations: {

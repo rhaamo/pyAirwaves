@@ -48,7 +48,6 @@ export default {
   },
   computed: {
     markers () {
-      // return this.$store.state.vehicles.markers
       return this.$store.getters.mapMarkers
     }
   },
@@ -71,6 +70,7 @@ export default {
           logger.default.info(`Vehicle ${address} Expired`)
           // remove vehicle
           delete this.$store.state.vehicles.aisVehicles[address]
+          this.$store.state.vehicles.aisVehicles.splice(address, 1)
         } else {
           return
         }
