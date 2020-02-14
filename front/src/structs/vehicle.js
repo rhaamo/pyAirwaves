@@ -34,6 +34,7 @@ export default class Vehicle {
     this.marker = null // Placeholder for the map marker
     this.info = null // Placeholder for the map info popup
     this.pathPoly = null // new L.polyline([]).addTo(map)
+    this.pathPolyLatLngs = [] // array of latlng for path poly
     this.icon = null
     this.latlng = null
   }
@@ -97,6 +98,7 @@ Vehicle.prototype.movePosition = function () {
     // this.pathPoly.setStyle({
     //   color: this.stkColor
     // })
+    this.pathPolyLatLngs.push(new L.latLng([this.lat, this.lon]))
 
     // // Update the marker
     // // this.marker.setIcon(this.createIcon())

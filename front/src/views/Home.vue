@@ -14,12 +14,10 @@
         :url="url"
         :attribution="attribution"
       />
-      <l-marker v-for="marker in markers" :lat-lng="marker.latlng" :key="marker.addr" :icon="marker.icon">
+      <l-marker v-for="marker in markers" :lat-lng="marker.latlng" :key="`marker${marker.addr}`" :icon="marker.icon">
         <l-popup>{{marker.addr}}</l-popup>
       </l-marker>
-      <l-marker v-for="marker in ssrMarkers" :lat-lng="marker.latlng" :key="marker.addr">
-        <l-popup>{{marker.addr}}</l-popup>
-      </l-marker>
+      <l-polyline v-for="marker in markers" :lat-lngs="marker.pathPolyLatLngs" :key="`polyline${marker.addr}`" :color="marker.stkColor"></l-polyline>
     </l-map>
   </div>
 </template>
@@ -52,9 +50,6 @@ export default {
   computed: {
     markers () {
       return this.$store.getters.mapMarkers
-    },
-    ssrMarkers () {
-      return this.$store.getters.ssrMarkers
     }
   },
   created () {
