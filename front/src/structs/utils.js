@@ -7,7 +7,7 @@ function toDeg (rad) {
 }
 
 function bearingFromTwoCoordinates (lat1, lon1, lat2, lon2) {
-  console.log('Bearing from ' + lat1 + ',' + lon1 + ' to ' + lat2 + ',' + lon2)
+  // console.log('Bearing from ' + lat1 + ',' + lon1 + ' to ' + lat2 + ',' + lon2)
 
   const startLat = toRadians(lat1)
   const startLon = toRadians(lon1)
