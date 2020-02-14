@@ -10,7 +10,6 @@
  * Deps: jQuery, vehicles.js
  **********************************************************/
 
-import L from 'leaflet'
 import Vehicle from './vehicle'
 import Vue from 'vue'
 
@@ -63,30 +62,4 @@ Ship.prototype.parseName = function () {
   // We should always have an MMSI address.
   idStr += '[' + this.addr.toString() + ']'
   return idStr
-}
-
-/***************************************************
- * FUNCTION SETS THE VEHICLE ICON
- * OVERRIDES DEFAULT TO USE courseOverGnd
- **************************************************/
-Ship.prototype.createIcon = function () {
-  var newIcon
-  // If we have heading data for the vehicle
-  if (this.courseOverGnd) {
-    // Create our icon for a vehicle with heading data.
-    newIcon = new L.BoatIcon({
-      color: '#f4ff01',
-      idleCircle: false,
-      course: this.courseOverGnd
-    })
-    newIcon.setHeading(this.courseOverGnd)
-  } else {
-    // Create our icon for a vehicle without heading data.
-    newIcon = new L.BoatIcon({
-      color: '#f4ff01',
-      idleCircle: false
-    })
-  }
-
-  return newIcon
 }

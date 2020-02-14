@@ -73,9 +73,9 @@ export default {
         if (vehicle != null) {
           const expiration = vehicle.checkExpiration()
           switch (expiration) {
-            case 'HalfLife':
+            case 'Halflife':
               console.log('half life for object id', address)
-              vehicle.setHalfLife()
+              vehicle.setHalflife()
               break
             case 'Expired':
               console.log('expired vehicle id', address)

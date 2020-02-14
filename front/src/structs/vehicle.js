@@ -76,47 +76,6 @@ Vehicle.prototype.drawPlane = function (icon, type) {
 }
 
 /***************************************************
- * FUNCTION CREATES VEHICLE ICONS FOR GMAPS
- * OVERRIDE IF USING A DIFFERENT HEADING
- **************************************************/
-Vehicle.prototype.createIcon = function () {
-  var newIcon
-  // If we have heading data for the vehicle
-  if (this.heading) {
-    // Create our icon for a vehicle with heading data.
-    // newIcon = new google.maps.Marker({
-    //  path: this.dirIcoPath,
-    //  scale: this.dirIcoScale,
-    //  strokeWeight: 1.5,
-    //  strokeColor: (this.selected == true) ? this.vehColorSelected : ((this.active == true) ? this.vehColorActive : this.vehColorInactive),
-    //  rotation: this.heading
-    // });
-    console.log('TODO: heading')
-    newIcon = new L.PlaneIcon({
-      color: '#f4ff01',
-      idleCircle: false,
-      course: this.heading
-    })
-    newIcon.setHeading(this.heading)
-  } else {
-    // Create our icon for a vehicle without heading data.
-    // newIcon = new google.maps.Marker({
-    //  path: this.ndIcoPath,
-    //  scale: this.ndIcoScale,
-    //  strokeWeight: 1.5,
-    //  strokeColor: (this.selected == true) ? this.vehColorSelected : ((this.active == true) ? this.vehColorActive : this.vehColorInactive)
-    // });
-    console.log('TODO: no heading')
-    newIcon = new L.PlaneIcon({
-      color: '#f4ff01',
-      idleCircle: false
-    })
-  }
-  // And return it.
-  return newIcon
-}
-
-/***************************************************
  * FUNCTION MOVES THE VEHICLE MARKER AND INFO POSITIONS
  **************************************************/
 Vehicle.prototype.movePosition = function () {
@@ -129,26 +88,26 @@ Vehicle.prototype.movePosition = function () {
     const thisPos = this.lat + ',' + this.lon
     // Update the path object with the new position
     // copy the path object
-    const pathObject = this.pathPoly.getLatLngs()
-    // update with the new path
-    pathObject.push(new L.LatLng(this.lat, this.lon))
-    // push back to the polyline
-    this.pathPoly.setLatLngs(pathObject)
-    // set the polyline color
-    this.pathPoly.setStyle({
-      color: this.stkColor
-    })
+    // const pathObject = this.pathPoly.getLatLngs()
+    // // update with the new path
+    // pathObject.push(new L.LatLng(this.lat, this.lon))
+    // // push back to the polyline
+    // this.pathPoly.setLatLngs(pathObject)
+    // // set the polyline color
+    // this.pathPoly.setStyle({
+    //   color: this.stkColor
+    // })
 
-    // Update the marker
-    this.marker.setIcon(this.createIcon())
-    // Move the marker.
-    this.marker.setLatLng(new L.LatLng(this.lat, this.lon))
+    // // Update the marker
+    // // this.marker.setIcon(this.createIcon())
+    // // Move the marker.
+    // this.marker.latlng = L.LatLng(this.lat, this.lon)
 
-    // also update popup info if opened
-    if (this.info.shown === true) {
-      this.info.setLatLng(new L.LatLng(this.lat, this.lon))
-      this.info.update()
-    }
+    // // also update popup info if opened
+    // if (this.info.shown === true) {
+    //   this.info.setLatLng(new L.LatLng(this.lat, this.lon))
+    //   this.info.update()
+    // }
 
     // Record the new position for testing on next update
     this.lastPos = thisPos
@@ -266,9 +225,6 @@ Vehicle.prototype.setHalflife = function () {
   this.active = false
   // Set the icon.
   console.log('TODO FIXME set icon for idle / greyed')
-  if (this.marker) {
-    this.marker.setIcon(this.createIcon())
-  }
 }
 
 /***************************************************

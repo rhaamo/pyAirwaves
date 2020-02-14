@@ -34,6 +34,7 @@ try:
         adsb_msg.src = cfg.PYAW_HOSTNAME
         adsb_msg.clientName = "sim_host"
         adsb_msg.dataOrigin = "dump1090"
+        print(f"sent planeA {adsb_msg.to_dict()}")
         socketio.emit("message", adsb_msg.to_dict())
         time.sleep(DELAY_MESSAGES)
 
@@ -51,6 +52,7 @@ try:
         adsb_msg.src = cfg.PYAW_HOSTNAME
         adsb_msg.clientName = "sim_host"
         adsb_msg.dataOrigin = "dump1090"
+        print(f"sent planeB {adsb_msg.to_dict()}")
         socketio.emit("message", adsb_msg.to_dict())
         time.sleep(DELAY_MESSAGES)
 
@@ -68,6 +70,7 @@ try:
         adsb_msg.src = cfg.PYAW_HOSTNAME
         adsb_msg.clientName = "sim_host"
         adsb_msg.dataOrigin = "dump1090"
+        print(f"sent planeC {adsb_msg.to_dict()}")
         socketio.emit("message", adsb_msg.to_dict())
         time.sleep(DELAY_MESSAGES)
 
