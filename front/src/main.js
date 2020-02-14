@@ -16,21 +16,19 @@ Vue.component('l-popup', LPopup)
 Vue.component('l-polyline', LPolyline)
 
 delete Icon.Default.prototype._getIconUrl
-Icon.Default.mergeOptions({
-  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-  iconUrl: require('leaflet/dist/images/marker-icon.png'),
-  shadowUrl: require('leaflet/dist/images/marker-shadow.png')
-})
 
 Vue.use(new VueSocketIO({
   debug: false,
-  connection: 'http://192.168.10.167:5000/',
+  // connection: 'http://192.168.10.167:5000/',
+  connection: 'https://pyairwaves.lan.sigpipe.me/', // websocket hosted by main dev. AIS and SSR available. if nothing, pollers crashed, ping me.
   vuex: {
     store,
     actionPrefix: 'SOCKET_'
   },
   options: {}
 }))
+
+Vue.config.performance = true
 
 new Vue({
   router,
