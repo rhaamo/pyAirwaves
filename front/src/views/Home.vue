@@ -14,7 +14,7 @@
         :url="url"
         :attribution="attribution"
       />
-      <l-marker v-for="marker in markers" :lat-lng="marker.latlng" :key="marker.addr">
+      <l-marker v-for="marker in markers" :lat-lng="marker.latlng" :key="marker.addr" :icon="marker.icon">
         <l-popup>{{marker.addr}}</l-popup>
       </l-marker>
       <l-marker v-for="marker in ssrMarkers" :lat-lng="marker.latlng" :key="marker.addr">
@@ -59,9 +59,9 @@ export default {
   },
   created () {
     logger.default.info('Setting up the vehicle purge poller')
-    this.purgeVehiclesPoller = setInterval(() => {
-      this.purgeVehicles()
-    }, 10000) // 5s
+    // this.purgeVehiclesPoller = setInterval(() => {
+    //   this.purgeVehicles()
+    // }, 10000) // 5s
   },
   beforeDestroy () {
     clearInterval(this.purgeVehiclesPoller)
@@ -69,28 +69,20 @@ export default {
   },
   methods: {
     purgeVehicles () {
-      for (const [address, vehicle] of Object.entries(this.$store.state.vehicles.aisVehicles)) {
-        // Compute the time delta
-        const vehDelta = Date.now() - vehicle.lastUpdate
-        if (vehDelta >= 1000) {
-          logger.default.info(`Vehicle ${address} Expired`)
-          // remove vehicle
-          delete this.$store.state.vehicles.aisVehicles[address]
-          this.$store.state.vehicles.aisVehicles.splice(address, 1)
-        } else {
-          return
-        }
-      }
-      for (const [address, vehicle] of Object.entries(this.$store.state.vehicles.ssrVehicles)) {
-        // Compute the time delta
-        const vehDelta = Date.now() - vehicle.lastUpdate
-        if (vehDelta >= 1000) {
-          logger.default.info(`Vehicle ${address} Expired`)
-          // remove vehicle
-          delete this.$store.state.vehicles.ssrVehicles[address]
-          this.$store.state.vehicles.ssrVehicles.splice(address, 1)
-        } else {
-          return
+      for (var key in this.$store.state.vehicles) {
+        if (this.$store.state.vehicles[key] != null) {
+          switch (this.$store.state.vehicles[key].checkExpiration()) {
+            case 'HalfLife':
+              console.log('half life for object id', key)
+              this.$store.state.vehicles[key].setHalfLife()
+              break
+            case 'Expired':
+              console.log('expired vehicle id', key)
+              this.$store.state.vehicles.aisVehicles.splice(key, 1)
+              break
+            default:
+              break
+          }
         }
       }
     },

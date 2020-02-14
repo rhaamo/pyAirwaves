@@ -45,7 +45,9 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "new-cap": 0
+    }
   },
   "browserslist": [
     "> 1%",
