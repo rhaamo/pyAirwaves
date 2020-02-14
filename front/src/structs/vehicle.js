@@ -101,7 +101,8 @@ Vehicle.prototype.movePosition = function () {
     // // Update the marker
     // // this.marker.setIcon(this.createIcon())
     // // Move the marker.
-    // this.marker.latlng = L.LatLng(this.lat, this.lon)
+
+    this.latlng = L.latLng([this.lat, this.lon])
 
     // // also update popup info if opened
     // if (this.info.shown === true) {
