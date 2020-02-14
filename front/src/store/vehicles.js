@@ -29,12 +29,19 @@ export default {
             // We have latitude and longitude, show marker
             state.vehicles[vehName].marker = true
             state.vehicles[vehName].latlng = L.latLng([data.lat, data.lon])
-            state.vehicles[vehName].icon = new BoatIcon({
-              color: '#f4ff01',
-              idleCircle: false,
-              course: data.courseOverGnd
-            })
-            state.vehicles[vehName].icon.setHeading(data.courseOverGnd)
+            if (state.vehicles[vehName].courseOverGnd) {
+              state.vehicles[vehName].icon = new BoatIcon({
+                color: '#f4ff01',
+                idleCircle: false,
+                course: data.courseOverGnd
+              })
+              state.vehicles[vehName].icon.setHeading(data.courseOverGnd)
+            } else {
+              state.vehicles[vehName].icon = new BoatIcon({
+                color: '#f4ff01',
+                idleCircle: false
+              })
+            }
           } else {
             state.vehicles[vehName].marker = false
           }
