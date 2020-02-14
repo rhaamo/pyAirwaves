@@ -59,9 +59,9 @@ export default {
   },
   created () {
     logger.default.info('Setting up the vehicle purge poller')
-    // this.purgeVehiclesPoller = setInterval(() => {
-    //   this.purgeVehicles()
-    // }, 10000) // 5s
+    this.purgeVehiclesPoller = setInterval(() => {
+      this.purgeVehicles()
+    }, 5000) // 5s
   },
   beforeDestroy () {
     clearInterval(this.purgeVehiclesPoller)
@@ -69,18 +69,21 @@ export default {
   },
   methods: {
     purgeVehicles () {
-      for (var key in this.$store.state.vehicles) {
-        if (this.$store.state.vehicles[key] != null) {
-          switch (this.$store.state.vehicles[key].checkExpiration()) {
+      for (const [address, vehicle] of Object.entries(this.$store.state.vehicles.vehicles)) {
+        if (vehicle != null) {
+          const expiration = vehicle.checkExpiration()
+          switch (expiration) {
             case 'HalfLife':
-              console.log('half life for object id', key)
-              this.$store.state.vehicles[key].setHalfLife()
+              console.log('half life for object id', address)
+              vehicle.setHalfLife()
               break
             case 'Expired':
-              console.log('expired vehicle id', key)
-              this.$store.state.vehicles.aisVehicles.splice(key, 1)
+              console.log('expired vehicle id', address)
+              delete this.$store.state.vehicles.vehicles[address]
+              this.$store.state.vehicles.vehicles.splice(address, 1)
               break
             default:
+              console.log('lolwut?', expiration)
               break
           }
         }

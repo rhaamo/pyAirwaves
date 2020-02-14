@@ -278,6 +278,7 @@ Vehicle.prototype.setHalflife = function () {
 Vehicle.prototype.checkExpiration = function () {
   // Compute the time delta
   const vehDelta = Date.now() - this.lastUpdate
+  console.log(`Date now: ${Date.now()}, lastUpdate: ${this.lastUpdate}, delta: ${vehDelta}, maxAge: ${this.maxAge}`)
   // Return Active, Halflife, or Expired
   if (vehDelta >= this.maxAge) {
     return ('Expired')

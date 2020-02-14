@@ -510,6 +510,7 @@ Vehicle.prototype.setHalflife = function () {
  * FUNCTION DETERMINES IF A VEHICLE SHOULD BE
  * SET TO HALFLIFE, EXPIRED, OR REMAIN ACTIVE
  **************************************************/
+
 Vehicle.prototype.checkExpiration = function () {
     // Compute the time delta
     let vehDelta = Date.now() - this.lastUpdate;
