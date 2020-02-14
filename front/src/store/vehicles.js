@@ -8,8 +8,6 @@ import Aircraft from '../structs/airSSR'
 
 export default {
   state: {
-    countSsrVehicles: 0,
-    ssrVehicles: [],
     vehicles: [],
     websocketConnected: false
   },
