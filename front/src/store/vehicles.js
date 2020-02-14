@@ -24,7 +24,6 @@ export default {
           console.log(vehName, 'does not exists')
           // new vehicle, call the constructor
           const newShip = new Ship(data)
-          console.log('new ship', newShip)
           Vue.set(state.vehicles, vehName, newShip) // reactive insert
           if (state.vehicles[vehName].lat && state.vehicles[vehName].lon) {
             // We have latitude and longitude, show marker
@@ -50,7 +49,6 @@ export default {
           console.log(vehName, 'does not exists')
           // new vehicle, call the constructor
           const newAircraft = new Aircraft(data)
-          console.log('new aircraft', newAircraft)
           Vue.set(state.vehicles, vehName, newAircraft) // reactive insert
           if (state.vehicles[vehName].lat && state.vehicles[vehName].lon) {
             // We have latitude and longitude, show marker

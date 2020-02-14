@@ -78,7 +78,7 @@ export default {
               this.$store.state.vehicles.vehicles.splice(address, 1)
               break
             default:
-              console.log('lolwut?', expiration)
+              // Still active, do nothing
               break
           }
         }

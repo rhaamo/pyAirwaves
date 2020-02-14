@@ -25,7 +25,7 @@ export default class Ship extends Vehicle {
     Vue.util.extend(this, msg)
     // add additional parameters
     this.domName = 'AIS'
-    this.maxAge = 10 * 1000 // 5 * (60 * 1000) // How long to retain a ship after losing contact (miliseconds)
+    this.maxAge = 5 * (60 * 1000) // How long to retain a ship after losing contact (miliseconds)
     // gMap icon stuff
     this.dirIcoPath = 'm 0,0 -20,50 40,0 -20,-50' // Path we want to use for AIS targets that we have direction data for.
     this.dirIcoScale = 0.15 // Current scale of the icon.

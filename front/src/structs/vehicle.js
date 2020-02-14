@@ -80,11 +80,8 @@ Vehicle.prototype.drawPlane = function (icon, type) {
  * FUNCTION MOVES THE VEHICLE MARKER AND INFO POSITIONS
  **************************************************/
 Vehicle.prototype.movePosition = function () {
-  console.log(this)
-
   // We can do this only if we have a non-null non-undefined lat and lon
   if (this.lat && this.lon) {
-    console.log(this)
     // Figure out where we are in 2D space
     const thisPos = this.lat + ',' + this.lon
     // Update the path object with the new position
@@ -136,7 +133,6 @@ Vehicle.prototype.setInfoWindow = function () {
  * custom vehicle types
  **************************************************/
 Vehicle.prototype.updateTableEntry = function () {
-  console.log('Error: Function updateTableEntry not set for protocol: ' + this.protocol)
 }
 
 Vehicle.prototype.update = function (msg) {
@@ -197,30 +193,6 @@ Vehicle.prototype.zerofill = function (number, numberOfDigits) {
 }
 
 /***************************************************
- * VEHICLE DESTRUCTOR
- **************************************************/
-Vehicle.prototype.destroy = function () {
-  console.log('Destroying vehicle: ' + this.parseName())
-
-  // Remove table entries
-  //  $('#' + this.addr + '-row-summary').remove()
-  //  $('#' + this.addr + '-row-detail').remove()
-
-  //   // Default destructor processes
-  //   if (this.info !== null) {
-  //     map.removeLayer(this.info)
-  //   }
-
-  //   if (map.hasLayer(this.pathPoly)) {
-  //     map.removeLayer(this.pathPoly)
-  //   }
-
-//   if (map.hasLayer(this.marker)) {
-//     map.removeLayer(this.marker)
-//   }
-}
-
-/***************************************************
  * FUNCTION SETS THE ICON TO HALFLIFE, SETS INACTIVE
  **************************************************/
 Vehicle.prototype.setHalflife = function () {
@@ -237,7 +209,6 @@ Vehicle.prototype.setHalflife = function () {
 Vehicle.prototype.checkExpiration = function () {
   // Compute the time delta
   const vehDelta = Date.now() - this.lastUpdate
-  console.log(`Date now: ${Date.now()}, lastUpdate: ${this.lastUpdate}, delta: ${vehDelta}, maxAge: ${this.maxAge}`)
   // Return Active, Halflife, or Expired
   if (vehDelta >= this.maxAge) {
     return ('Expired')
