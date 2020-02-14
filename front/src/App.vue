@@ -7,11 +7,25 @@
           <router-link :to="{name:'about'}">About</router-link>
         </div>
         <div id="right">
-            <span id="socket_state" class="fa fa-question-circle-o" title="WebSocket status unknown"></span> <a href="https://github.com/rhaamo/pyAirwaves" target="_blank">pyAirwaves</a></div>
+            <span id="socket_state" :class="websocketState.class" :title="websocketState.title"></span> <a href="https://github.com/rhaamo/pyAirwaves" target="_blank">pyAirwaves</a></div>
     </div>
     <router-view/>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    websocketState () {
+      if (this.$store.state.vehicles.websocketConnected) {
+        return { class: 'fa fa-check', title: 'Websocket connected' }
+      } else {
+        return { class: 'fa fa-close', title: 'Websocket disconnected' }
+      }
+    }
+  }
+}
+</script>
 
 <style>
 * {

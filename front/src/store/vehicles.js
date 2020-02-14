@@ -10,9 +10,13 @@ export default {
   state: {
     countSsrVehicles: 0,
     ssrVehicles: [],
-    vehicles: []
+    vehicles: [],
+    websocketConnected: false
   },
   mutations: {
+    'changeWebsocketState' (state, websocketState) {
+      state.websocketConnected = websocketState
+    },
     'saveVehicle' (state, data) {
       if (data.type === 'airAIS' && data.addr) {
         const vehName = 'veh' + String(data.addr)
@@ -96,6 +100,12 @@ export default {
     },
     'SOCKET_info' (state, server) {
       console.log('info', server)
+    },
+    'SOCKET_connect' ({ dispatch, commit }) {
+      commit('changeWebsocketState', true)
+    },
+    'SOCKET_disconnect' ({ dispatch, commit }) {
+      commit('changeWebsocketState', false)
     }
   }
 }
