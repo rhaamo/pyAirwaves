@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%;">
     <div id="header">
         <div id="left">
           <router-link :to="{name:'home'}">Home</router-link>
