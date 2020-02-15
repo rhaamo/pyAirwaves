@@ -54,3 +54,8 @@ span.icon-socket-ok {
 span.icon-socket-nok {
     color: red;
 }
+
+.sidebar {
+    top: 3.7rem !important;
+    bottom: 3.7rem !important;
+}

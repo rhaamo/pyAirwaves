@@ -1,6 +1,31 @@
 {% extends "layout.jinja2" %}
 
 {% block content %}
+    <div id="sidebar" class="sidebar collapsed">
+      <!-- navigation tabs -->
+      <div class="sidebar-tabs">
+        <ul role="tablist">
+          <li><a href="#help" role="tab"><i class="fa fa-question"></i></a></li>
+          <li><a href="#settings" role="tab"><i class="fa fa-cogs"></i></a></li>
+          <li><a href="#aircrafts" role="tab"><i class="fa fa-plane"></i></a></li>
+          <li><a href="#ships" role="tab"><i class="fa fa-ship"></i></a></li>
+        </ul>
+      </div>
+
+      <!-- tab panes -->
+      <div class="sidebar-content">
+        <div class="sidebar-pane" id="help">
+          <h1 class="sidebar-header">
+            Help
+            <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
+          </h1>
+
+          <p>Left click on a marker to highlight it when sidebar is opened.</p>
+          <p>Right click on a marker to show the path.</p>
+        </div>
+      </div>
+    </div>
+
     <!-- The Leaflet map goes here. -->
-    <div id="map"></div>
+    <div id="map" class="sidebar-map"></div>
 {% endblock %}
