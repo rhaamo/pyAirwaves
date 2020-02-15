@@ -14,6 +14,7 @@
 
       <!-- tab panes -->
       <div class="sidebar-content">
+        <!-- help pane -->
         <div class="sidebar-pane" id="help">
           <h1 class="sidebar-header">
             Help
@@ -23,9 +24,49 @@
           <p>Left click on a marker to highlight it when sidebar is opened.</p>
           <p>Right click on a marker to show the path.</p>
         </div>
+        <!-- settings pane -->
+        <div class="sidebar-pane" id="settings">
+          <h1 class="sidebar-header">
+            Settings
+            <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
+          </h1>
+
+          <p>
+            Show day/night <input type="checkbox" id="toggleGreyline">
+          </p>
+        </div>
       </div>
     </div>
 
     <!-- The Leaflet map goes here. -->
     <div id="map" class="sidebar-map"></div>
 {% endblock %}
+
+{% block scripts %}
+    <script>
+      var t = L.terminator();
+      setInterval(function(){updateTerminator(t)}, 1000);
+
+      function updateTerminator(t) {
+          var check = $('input#toggleGreyline').is(':checked');
+          if (!check) {
+              return;
+          }
+          var t2 = L.terminator();
+          t.setLatLngs(t2.getLatLngs());
+          t.redraw();
+      }
+
+      $('input#toggleGreyline').change(function() {
+          var checked = this.checked;
+          if (checked) {
+              t.addTo(map);
+              console.log("Added greyline");
+          } else {
+              map.removeLayer(t);
+              $("#curDate").html("");
+              console.log("Removed greyline");
+          }
+      })
+    </script>
+    {% endblock %}
