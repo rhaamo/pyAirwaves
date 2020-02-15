@@ -26,14 +26,14 @@ function initMap() {
             navigator.geolocation.getCurrentPosition(function (position) {
                 window.defautLng = position.coords.longitude;
                 window.defaultLat = position.coords.latitude;
-                console.log("GeoLocation authorized, coords used.");
+                Logger.info("GeoLocation authorized, coords used.");
             }, function (error) {
                 if (error.code === error.PERMISSION_DENIED) {
-                    console.log("GeoLocation denied, defaulting to server's one.");
+                    Logger.error("GeoLocation denied, defaulting to server's one.");
                 }
             });
         } else {
-            console.log("GeoLocation deactivated, defaulting to server's one.");
+            Logger.info("GeoLocation deactivated, defaulting to server's one.");
         }
     }
 

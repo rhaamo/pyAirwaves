@@ -75,13 +75,11 @@ Ship.prototype.parseName = function () {
  * FUNCTION ADDS VEHICLE TO THE INFO TABLE
  **************************************************/
 Ship.prototype.createTableEntry = function () {
-  if (debug) {
-    console.log('Creating new table entry for ship: ' + this.addr + ' in table: #table-' + this.domName);
-  }
+  Logger.debug('Creating new table entry for ship: ' + this.addr + ' in table: #table-' + this.domName);
   let hasPos;
   let etaStr = "--";
   let colLength = $('#table-' + this.domName).find('th').length; //number of columns to span for the detail row
-  //console.log('AIS table columns determined for: '+this.addr+' as this many columns: '+colLength);
+  // Logger.trace('AIS table columns determined for: '+this.addr+' as this many columns: '+colLength);
 
   // Work out our ETA info.
   if (this.etaMonth != null || this.etaDay != null || this.etaHour != null || this.etaMinute != null) {
@@ -205,9 +203,7 @@ Ship.prototype.createTableEntry = function () {
  * FUNCTION UPDATES VEHICLE IN THE INFO TABLE
  **************************************************/
 Ship.prototype.updateTableEntry = function () {
-  if (debug) {
-    console.log('Updating table entry for ship: ' + this.addr + ' in table: #table-' + this.domName);
-  }
+  Logger.debug('Updating table entry for ship: ' + this.addr + ' in table: #table-' + this.domName);
   let hasPos;
   let etaStr = "--";
   let colLength = $('#table-' + this.domName).find('th').length; //number of columns to span for the detail row
