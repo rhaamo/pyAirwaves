@@ -9,7 +9,7 @@ L.BoatIcon = L.Icon.extend({
 
 	// OPTIONS
 	options: {
-		iconSize: new L.Point(150, 150),
+		iconSize: new L.Point(50, 50),
 		className: "leaflet-boat-icon",
 		course: 0,
 		speed: 0,
@@ -22,8 +22,8 @@ L.BoatIcon = L.Icon.extend({
 	},
 
 	// PROPERTIES
-	x: 66,
-	y: 85,
+	x: 50,
+	y: 50,
 	x_fac: 0.16,
 	y_fac: 0.16,
 	ctx: null,
@@ -43,7 +43,8 @@ L.BoatIcon = L.Icon.extend({
 		this.lastHeading = 0;   // reset in case the marker is removed and added again
 
 		this.ctx = e.getContext("2d");
-		this.draw(this.ctx, s.x, s.y);
+		//this.draw(this.ctx, s.x, s.y);
+		this.draw(this.ctx, this.x, this.y);
 
 		return e;
 	},
@@ -52,8 +53,8 @@ L.BoatIcon = L.Icon.extend({
 	// renders the boat icon onto the canvas element
 	draw: function(ctx, w, h) {
 		if(!ctx) return;
-		var x = this.x;
-		var y = this.y;
+		var x = 17;
+		var y = 35;
 
 		var x_fac = this.x_fac;
 		var y_fac = this.y_fac;
@@ -65,7 +66,7 @@ L.BoatIcon = L.Icon.extend({
 		ctx.translate(-w/2, -h/2);
 
 		// roughly the bounding box
-		//ctx.fillRect(0,0,w,h);
+		// ctx.fillRect(0,0,w,h);
 
 		ctx.beginPath();
 		ctx.lineWidth=this.lineWidth;
