@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Resized down the boat icon
 - Plane icon is now on coordinates instead of aside
 - Markers trail is now hiden by default
+- Canvas bounding box of Plane and Boat have been reduced to bigger-length of extremities of the icon plus a small margin
 
 ### Fixed
 - Debug/console.log cleanups
