@@ -102,7 +102,7 @@ function toDeg(rad) {
 }
 
 function bearingFromTwoCoordinates(lat1, lon1, lat2, lon2) {
-    Logger.debug("Bearing from " + lat1 + "," + lon1 + " to " + lat2 + "," + lon2);
+    //Logger.debug("Bearing from " + lat1 + "," + lon1 + " to " + lat2 + "," + lon2);
 
     let startLat = toRadians(lat1);
     let startLon = toRadians(lon1);
@@ -223,7 +223,7 @@ Vehicle.prototype.createIcon = function () {
         //  strokeColor: (this.selected == true) ? this.vehColorSelected : ((this.active == true) ? this.vehColorActive : this.vehColorInactive),
         //  rotation: this.heading
         //});
-        Logger.warning("TODO: heading");
+        Logger.warn("TODO: heading");
         newIcon = new L.PlaneIcon({
             color: '#f4ff01',
             idleCircle: false,
@@ -238,7 +238,7 @@ Vehicle.prototype.createIcon = function () {
         //  strokeWeight: 1.5,
         //  strokeColor: (this.selected == true) ? this.vehColorSelected : ((this.active == true) ? this.vehColorActive : this.vehColorInactive)
         //});
-        Logger.warning("TODO: no heading");
+        Logger.warn("TODO: no heading");
         newIcon = new L.PlaneIcon({
             color: '#f4ff01',
             idleCircle: false
@@ -254,7 +254,7 @@ Vehicle.prototype.createIcon = function () {
 Vehicle.prototype.setMarker = function () {
     // Create our marker.
     Logger.debug("Asked creating a marker for: " + this.addr);
-    Logger.warning("TODO4 also set icon: .setIcon()");
+    Logger.warn("TODO4 also set icon: .setIcon()");
     this.marker = new L.marker(new L.LatLng(this.lat, this.lon), {
         vehName: this.addr,
         icon: this.createIcon()
@@ -443,7 +443,7 @@ Vehicle.prototype.setHalflife = function () {
     // Deactivate vehicle and change the icon for it.
     this.active = false;
     // Set the icon.
-    Logger.warning("TODO FIXME set icon for idle / greyed");
+    Logger.warn("TODO FIXME set icon for idle / greyed");
     if (this.marker) {
         this.marker.setIcon(this.createIcon());
     }

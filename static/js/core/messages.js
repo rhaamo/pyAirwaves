@@ -18,16 +18,7 @@
 function handleMessage(msgJSON) {
     if (!mapLoaded) {
         // Return early - the map isn't loaded yet
-        if (debug) {
-            console.log("Maps not loaded. Discarding aircraft data.");
-        }
-        return;
-    }
-    if (!sidebarLoaded) {
-        // Return early - the map isn't loaded yet
-        if (debug) {
-            console.log("Sidebar not loaded. Discarding aircraft data.");
-        }
+        Logger.error("Maps not loaded. Discarding aircraft data.");
         return;
     }
     // Dump the JSON string to the message box.
@@ -53,19 +44,13 @@ function handleMessage(msgJSON) {
         let length = vehicleTypes.length;
         for (index = 0; index < length; ++index) {
             if (msgJSON.type === vehicleTypes[index].protocol) {
-                if (debug) {
-                    console.log('New vehicle found, type registered: ' + msgJSON.type);
-                }
+                Logger.debug('New vehicle found, type registered: ' + msgJSON.type);
                 // add the new vehicle (constructor should call registered update functions)
                 vehicles[vehName] = vehicleTypes[index].constructor(msgJSON);
 
                 // Add marker and listeners only if we have a Latitude and Longitude
                 // Cannot create a marker without geoposition datas
                 if (vehicles[vehName].lat && vehicles[vehName].lon) {
-                    if (debug) {
-                        console.log("we have a lat lon for: " + vehicles[vehName].addr);
-                    }
-
                     // create a marker icon for the vehicle (may move to the constructor)
                     vehicles[vehName].setMarker();
 
@@ -79,16 +64,12 @@ function handleMessage(msgJSON) {
                     });
                 } else {
                     //debugger;
-                    if (debug) {
-                        console.log('handleMessage: No Lat/Lon available for: ' + vehicles[vehName].addr);
-                    }
+                    Logger.warn('handleMessage: No Lat/Lon available for: ' + vehicles[vehName].addr);
                 }
                 break;
             } else if (index === length) {
                 // vehicle type not registered, drop data
-                if (debug) {
-                    console.log('New vehicle found, type not registered: ' + msgJSON.type + ' Dropping data.')
-                }
+                Logger.error('New vehicle found, type not registered: ' + msgJSON.type + ' Dropping data.')
             }
         }
     }

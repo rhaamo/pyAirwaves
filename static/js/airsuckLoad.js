@@ -12,7 +12,7 @@
  * Deps: jquery
  **********************************************************/
 
-/* exported sidebarLoaded, vehicleTypes, vehicles */
+/* exported vehicleTypes, vehicles */
 /* global debug, socket, mapLoaded, vehExpireCheckInterval, expireVehicles */
 
 /***************************************************
