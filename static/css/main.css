@@ -59,3 +59,7 @@ span.icon-socket-nok {
     top: 3.7rem !important;
     bottom: 3.7rem !important;
 }
+
+.sidebar-header {
+    margin-bottom: 10px !important;
+}
