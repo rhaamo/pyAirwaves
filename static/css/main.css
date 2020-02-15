@@ -1,8 +1,5 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-size: 10px;
+    font-size: 0.9rem;
     font-family: Helvetica,
     Arial,
     "Lucida Grande",
@@ -24,10 +21,13 @@
     z-index: 9999;
 }
 
+div.content {
+    padding-top: 3rem;
+    height: 100%;
+}
+
 html, body {
     height: 100%;
-    margin: 0;
-    padding: 0;
 }
 
 #map {
@@ -45,21 +45,6 @@ html, body {
 .mapStyleSelector {
     font-size: 12px;
     z-index: 9999;
-}
-
-#header {
-    background-color: #dddddd;
-    height: 2em;
-    padding-left: 1em;
-    padding-right: 1em;
-}
-
-#header #left {
-    float: left;
-}
-
-#header #right {
-    float: right;
 }
 
 span.icon-socket-ok {

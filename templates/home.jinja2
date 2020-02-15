@@ -1,43 +1,6 @@
-<!--
-pyAirwaves geospatial viewer by Dashie (https://github.com/rhaamo)
+{% extends "layout.jinja2" %}
 
-This project is licensed under GPLv3. See COPYING for dtails.
-
-This file is part of the airSuck project (https://github.com/rhaamo/pyAirwaves).
--->
-
-<!doctype html>
-<html>
-  <head>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    
-    <title>pyAirwaves geospatial viewer</title>
-    
-    <!-- Scripts and CSS -->
-    <link rel="stylesheet" type="text/css" href="static/css/main.css"><!-- Master stylesheet -->
-    <link rel="stylesheet" type="text/css" href="static/css/leaflet.css"><!-- Master stylesheet -->
-    <link rel="stylesheet" type="text/css" href="static/css/fork-awesome.min.css"><!-- Master stylesheet -->
-    <script src="static/js/jquery-3.4.1.min.js" type="text/javascript"></script><!-- Include jQuery because normal JS sucks. -->
-    <script src="static/js/socket.io.js" type="text/javascript"></script><!-- Include Socket.IO. -->
-    <script src="static/js/leaflet.js" type="text/javascript"></script><!-- Include Leaflet mapping stuff. -->
-    <script src="static/js/leaflet-providers.js" type="text/javascript"></script><!-- Include Leaflet provider. -->
-    <script src="static/js/leaflet.planemarker.js" type="text/javascript"></script><!-- Include canvas plane marker. -->
-    <script src="static/js/leaflet.boatmarker.js" type="text/javascript"></script><!-- Include canvas boat marker. -->
-    <script src="static/js/airsuckLoad.js" type="text/javascript"></script><!-- Include airsuck JS loader. -->
-
-  </head>
-  <body>
-    <div id="header">
-        <div id="left">
-        left click = highlight item in sidebar if open; right click = toggle path
-        </div>
-        <div id="right">
-            <span id="socket_state" class="fa fa-question-circle-o" title="WebSocket status unknown"></span> <a href="https://github.com/rhaamo/pyAirwaves" target="_blank">pyAirwaves</a> {{ g.cfg['PYAIRWAVES_VERSION'] }}</div>
-    </div>
+{% block content %}
     <!-- The Leaflet map goes here. -->
     <div id="map"></div>
-
-    <form><input type="text" class="msgBx" id="message" value="Waiting for message data..." /></form>
-  </body>
-</html>
+{% endblock %}

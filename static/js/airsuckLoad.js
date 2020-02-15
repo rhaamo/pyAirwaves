@@ -37,12 +37,14 @@ $.getScript("static/js/config.js", function () {
 window.socket = io();
 
 function socketOk(msg) {
-    $("#socket_state").removeClass().addClass(["fa", "fa-check icon-socket-ok"]).prop('title', msg);
+    $("#websocket-status").removeClass().addClass(["badge badge-pill", "badge-success"]).prop('title', msg);
+    $("#websocket-status i").removeClass().addClass(["fa", "fa-check icon-socket-ok"]);
     console.log("SocketIO OK: " + msg);
 }
 
 function socketNok(msg) {
-    $("#socket_state").removeClass().addClass(["fa", "fa-close icon-socket-nok"]).prop('title', msg);
+    $("#websocket-status").removeClass().addClass(["badge badge-pill", "badge-success"]).prop('title', msg);
+    $("#websocket-status i").removeClass().addClass(["fa", "fa-close icon-socket-nok"]);
     console.log("SocketIO Err: " + msg);
 
 }

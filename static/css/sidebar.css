@@ -34,6 +34,7 @@
     z-index: 998;
     background-color: #ffffff;
     padding: 10px;
+    padding-top: 3rem;
     overflow: scroll;
 }
 
