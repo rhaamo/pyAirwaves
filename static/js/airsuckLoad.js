@@ -80,27 +80,11 @@ $.getScript("static/js/vehicles/vehicle.js", function () {
         $.getScript("static/js/vehicles/" + loadCustomVehicles[index]);
     }
 
-    // Prevent race condition where sidebar loads before vehicle types finish registration.
-    setTimeout(function () {
-        // Load the message handler
-        $.getScript("static/js/core/messages.js");
+    // Initialize the sidebar
+    window.sidebar = L.control.sidebar('sidebar', {position: 'right'}).addTo(map);
 
-        var sidebar = L.control.sidebar('sidebar', {position: 'right'}).addTo(map);
-
-        // load sidebar (here so it loads in the right order...)
-        // $.getScript("static/js/core/sidebar.js", function () {
-        //     // setup the sidebar on successful load
-        //     setupSidebar();
-
-        //     // load sidebar CSS
-        //     $('<link/>', {
-        //         rel: 'stylesheet',
-        //         type: 'text/css',
-        //         href: 'static/css/sidebar.css'
-        //     }).appendTo('head');
-        // });
-    }, 0.5);
-
+    // Load the message handler
+    $.getScript("static/js/core/messages.js");
 });
 
 /***************************************************
