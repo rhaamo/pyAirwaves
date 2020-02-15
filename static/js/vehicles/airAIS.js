@@ -14,13 +14,9 @@
 /* jshint multistr: true */
 
 // Register vehicle type
-if (debug) {
-  console.log('Registering vehicle type: AIS');
-}
+Logger.info('Registering vehicle type: AIS');
 registerVehicleType('airAIS', 'AIS', 'fa-ship', function (msgJSON) {
   return new Ship(msgJSON);
-}, function (container) {
-  $(container).append('<tr><th>ID</th><th>Flag</th><th>Velocity</th><th>Course</th><th>Destination</th><th>Pos</th><th>Sig</th></tr>');
 });
 
 /***************************************************

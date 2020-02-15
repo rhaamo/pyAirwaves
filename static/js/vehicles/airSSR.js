@@ -14,13 +14,9 @@
 /* jshint multistr: true */
 
 // Register vehicle type
-if (debug) {
-  console.log('Registering vehicle type: SSR');
-}
+Logger.info('Registering vehicle type: SSR');
 registerVehicleType('airSSR', 'SSR', 'fa-plane', function (msgJSON) {
   return new Aircraft(msgJSON);
-}, function (container) {
-  $(container).append('<tr><th>ID</th><th>Cat.</th><th>Flag</th><th>Altitude</th><th>Velocity</th><th>Heading</th><th>Pos</th><th>Sig</th></tr>');
 });
 
 /***************************************************

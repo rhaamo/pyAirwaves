@@ -17,9 +17,7 @@
  **************************************************/
 // Initialize the map.
 function initMap() {
-    if (debug) {
-        console.log("Maps loading...");
-    }
+    Logger.info("Initializing maps...");
 
     // Attempt to detect user location if turned on
     if (useLocation) {

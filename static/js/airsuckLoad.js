@@ -31,7 +31,16 @@ $.getScript("static/js/config.js", function () {
     }
     // set the html object ID for sending on-screen debug and messages
     window.messageBx = 'message';
+
+    // Initialize the logger
+    Logger.useDefaults()
+    if (debug) {
+        Logger.setLevel(Logger.trace)
+    } else {
+        Logger.setLevel(Logger.error)
+    }
 });
+
 
 // Initiate Socket.IO, it will connect back to the server automatically
 window.socket = io();
@@ -39,13 +48,13 @@ window.socket = io();
 function socketOk(msg) {
     $("#websocket-status").removeClass().addClass(["badge badge-pill", "badge-success"]).prop('title', msg);
     $("#websocket-status i").removeClass().addClass(["fa", "fa-check icon-socket-ok"]);
-    console.log("SocketIO OK: " + msg);
+    Logger.info("SocketIO OK: " + msg);
 }
 
 function socketNok(msg) {
     $("#websocket-status").removeClass().addClass(["badge badge-pill", "badge-success"]).prop('title', msg);
     $("#websocket-status i").removeClass().addClass(["fa", "fa-close icon-socket-nok"]);
-    console.log("SocketIO Err: " + msg);
+    Logger.info("SocketIO Err: " + msg);
 
 }
 
@@ -74,9 +83,7 @@ $.getScript("static/js/vehicles/vehicle.js", function () {
     // Load any custom vehicles
     let index;
     for (index = 0; index < loadCustomVehicles.length; index++) {
-        if (debug) {
-            console.log('Loading custom vehicle: ' + loadCustomVehicles[index]);
-        }
+        Logger.info('Loading custom vehicle: ' + loadCustomVehicles[index]);
         $.getScript("static/js/vehicles/" + loadCustomVehicles[index]);
     }
 
@@ -91,7 +98,6 @@ $.getScript("static/js/vehicles/vehicle.js", function () {
  * SETUP AND LOAD MAPS
  **************************************************/
 $(document).ready(function () {
-    console.log("Document ready.");
     // Load RainbowVis to color vehicle paths by height
     $.getScript("static/js/plugins/rainbowvis.js", function () {
         // Instanciate RainbowVis and set global color ramp by plane height

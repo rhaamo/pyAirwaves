@@ -17,9 +17,6 @@
  **************************************************/
 // Expire vehicles.
 function expireVehicles() {
-    if (debug) {
-        console.log("Expiration check running");
-    }
     let key;
     for (key in vehicles) {
         // Get the state of the vehicle and take appropriate action
@@ -27,16 +24,12 @@ function expireVehicles() {
         if (vehicles[key] != null) {
             switch (vehicles[key].checkExpiration()) {
                 case 'Halflife':
-                    if (debug) {
-                        console.log('Halflife determined for vehicle: ' + vehicles[key].parseName());
-                    }
+                    Logger.debug('Halflife determined for vehicle: ' + vehicles[key].parseName());
                     // Set halflife mode.
                     vehicles[key].setHalflife();
                     break;
                 case 'Expired':
-                    if (debug) {
-                        console.log('Expiration determined for vehicle: ' + vehicles[key].parseName());
-                    }
+                    Logger.debug('Expiration determined for vehicle: ' + vehicles[key].parseName());
                     // Vehicle expired, cleanup the vehicles things...
                     vehicles[key].destroy();
                     // Then destroy the key
@@ -88,16 +81,12 @@ function vehicleMarkerClickListener(vehName) {
 function vehicleTableRowClickListener(vehName) {
     // check the string for validity
     if (vehName === 'undefined') {
-        if (debug) {
-            console.log('Error: ID passed to vehicleTableRowClickListener is invalid.');
-        }
+        Logger.error('Error: ID passed to vehicleTableRowClickListener is invalid.');
         return false;
     } else if (vehName.substring(0, 2) !== 'veh') {
         vehName = 'veh' + vehName; //missing veh at the beginning, add
     }
-    if (debug) {
-        console.log('Changing marker for: ' + vehName);
-    }
+    Logger.info('Changing marker for: ' + vehName);
     vehicles[vehName].setMarkerSelected();
 }
 
@@ -113,9 +102,7 @@ function toDeg(rad) {
 }
 
 function bearingFromTwoCoordinates(lat1, lon1, lat2, lon2) {
-    if (debug) {
-        console.log("Bearing from " + lat1 + "," + lon1 + " to " + lat2 + "," + lon2);
-    }
+    Logger.debug("Bearing from " + lat1 + "," + lon1 + " to " + lat2 + "," + lon2);
 
     let startLat = toRadians(lat1);
     let startLon = toRadians(lon1);
@@ -172,9 +159,7 @@ function degreeToCardinal(degree) {
         case 16:
             return 'N';
         default:
-            if (debug) {
-                console.log('degreeToBearing: error in calculating bearing');
-            }
+            Logger.error('degreeToBearing: error in calculating bearing:', degree);
             return null;
     }
 }
@@ -185,9 +170,7 @@ function degreeToCardinal(degree) {
 
 class Vehicle {
     constructor(msgJSON, protocol) {
-        if (debug) {
-            console.log('Vehicle constructor executed for vehicle: ' + msgJSON.addr + ', Using protocol: ' + protocol);
-        }
+        Logger.info('Vehicle constructor executed for vehicle: ' + msgJSON.addr + ', Using protocol: ' + protocol);
         this.spinState = 0; // This is just for tracking the spinner animation state.
         this.addr = msgJSON.addr;
         this.protocol = protocol; // communications protocol used (AIS,SSR)
@@ -223,33 +206,6 @@ Vehicle.prototype.parseName = function () {
     return this.addr.toUpperCase();
 };
 
-/*
- * Vehicle 'PLANE' icon definition
- */
-Vehicle.prototype.drawPlane = function (icon, type) {
-    if (type === 'icon') {
-        let ctx = icon.getContext('2d');
-        ctx.beginPath();
-        ctx.moveTo(109.375000, 307.375000);
-        ctx.lineTo(109.375000, 279.375000);
-        ctx.lineTo(139.375000, 255.375000);
-        ctx.lineTo(139.375000, 183.375000);
-        ctx.lineTo(6.375000, 227.375000);
-        ctx.lineTo(6.375000, 192.375000);
-        ctx.lineTo(138.375000, 112.375000);
-        ctx.lineTo(138.375000, 14.375000);
-        ctx.bezierCurveTo(138.375000, -6.625000, 172.375000, -6.625000, 172.375000, 14.375000);
-        ctx.lineTo(172.375000, 112.375000);
-        ctx.lineTo(306.375000, 192.375000);
-        ctx.lineTo(306.375000, 227.375000);
-        ctx.lineTo(173.375000, 184.375000);
-        ctx.lineTo(173.375000, 255.375000);
-        ctx.lineTo(203.375000, 279.375000);
-        ctx.lineTo(203.375000, 307.375000);
-        ctx.lineTo(156.375000, 292.375000);
-    }
-
-};
 
 /***************************************************
  * FUNCTION CREATES VEHICLE ICONS FOR GMAPS
@@ -267,7 +223,7 @@ Vehicle.prototype.createIcon = function () {
         //  strokeColor: (this.selected == true) ? this.vehColorSelected : ((this.active == true) ? this.vehColorActive : this.vehColorInactive),
         //  rotation: this.heading
         //});
-        console.log("TODO: heading");
+        Logger.warning("TODO: heading");
         newIcon = new L.PlaneIcon({
             color: '#f4ff01',
             idleCircle: false,
@@ -282,7 +238,7 @@ Vehicle.prototype.createIcon = function () {
         //  strokeWeight: 1.5,
         //  strokeColor: (this.selected == true) ? this.vehColorSelected : ((this.active == true) ? this.vehColorActive : this.vehColorInactive)
         //});
-        console.log("TODO: no heading");
+        Logger.warning("TODO: no heading");
         newIcon = new L.PlaneIcon({
             color: '#f4ff01',
             idleCircle: false
@@ -297,8 +253,8 @@ Vehicle.prototype.createIcon = function () {
  **************************************************/
 Vehicle.prototype.setMarker = function () {
     // Create our marker.
-    console.log("Asked creating a marker for: " + this.addr);
-    console.log("TODO4 also set icon: .setIcon()");
+    Logger.debug("Asked creating a marker for: " + this.addr);
+    Logger.warning("TODO4 also set icon: .setIcon()");
     this.marker = new L.marker(new L.LatLng(this.lat, this.lon), {
         vehName: this.addr,
         icon: this.createIcon()
@@ -346,15 +302,8 @@ Vehicle.prototype.setMarkerUnselected = function () {
  * FUNCTION MOVES THE VEHICLE MARKER AND INFO POSITIONS
  **************************************************/
 Vehicle.prototype.movePosition = function () {
-    // if (debug) {
-    //     console.log(this);
-    //  }
-
     // We can do this only if we have a non-null non-undefined lat and lon
     if (this.lat && this.lon) {
-        // if (debug) {
-        //     console.log(this);
-        // }
         // Figure out where we are in 2D space
         let thisPos = this.lat + "," + this.lon;
         // Update the path object with the new position
@@ -383,9 +332,7 @@ Vehicle.prototype.movePosition = function () {
         // Record the new position for testing on next update
         this.lastPos = thisPos;
     } else {
-        if (debug) {
-            console.log("movePosition: Cannot move marker without lat/lon for: " + this.addr);
-        }
+        Logger.error("movePosition: Cannot move marker without lat/lon for: " + this.addr);
     }
 };
 
@@ -406,9 +353,7 @@ Vehicle.prototype.setInfoWindow = function () {
  * custom vehicle types
  **************************************************/
 Vehicle.prototype.updateTableEntry = function () {
-    if (debug) {
-        console.log('Error: Function updateTableEntry not set for protocol: ' + this.protocol);
-    }
+    Logger.error('Error: Function updateTableEntry not set for protocol: ' + this.protocol);
 };
 
 Vehicle.prototype.update = function (msgJSON) {
@@ -471,9 +416,7 @@ Vehicle.prototype.zerofill = function (number, numberOfDigits) {
  * VEHICLE DESTRUCTOR
  **************************************************/
 Vehicle.prototype.destroy = function () {
-    if (debug) {
-        console.log('Destroying vehicle: ' + this.parseName());
-    }
+    Logger.debug('Destroying vehicle: ' + this.parseName());
 
     // Remove table entries
     $('#' + this.addr + '-row-summary').remove();
@@ -500,7 +443,7 @@ Vehicle.prototype.setHalflife = function () {
     // Deactivate vehicle and change the icon for it.
     this.active = false;
     // Set the icon.
-    console.log("TODO FIXME set icon for idle / greyed");
+    Logger.warning("TODO FIXME set icon for idle / greyed");
     if (this.marker) {
         this.marker.setIcon(this.createIcon());
     }
@@ -530,13 +473,12 @@ Vehicle.prototype.checkExpiration = function () {
  * CUSTOM VEHICLES NEED TO REGISTER USING THIS FUNCTION
  **************************************************/
 // Function to register new vehicle types
-function registerVehicleType(newProtocol, newDomName, newFaIcon, newConstructor, newTableHeader) {
+function registerVehicleType(newProtocol, newDomName, newFaIcon, newConstructor) {
     // TO DO: validate input
     vehicleTypes.push({
         protocol: newProtocol, // the name to look for in the type field of incoming data
         domName: newDomName, // the name used for this vehicle type in the DOM
         faIcon: newFaIcon, // the icon used for this vehicle type in the sidebar and menus
         constructor: newConstructor, // constructor function for this vehicle type
-        buildTable: newTableHeader // header row to use for this vehicle type in its' data table
     });
 }
