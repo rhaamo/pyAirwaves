@@ -11,18 +11,16 @@ L.PlaneIcon = L.Icon.extend({
 
 	// OPTIONS
 	options: {
-		iconSize: new L.Point(150, 150),
+		iconSize: new L.Point(30, 30),
 		className: "leaflet-plane-icon",
 		course: 0,
 		speed: 0,
 		color: "#8ED6FF",
-		labelAnchor: [23, 0],
 	},
 
 	// PROPERTIES
-	// Center of icon == coordinates
-	x: 62, // 66
-	y: 60, // 85
+	x: 30, // same as L.Point size
+	y: 30, // same as L.Point size
 	x_fac: 0.18,
 	y_fac: 0.18,
 	ctx: null,
@@ -48,24 +46,27 @@ L.PlaneIcon = L.Icon.extend({
 	// DRAW
 	// renders the boat icon onto the canvas element
 	draw: function(ctx, w, h) {
-		if(!ctx) return;
-		var x = this.x;
-		var y = this.y;
-
-		// TODO reintroduce x and y factor ...
-		var x_fac = this.x_fac;
-		var y_fac = this.y_fac;
-
+		// Corner is bottom left or something like that
+		if (!ctx) {
+			return;	
+		}
+		// Clear whole canvas
 		ctx.clearRect(0, 0, w, h);
 
+		
+		// If you want to saw its bounding box
+		// ctx.fillRect(0, 0, w, h);
+
+		// Rotate depending on course
+		// Translate is here to keep the rotation on center of canvas
 		ctx.translate(w/2, h/2);
 		ctx.rotate(this.options.course*Math.PI/180);
 		ctx.translate(-w/2, -h/2);
 
-		// roughly the bounding box
-		//ctx.fillRect(0,0,w,h);
+		const x = 2;
+		const y = 2;
 
-		// Main body (scale down ~12.132)
+		// Draw a plane
 		ctx.beginPath(); // start a new path
 		ctx.moveTo(8.958330+x, 25.864580+y);
 		ctx.lineTo(8.95833+x,23.53125+y);
@@ -88,10 +89,7 @@ L.PlaneIcon = L.Icon.extend({
 		ctx.stroke();
 		ctx.fillStyle = this.options.color;
 		ctx.fill();
-
-
 		ctx.closePath();
-
 	},
 
 	// SET HEADING
