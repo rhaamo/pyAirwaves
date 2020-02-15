@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 - AIS Support
 - A bunch of missing indexes
+- Help in top left header
 
 ### Changed
 - **Breaking:** Services files now uses gunicorn for production, please update according to `installation/pyairwaves-*.service` and `installation/nginx.conf`
@@ -16,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - airSSR & airAIS, headings etc. are now fixed to two decimals
 - Resized down the boat icon
 - Plane icon is now on coordinates instead of aside
+- Markers trail is now hiden by default
 
 ### Fixed
 - Debug/console.log cleanups

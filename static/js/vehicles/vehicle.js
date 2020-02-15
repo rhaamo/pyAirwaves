@@ -210,7 +210,7 @@ class Vehicle {
         this.vehColorSelected = "#ff00ff"; // Color of the vehicle icon when selected
         this.marker = null; // Placeholder for the map marker
         this.info = null; // Placeholder for the map info popup
-        this.pathPoly = new L.polyline([]).addTo(map);
+        this.pathPoly = new L.polyline([]); // do not show by default
     }
 }
 
