@@ -1,5 +1,5 @@
 /*
- * LEAFLET.BOATMARKER
+ * LEAFLET.PLANEMARKER based on LEAFLET.BOATMARKER
  * v1.1.0
  * Thomas Brüggemann
  * https://github.com/thomasbrueggemann/leaflet.boatmarker
@@ -11,26 +11,22 @@ L.PlaneIcon = L.Icon.extend({
 
 	// OPTIONS
 	options: {
-		iconSize: new L.Point(100, 100),
+		iconSize: new L.Point(150, 150),
 		className: "leaflet-plane-icon",
 		course: 0,
 		speed: 0,
 		color: "#8ED6FF",
 		labelAnchor: [23, 0],
-		wind: false,
-		windDirection: 0,
-		windSpeed: 0,
-		idleCircle: false
 	},
 
 	// PROPERTIES
-	x: 66,
-	y: 85,
+	// Center of icon == coordinates
+	x: 62, // 66
+	y: 60, // 85
 	x_fac: 0.18,
 	y_fac: 0.18,
 	ctx: null,
 	lastHeading: 0,
-	lastWindDirection: 0,
 
 	// CREATE ICON
 	// setup the icon and start drawing
@@ -56,6 +52,7 @@ L.PlaneIcon = L.Icon.extend({
 		var x = this.x;
 		var y = this.y;
 
+		// TODO reintroduce x and y factor ...
 		var x_fac = this.x_fac;
 		var y_fac = this.y_fac;
 
@@ -65,92 +62,36 @@ L.PlaneIcon = L.Icon.extend({
 		ctx.rotate(this.options.course*Math.PI/180);
 		ctx.translate(-w/2, -h/2);
 
+		// roughly the bounding box
 		//ctx.fillRect(0,0,w,h);
 
-		ctx.beginPath();
-
-		// draw idle boat shape
-		if(this.options.idleCircle === true && this.options.speed === 0) {
-			ctx.arc(x+(50*x_fac), y-(50*y_fac), 50*x_fac, 0, 2 * Math.PI);
-		}
-		// draw boat shape in motion
-		else {
-			// Offset
-			let xx = 10;
-			let yy = 10;
-
-			//ctx.scale(1.5, 1.5);
-
-			// Move origin
-			ctx.moveTo(x, y);
-
-			// Main body
-            ctx.beginPath(); // start a new path
-            ctx.lineWidth=2;
-            ctx.moveTo(8.958330+xx, 25.864580+yy);
-            ctx.lineTo(8.95833+xx,23.53125+yy);
-            ctx.lineTo(11.45833+xx,21.53125+yy);
-            ctx.lineTo(11.45833+xx,15.53125+yy);
-            ctx.lineTo(0.375+xx,19.19792+yy);
-            ctx.lineTo(0.375+xx,16.28125+yy);
-            ctx.lineTo(11.375+xx,9.61458+yy);
-            ctx.lineTo(11.375+xx,1.44792+yy);
-            ctx.bezierCurveTo(11.375+xx,+0.3020799999999999+yy,14.20833+xx,+0.3020799999999999+yy,14.20833+xx,1.44792+yy);
-            ctx.lineTo(14.20833+xx,9.61458+yy);
-            ctx.lineTo(25.375+xx,16.28125+yy);
-            ctx.lineTo(25.375+xx,19.19792+yy);
-            ctx.lineTo(14.29167+xx,15.61458+yy);
-            ctx.lineTo(14.29167+xx,21.53125+yy);
-            ctx.lineTo(16.79167+xx,23.53125+yy);
-            ctx.lineTo(16.79167+xx,25.86458+yy);
-            ctx.lineTo(12.875+xx,24.61458+yy);
-            ctx.lineTo(8.4+xx, 25.864580+yy);
-            ctx.stroke();
-            ctx.fillStyle = this.options.color;
-            ctx.fill();
-
-            // Arrow thingy
-            ctx.beginPath(); // start a new path
-            ctx.lineWidth=0.5;
-            ctx.moveTo(30.79167, 35.864580);
-            ctx.lineTo(w/2, h/2);
-            // The Arrow
-			// up-left
-            ctx.moveTo(w/2, h/2); // move to origin
-			ctx.lineTo((w/2)-5, (h/2)-5);
-			// up-right
-            ctx.moveTo(w/2, h/2); // move to origin
-            ctx.lineTo((w/2)+5, (h/2)-5);
-			// bot-left
-            ctx.moveTo(w/2, h/2); // move to origin
-            ctx.lineTo((w/2)-5, (h/2)+5);
-			// bot-right
-            ctx.moveTo(w/2, h/2); // move to origin
-            ctx.lineTo((w/2)+5, (h/2)+5);
-
-            // Whatever
-            ctx.fill();
-            ctx.stroke();
-		}
+		// Main body (scale down ~12.132)
+		ctx.beginPath(); // start a new path
+		ctx.moveTo(8.958330+x, 25.864580+y);
+		ctx.lineTo(8.95833+x,23.53125+y);
+		ctx.lineTo(11.45833+x,21.53125+y);
+		ctx.lineTo(11.45833+x,15.53125+y);
+		ctx.lineTo(0.375+x,19.19792+y);
+		ctx.lineTo(0.375+x,16.28125+y);
+		ctx.lineTo(11.375+x,9.61458+y);
+		ctx.lineTo(11.375+x,1.44792+y);
+		ctx.bezierCurveTo(11.375+x,+0.3020799999999999+y,14.20833+x,+0.3020799999999999+y,14.20833+x,1.44792+y);
+		ctx.lineTo(14.20833+x,9.61458+y);
+		ctx.lineTo(25.375+x,16.28125+y);
+		ctx.lineTo(25.375+x,19.19792+y);
+		ctx.lineTo(14.29167+x,15.61458+y);
+		ctx.lineTo(14.29167+x,21.53125+y);
+		ctx.lineTo(16.79167+x,23.53125+y);
+		ctx.lineTo(16.79167+x,25.86458+y);
+		ctx.lineTo(12.875+x,24.61458+y);
+		ctx.lineTo(8.4+x, 25.864580+y);
+		ctx.stroke();
+		ctx.fillStyle = this.options.color;
+		ctx.fill();
 
 
 		ctx.closePath();
 
-	},
-
-	setHeadingWind: function(heading, windSpeed, windDirection) {
-		this.options.wind = true;
-
-		this.options.course = (heading % 360) - this.lastHeading;
-		this.lastHeading = heading % 360;
-
-		this.options.windDirection = (windDirection % 360) - (heading % 360);
-		this.lastHeading += this.options.windDirection;
-
-		this.options.windSpeed = windSpeed;
-
-		var s = this.options.iconSize;
-		this.draw(this.ctx, s.x, s.y);
 	},
 
 	// SET HEADING
@@ -176,10 +117,6 @@ L.PlaneIcon = L.Icon.extend({
 });
 
 L.PlaneMarker = L.Marker.extend({
-  	setHeadingWind: function(heading, windSpeed, windDirection) {
-  		this.options.icon.setHeadingWind(heading, windSpeed, windDirection);
-  	},
-
   	setHeading: function(heading) {
   		this.options.icon.setHeading(heading);
   	},
@@ -192,8 +129,7 @@ L.PlaneMarker = L.Marker.extend({
 L.planeMarker = function(pos, options) {
 
 	var c = ("color" in options) ? options.color : "#f1c40f";
-	var i = ("idleCircle" in options) ? options.idleCircle : false;
-	options.icon = new L.PlaneIcon({ color: c, idleCircle: i});
+	options.icon = new L.PlaneIcon({ color: c });
 
     return new L.PlaneMarker(pos, options);
 };
