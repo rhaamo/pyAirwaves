@@ -170,7 +170,6 @@ function degreeToCardinal(degree) {
 
 class Vehicle {
     constructor(msgJSON, protocol) {
-        Logger.info('Vehicle constructor executed for vehicle: ' + msgJSON.addr + ', Using protocol: ' + protocol);
         this.spinState = 0; // This is just for tracking the spinner animation state.
         this.addr = msgJSON.addr;
         this.protocol = protocol; // communications protocol used (AIS,SSR)
@@ -319,9 +318,11 @@ Vehicle.prototype.movePosition = function () {
         });
 
         // Update the marker
-        this.marker.setIcon(this.createIcon());
-        // Move the marker.
-        this.marker.setLatLng(new L.LatLng(this.lat, this.lon));
+        if (this.marker) {
+            this.marker.setIcon(this.createIcon());
+            // Move the marker.
+            this.marker.setLatLng(new L.LatLng(this.lat, this.lon));
+        }
 
         // also update popup info if opened
         if (this.info.shown === true) {

@@ -44,7 +44,6 @@ function handleMessage(msgJSON) {
         let length = vehicleTypes.length;
         for (index = 0; index < length; ++index) {
             if (msgJSON.type === vehicleTypes[index].protocol) {
-                Logger.debug('New vehicle found, type registered: ' + msgJSON.type);
                 // add the new vehicle (constructor should call registered update functions)
                 vehicles[vehName] = vehicleTypes[index].constructor(msgJSON);
 

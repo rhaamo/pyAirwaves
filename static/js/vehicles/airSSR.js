@@ -133,7 +133,6 @@ Aircraft.prototype.parseName = function () {
  * so we don't duplicate with the update function
  **************************************************/
 Aircraft.prototype.createTableEntry = function () {
-  Logger.debug('Creating new table entry for aircraft: ' + this.addr + ' in table: #table-' + this.domName);
   let hasPos;
   let colLength = $('#table-' + this.domName).find('th').length; //number of columns to span for the detail row
   if (this.lat) {
@@ -264,7 +263,6 @@ Aircraft.prototype.createTableEntry = function () {
  * FUNCTION UPDATES VEHICLE IN THE INFO TABLE
  **************************************************/
 Aircraft.prototype.updateTableEntry = function () {
-  Logger.debug('Updating table entry for aircraft: ' + this.addr + ' in table: #table-' + this.domName);
   let hasPos;
   hasPos = !!this.lat;
 

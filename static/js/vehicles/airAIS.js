@@ -75,7 +75,6 @@ Ship.prototype.parseName = function () {
  * FUNCTION ADDS VEHICLE TO THE INFO TABLE
  **************************************************/
 Ship.prototype.createTableEntry = function () {
-  Logger.debug('Creating new table entry for ship: ' + this.addr + ' in table: #table-' + this.domName);
   let hasPos;
   let etaStr = "--";
   let colLength = $('#table-' + this.domName).find('th').length; //number of columns to span for the detail row
@@ -203,7 +202,6 @@ Ship.prototype.createTableEntry = function () {
  * FUNCTION UPDATES VEHICLE IN THE INFO TABLE
  **************************************************/
 Ship.prototype.updateTableEntry = function () {
-  Logger.debug('Updating table entry for ship: ' + this.addr + ' in table: #table-' + this.domName);
   let hasPos;
   let etaStr = "--";
   let colLength = $('#table-' + this.domName).find('th').length; //number of columns to span for the detail row
