@@ -14,26 +14,15 @@
     bottom: 1.8rem !important;
 }
 
-.sidebar-pane {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
-
 .sidebar-header {
     margin-bottom: 10px !important;
-    padding-left: 50px !important;
-    padding-right: 50px !important;
 }
 
 #sidebar #aircrafts, #sidebar #ships {
     font-size: 10px !important;
     font-family: Helvetica, Arial, "Lucida Grande", sans-serif;
-    line-height: 1;
 }
 
-#aircrafts.sidebar-pane .container-list-vehicles, #ships.sidebar-pane .container-list-vehicles {
-    padding: 0;
-}
 
 #aircrafts.sidebar-pane .sidebar-header, #ships.sidebar-pane .sidebar-header {
     margin-bottom: 0 !important;
