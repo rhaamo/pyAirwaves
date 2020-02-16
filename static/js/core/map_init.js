@@ -63,6 +63,9 @@ function initMap() {
     // Add a scale on bottom left
     L.control.scale().addTo(map);
 
+    // Handle a dynamic hash in URL for hotlinking
+    window.hash = new L.Hash(map);
+
     // The map loaded.
     window.mapLoaded = true;
 }

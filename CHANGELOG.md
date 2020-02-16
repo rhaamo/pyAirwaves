@@ -13,6 +13,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Day/Night overlay switch
 - Markers change color to grey when halflife is reached before deletion
 - Scale on bottom-left of the map
+- Leaflet hash handling in URL for hotlinking URLs
+
 
 ### Changed
 - **Breaking:** Services files now uses gunicorn for production, please update according to `installation/pyairwaves-*.service` and `installation/nginx.conf`
