@@ -28,7 +28,7 @@ var vehicles = []; // Main array holding vehicles - replacing vehData array with
 $.getScript("static/js/config.js")
     .done(function () {
         if (debug) {
-            $('.msgBx').addClass('dbgActive');
+            $('.msgBx').removeClass('dbgInactive').addClass('dbgActive');
         }
         // set the html object ID for sending on-screen debug and messages
         window.messageBx = 'message';

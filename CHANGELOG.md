@@ -37,3 +37,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - lastClientName and lastSrc report properly
 - shipTypeMeta now reported
 - aircraft idInfo is an unknown field, set it at default so it is ignored by frontend
+- Debug input message correctly shown or not
