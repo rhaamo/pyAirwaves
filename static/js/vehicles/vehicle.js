@@ -252,7 +252,6 @@ Vehicle.prototype.createIcon = function () {
  **************************************************/
 Vehicle.prototype.setMarker = function () {
     // Create our marker.
-    Logger.debug("Asked creating a marker for: " + this.addr);
     Logger.warn("TODO4 also set icon: .setIcon()");
     this.marker = new L.marker(new L.LatLng(this.lat, this.lon), {
         vehName: this.addr,

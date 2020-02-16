@@ -113,11 +113,10 @@
           var checked = this.checked;
           if (checked) {
               t.addTo(map);
-              console.log("Added greyline");
+              Logger.info("Added greyline");
           } else {
               map.removeLayer(t);
-              $("#curDate").html("");
-              console.log("Removed greyline");
+              Logger.info("Removed greyline");
           }
       })
     </script>
