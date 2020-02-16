@@ -14,13 +14,9 @@
 /* jshint multistr: true */
 
 // Register vehicle type
-if (debug) {
-  console.log('Registering vehicle type: SSR');
-}
+Logger.info('Registering vehicle type: SSR');
 registerVehicleType('airSSR', 'SSR', 'fa-plane', function (msgJSON) {
   return new Aircraft(msgJSON);
-}, function (container) {
-  $(container).append('<tr><th>ID</th><th>Cat.</th><th>Flag</th><th>Altitude</th><th>Velocity</th><th>Heading</th><th>Pos</th><th>Sig</th></tr>');
 });
 
 /***************************************************
@@ -137,9 +133,6 @@ Aircraft.prototype.parseName = function () {
  * so we don't duplicate with the update function
  **************************************************/
 Aircraft.prototype.createTableEntry = function () {
-  if (debug) {
-    console.log('Creating new table entry for aircraft: ' + this.addr + ' in table: #table-' + this.domName);
-  }
   let hasPos;
   let colLength = $('#table-' + this.domName).find('th').length; //number of columns to span for the detail row
   if (this.lat) {
@@ -185,7 +178,7 @@ Aircraft.prototype.createTableEntry = function () {
     </tr>\
     <tr id="' + this.addr + '-row-detail" class="vehicle-table-detail">\
       <td colspan="' + colLength + '">\
-        <table class="infoTable"><tbody>\
+        <table class="table table-sm infoTable"><tbody>\
            <tr>\
         <td class="tblHeader">Air/Gnd</td>\
         <td class="tblCell">' + ((this.vertStat == null) ? '--' : this.vertStat) + '</td>\
@@ -270,9 +263,6 @@ Aircraft.prototype.createTableEntry = function () {
  * FUNCTION UPDATES VEHICLE IN THE INFO TABLE
  **************************************************/
 Aircraft.prototype.updateTableEntry = function () {
-  if (debug) {
-    console.log('Updating table entry for aircraft: ' + this.addr + ' in table: #table-' + this.domName);
-  }
   let hasPos;
   hasPos = !!this.lat;
 

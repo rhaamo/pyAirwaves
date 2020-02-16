@@ -12,7 +12,7 @@
  * Deps: jquery
  **********************************************************/
 
-/* exported sidebarLoaded, vehicleTypes, vehicles */
+/* exported vehicleTypes, vehicles */
 /* global debug, socket, mapLoaded, vehExpireCheckInterval, expireVehicles */
 
 /***************************************************
@@ -25,13 +25,27 @@ var vehicles = []; // Main array holding vehicles - replacing vehData array with
 /***************************************************
  * LOAD CONFIG OPTIONS AND HELPER SCRIPTS
  **************************************************/
-$.getScript("static/js/config.js", function () {
-    if (debug) {
-        $('.msgBx').addClass('dbgActive');
-    }
-    // set the html object ID for sending on-screen debug and messages
-    window.messageBx = 'message';
-});
+$.getScript("static/js/config.js")
+    .done(function () {
+        if (debug) {
+            $('.msgBx').addClass('dbgActive');
+        }
+        // set the html object ID for sending on-screen debug and messages
+        window.messageBx = 'message';
+
+        // Initialize the logger
+        Logger.useDefaults()
+        if (debug) {
+            Logger.setLevel(Logger.trace)
+        } else {
+            Logger.setLevel(Logger.error)
+        }
+        Logger.info('Configuration loaded.')
+    })
+    .fail(function (jqxhr, settings, exception) {
+        console.log("ERROR: Cannot load configuration file", exception)
+    });
+
 
 // Initiate Socket.IO, it will connect back to the server automatically
 window.socket = io();
@@ -39,13 +53,13 @@ window.socket = io();
 function socketOk(msg) {
     $("#websocket-status").removeClass().addClass(["badge badge-pill", "badge-success"]).prop('title', msg);
     $("#websocket-status i").removeClass().addClass(["fa", "fa-check icon-socket-ok"]);
-    console.log("SocketIO OK: " + msg);
+    Logger.info("SocketIO OK: " + msg);
 }
 
 function socketNok(msg) {
     $("#websocket-status").removeClass().addClass(["badge badge-pill", "badge-success"]).prop('title', msg);
     $("#websocket-status i").removeClass().addClass(["fa", "fa-close icon-socket-nok"]);
-    console.log("SocketIO Err: " + msg);
+    Logger.info("SocketIO Err: " + msg);
 
 }
 
@@ -74,38 +88,21 @@ $.getScript("static/js/vehicles/vehicle.js", function () {
     // Load any custom vehicles
     let index;
     for (index = 0; index < loadCustomVehicles.length; index++) {
-        if (debug) {
-            console.log('Loading custom vehicle: ' + loadCustomVehicles[index]);
-        }
+        Logger.info('Loading custom vehicle: ' + loadCustomVehicles[index]);
         $.getScript("static/js/vehicles/" + loadCustomVehicles[index]);
     }
 
-    // Prevent race condition where sidebar loads before vehicle types finish registration.
-    setTimeout(function () {
-        // Load the message handler
-        $.getScript("static/js/core/messages.js");
+    // Initialize the sidebar
+    window.sidebar = L.control.sidebar('sidebar', {position: 'right'}).addTo(map);
 
-        // load sidebar (here so it loads in the right order...)
-        $.getScript("static/js/core/sidebar.js", function () {
-            // setup the sidebar on successful load
-            setupSidebar();
-
-            // load sidebar CSS
-            $('<link/>', {
-                rel: 'stylesheet',
-                type: 'text/css',
-                href: 'static/css/sidebar.css'
-            }).appendTo('head');
-        });
-    }, 0.5);
-
+    // Load the message handler
+    $.getScript("static/js/core/messages.js");
 });
 
 /***************************************************
  * SETUP AND LOAD MAPS
  **************************************************/
 $(document).ready(function () {
-    console.log("Document ready.");
     // Load RainbowVis to color vehicle paths by height
     $.getScript("static/js/plugins/rainbowvis.js", function () {
         // Instanciate RainbowVis and set global color ramp by plane height

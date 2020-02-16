@@ -9,6 +9,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - A bunch of missing indexes
 - Help in top left header
 - Bootstrap library
+- Proper Logging support in frontend javascript
+- Day/Night overlay switch
+- Markers change color to grey when halflife is reached before deletion
+
 
 ### Changed
 - **Breaking:** Services files now uses gunicorn for production, please update according to `installation/pyairwaves-*.service` and `installation/nginx.conf`
@@ -21,8 +25,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Markers trail is now hiden by default
 - Canvas bounding box of Plane and Boat have been reduced to bigger-length of extremities of the icon plus a small margin
 - Header now uses bootstrap
+- Removed old sidebar, superseeded by the new v2
+
 
 ### Fixed
 - Debug/console.log cleanups
 - lastClientName and lastSrc report properly
 - shipTypeMeta now reported
+- aircraft idInfo is an unknown field, set it at default so it is ignored by frontend

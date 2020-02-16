@@ -14,13 +14,9 @@
 /* jshint multistr: true */
 
 // Register vehicle type
-if (debug) {
-  console.log('Registering vehicle type: AIS');
-}
+Logger.info('Registering vehicle type: AIS');
 registerVehicleType('airAIS', 'AIS', 'fa-ship', function (msgJSON) {
   return new Ship(msgJSON);
-}, function (container) {
-  $(container).append('<tr><th>ID</th><th>Flag</th><th>Velocity</th><th>Course</th><th>Destination</th><th>Pos</th><th>Sig</th></tr>');
 });
 
 /***************************************************
@@ -79,13 +75,10 @@ Ship.prototype.parseName = function () {
  * FUNCTION ADDS VEHICLE TO THE INFO TABLE
  **************************************************/
 Ship.prototype.createTableEntry = function () {
-  if (debug) {
-    console.log('Creating new table entry for ship: ' + this.addr + ' in table: #table-' + this.domName);
-  }
   let hasPos;
   let etaStr = "--";
   let colLength = $('#table-' + this.domName).find('th').length; //number of columns to span for the detail row
-  //console.log('AIS table columns determined for: '+this.addr+' as this many columns: '+colLength);
+  // Logger.trace('AIS table columns determined for: '+this.addr+' as this many columns: '+colLength);
 
   // Work out our ETA info.
   if (this.etaMonth != null || this.etaDay != null || this.etaHour != null || this.etaMinute != null) {
@@ -113,7 +106,7 @@ Ship.prototype.createTableEntry = function () {
     </tr>\
     <tr id="' + this.addr + '-row-detail" class="vehicle-table-detail">\
       <td colspan="' + colLength + '">\
-        <table class="infoTable"><tbody>\
+        <table class="table table-sm infoTable"><tbody>\
           <tr>\
             <td class="tblHeader">MMSI Type</td>\
             <td class="tblCell">' + ((this.mmsiType == null) ? '--' : this.mmsiType) + '</td>\
@@ -209,9 +202,6 @@ Ship.prototype.createTableEntry = function () {
  * FUNCTION UPDATES VEHICLE IN THE INFO TABLE
  **************************************************/
 Ship.prototype.updateTableEntry = function () {
-  if (debug) {
-    console.log('Updating table entry for ship: ' + this.addr + ' in table: #table-' + this.domName);
-  }
   let hasPos;
   let etaStr = "--";
   let colLength = $('#table-' + this.domName).find('th').length; //number of columns to span for the detail row
@@ -240,7 +230,7 @@ Ship.prototype.updateTableEntry = function () {
     <td>' + spinnerAnim[this.spinState] + '</td>');
   $('#' + this.addr + '-row-detail').html('\
     <td colspan="' + colLength + '">\
-      <table class="infoTable"><tbody>\
+      <table class="table table-sm infoTable"><tbody>\
         <tr>\
           <td class="tblHeader">MMSI Type</td>\
           <td class="tblCell">' + ((this.mmsiType == null) ? '--' : this.mmsiType) + '</td>\
@@ -290,13 +280,17 @@ Ship.prototype.updateTableEntry = function () {
  * FUNCTION SETS THE VEHICLE ICON
  * OVERRIDES DEFAULT TO USE courseOverGnd
  **************************************************/
-Ship.prototype.createIcon = function () {
+Ship.prototype.createIcon = function (halflife=false) {
+  let color = '#f4ff01';
+  if (halflife) {
+      color = '#B0B6BD';  // set the color as something-something grey
+  }
   var newIcon;
   // If we have heading data for the vehicle
   if (this.courseOverGnd) {
     // Create our icon for a vehicle with heading data.
     newIcon = new L.BoatIcon({
-      color: '#f4ff01',
+      color: color,
       idleCircle: false,
       course: this.courseOverGnd
     });
@@ -304,7 +298,7 @@ Ship.prototype.createIcon = function () {
   } else {
     // Create our icon for a vehicle without heading data.
     newIcon = new L.BoatIcon({
-      color: '#f4ff01',
+      color: color,
       idleCircle: false
     });
   }

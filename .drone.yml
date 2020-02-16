@@ -59,3 +59,4 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_DB=pyairwaves_test
+      - POSTGRES_HOST_AUTH_METHOD=trust

@@ -9,72 +9,24 @@
  *
  **********************************************************/
 
-/* Button for the sidebar on the main page */
-#sidebar-icon {
-    /* uses font-awesome chevron-left */
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    font-size: 30px;
-    color: #006cff;
-    z-index: 999;
+.sidebar {
+    top: 3.7rem !important;
+    bottom: 1.8rem !important;
 }
 
-#sidebar-icon:hover {
-    color: #000000;
+.sidebar-header {
+    margin-bottom: 10px !important;
 }
 
-/* Sidebar structure - main container and primary structure */
-#sidebar {
-    width: 30%;
-    height: 100%;
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: 998;
-    background-color: #ffffff;
-    padding: 10px;
-    padding-top: 3rem;
-    overflow: scroll;
+#sidebar #aircrafts, #sidebar #ships {
+    font-size: 10px !important;
+    font-family: Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
-#sidebar h1 {
-    text-align: center;
-    font-size: 18px;
-    margin: 10px 0 10px 0;
+
+#aircrafts.sidebar-pane .sidebar-header, #ships.sidebar-pane .sidebar-header {
+    margin-bottom: 0 !important;
 }
-
-#sidebar-header {
-    width: 100%;
-    border-bottom: 1px solid #000000;
-    text-align: center;
-}
-
-#sidebar-body {
-}
-
-#sidebar-footer {
-}
-
-/* Elements within #sidebar-header */
-.sidebar-button {
-    width: 33%;
-    /*border:1px solid #000000;
-    border-radius:3px;*/
-    margin: 10px 0 10px 0;
-    font-size: 24px;
-    cursor: pointer;
-}
-
-.sidebar-button.active, .sidebar-button:hover {
-    color: #ff9900;
-}
-
-/* Sub-containers within #sidebar-body */
-
-.sidebar-container {
-}
-
 
 /* Vehicle List Container */
 
@@ -108,24 +60,16 @@ tr.vehicle-table-entry {
     cursor: pointer;
 }
 
+tr.vehicle-table-entry td {
+    text-overflow: ellipsis;
+}
+
 .vehicle-table-detail {
     display: none;
 }
 
-/* MISC */
-.hide {
-    display: none;
-}
-
-
-/* Imported from original gMaps info window table */
 .infoTable {
     border: 0;
-}
-
-.vehInfoHeader {
-    text-align: center;
-    font-weight: bold;
 }
 
 .tblHeader {

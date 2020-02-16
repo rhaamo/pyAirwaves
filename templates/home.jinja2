@@ -1,6 +1,127 @@
 {% extends "layout.jinja2" %}
 
 {% block content %}
+    <div id="sidebar" class="sidebar collapsed">
+      <!-- navigation tabs -->
+      <div class="sidebar-tabs">
+        <ul role="tablist">
+          <li><a href="#help" role="tab"><i class="fa fa-question"></i></a></li>
+          <li><a href="#settings" role="tab"><i class="fa fa-cogs"></i></a></li>
+          <li><a href="#aircrafts" role="tab"><i class="fa fa-plane"></i></a></li>
+          <li><a href="#ships" role="tab"><i class="fa fa-ship"></i></a></li>
+        </ul>
+      </div>
+
+      <!-- tab panes -->
+      <div class="sidebar-content">
+        <!-- help pane -->
+        <div class="sidebar-pane" id="help">
+          <h1 class="sidebar-header">
+            Help
+            <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
+          </h1>
+
+          <p>
+            The following actions are available on every markers:
+            <ul>
+            <li>Left click: highlight row in sidebar if open, also shows a popup.</li>
+            <li>Right click: show the path made by the vehicle, if any in memory.</li>
+          </p>
+        </div>
+        <!-- settings pane -->
+        <div class="sidebar-pane" id="settings">
+          <h1 class="sidebar-header">
+            Settings
+            <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
+          </h1>
+
+          <p>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="toggleGreyline">
+              <label class="form-check-label" for="toggleGreyline">
+                Show day/night
+              </label>
+            </div>
+          </p>
+        </div>
+        <!-- aircrafts pane -->
+        <div class="sidebar-pane" id="aircrafts">
+          <h1 class="sidebar-header">
+            Vehicles broadcasting over SSR
+            <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
+          </h1>
+
+          <div id="container-list-SSR" class="container-list-vehicles">
+            <table id="table-SSR" class="table table-sm vehicle-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Cat.</th>
+                  <th>Flag</th>
+                  <th>Altitude</th>
+                  <th>Velocity</th>
+                  <th>Heading</th>
+                  <th>Pos</th>
+                  <th>Sig</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+        <!-- ships pane -->
+        <div class="sidebar-pane" id="ships">
+          <h1 class="sidebar-header">
+            Vehicles broadcasting over AIS
+            <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
+          </h1>
+
+          <div id="container-list-AIS" class="container-list-vehicles">
+            <table id="table-AIS" class="table table-sm vehicle-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Flag</th>
+                  <th>Velocity</th>
+                  <th>Course</th>
+                  <th>Destination</th>
+                  <th>Pos</th>
+                  <th>Sig</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- The Leaflet map goes here. -->
-    <div id="map"></div>
+    <div id="map" class="sidebar-map"></div>
 {% endblock %}
+
+{% block scripts %}
+    <script>
+      var t = L.terminator();
+      setInterval(function(){updateTerminator(t)}, 1000);
+
+      function updateTerminator(t) {
+          var check = $('input#toggleGreyline').is(':checked');
+          if (!check) {
+              return;
+          }
+          var t2 = L.terminator();
+          t.setLatLngs(t2.getLatLngs());
+          t.redraw();
+      }
+
+      $('input#toggleGreyline').change(function() {
+          var checked = this.checked;
+          if (checked) {
+              t.addTo(map);
+              Logger.info("Added greyline");
+          } else {
+              map.removeLayer(t);
+              Logger.info("Removed greyline");
+          }
+      })
+    </script>
+    {% endblock %}
