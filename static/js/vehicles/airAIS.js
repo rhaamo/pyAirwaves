@@ -280,13 +280,17 @@ Ship.prototype.updateTableEntry = function () {
  * FUNCTION SETS THE VEHICLE ICON
  * OVERRIDES DEFAULT TO USE courseOverGnd
  **************************************************/
-Ship.prototype.createIcon = function () {
+Ship.prototype.createIcon = function (halflife=false) {
+  let color = '#f4ff01';
+  if (halflife) {
+      color = '#B0B6BD';  // set the color as something-something grey
+  }
   var newIcon;
   // If we have heading data for the vehicle
   if (this.courseOverGnd) {
     // Create our icon for a vehicle with heading data.
     newIcon = new L.BoatIcon({
-      color: '#f4ff01',
+      color: color,
       idleCircle: false,
       course: this.courseOverGnd
     });
@@ -294,7 +298,7 @@ Ship.prototype.createIcon = function () {
   } else {
     // Create our icon for a vehicle without heading data.
     newIcon = new L.BoatIcon({
-      color: '#f4ff01',
+      color: color,
       idleCircle: false
     });
   }

@@ -210,36 +210,25 @@ Vehicle.prototype.parseName = function () {
  * FUNCTION CREATES VEHICLE ICONS FOR GMAPS
  * OVERRIDE IF USING A DIFFERENT HEADING
  **************************************************/
-Vehicle.prototype.createIcon = function () {
+Vehicle.prototype.createIcon = function (halflife=false) {
+    let color = '#f4ff01';
+    if (halflife) {
+        color = '#B0B6BD';  // set the color as something-something grey
+    }
     var newIcon;
     // If we have heading data for the vehicle
     if (this.heading) {
         // Create our icon for a vehicle with heading data.
-        //newIcon = new google.maps.Marker({
-        //  path: this.dirIcoPath,
-        //  scale: this.dirIcoScale,
-        //  strokeWeight: 1.5,
-        //  strokeColor: (this.selected == true) ? this.vehColorSelected : ((this.active == true) ? this.vehColorActive : this.vehColorInactive),
-        //  rotation: this.heading
-        //});
-        Logger.warn("TODO: heading");
         newIcon = new L.PlaneIcon({
-            color: '#f4ff01',
+            color: color,
             idleCircle: false,
             course: this.heading
         });
         newIcon.setHeading(this.heading);
     } else {
         // Create our icon for a vehicle without heading data.
-        //newIcon = new google.maps.Marker({
-        //  path: this.ndIcoPath,
-        //  scale: this.ndIcoScale,
-        //  strokeWeight: 1.5,
-        //  strokeColor: (this.selected == true) ? this.vehColorSelected : ((this.active == true) ? this.vehColorActive : this.vehColorInactive)
-        //});
-        Logger.warn("TODO: no heading");
         newIcon = new L.PlaneIcon({
-            color: '#f4ff01',
+            color: color,
             idleCircle: false
         });
     }
@@ -252,7 +241,6 @@ Vehicle.prototype.createIcon = function () {
  **************************************************/
 Vehicle.prototype.setMarker = function () {
     // Create our marker.
-    Logger.warn("TODO4 also set icon: .setIcon()");
     this.marker = new L.marker(new L.LatLng(this.lat, this.lon), {
         vehName: this.addr,
         icon: this.createIcon()
@@ -443,9 +431,8 @@ Vehicle.prototype.setHalflife = function () {
     // Deactivate vehicle and change the icon for it.
     this.active = false;
     // Set the icon.
-    Logger.warn("TODO FIXME set icon for idle / greyed");
     if (this.marker) {
-        this.marker.setIcon(this.createIcon());
+        this.marker.setIcon(this.createIcon(true));
     }
 };
 

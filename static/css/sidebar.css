@@ -60,6 +60,10 @@ tr.vehicle-table-entry {
     cursor: pointer;
 }
 
+tr.vehicle-table-entry td {
+    text-overflow: ellipsis;
+}
+
 .vehicle-table-detail {
     display: none;
 }

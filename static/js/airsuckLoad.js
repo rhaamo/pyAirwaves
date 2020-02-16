@@ -25,21 +25,26 @@ var vehicles = []; // Main array holding vehicles - replacing vehData array with
 /***************************************************
  * LOAD CONFIG OPTIONS AND HELPER SCRIPTS
  **************************************************/
-$.getScript("static/js/config.js", function () {
-    if (debug) {
-        $('.msgBx').addClass('dbgActive');
-    }
-    // set the html object ID for sending on-screen debug and messages
-    window.messageBx = 'message';
+$.getScript("static/js/config.js")
+    .done(function () {
+        if (debug) {
+            $('.msgBx').addClass('dbgActive');
+        }
+        // set the html object ID for sending on-screen debug and messages
+        window.messageBx = 'message';
 
-    // Initialize the logger
-    Logger.useDefaults()
-    if (debug) {
-        Logger.setLevel(Logger.trace)
-    } else {
-        Logger.setLevel(Logger.error)
-    }
-});
+        // Initialize the logger
+        Logger.useDefaults()
+        if (debug) {
+            Logger.setLevel(Logger.trace)
+        } else {
+            Logger.setLevel(Logger.error)
+        }
+        Logger.info('Configuration loaded.')
+    })
+    .fail(function (jqxhr, settings, exception) {
+        console.log("ERROR: Cannot load configuration file", exception)
+    });
 
 
 // Initiate Socket.IO, it will connect back to the server automatically
