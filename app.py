@@ -21,7 +21,7 @@ from pprint import pprint as pp
 
 from version import VERSION
 
-from config import LISTEN_HOST, LISTEN_PORT
+from config import LISTEN_HOST, LISTEN_PORT, SOCKETIO_CORS_ALLOWED_ORIGINS
 
 __VERSION__ = VERSION
 
@@ -36,7 +36,7 @@ except ImportError:
     HAS_SENTRY = False
 
 eventlet.monkey_patch()
-socketio = SocketIO(cors_allowed_origins="*")
+socketio = SocketIO(cors_allowed_origins=SOCKETIO_CORS_ALLOWED_ORIGINS)
 
 
 def create_app(config_filename="config.py"):
@@ -176,4 +176,5 @@ def create_app(config_filename="config.py"):
 
 
 if __name__ == "__main__":
-    socketio.run(create_app(), host=LISTEN_HOST, port=LISTEN_PORT)
+    app = create_app()
+    socketio.run(app, host=LISTEN_HOST, port=LISTEN_PORT, debug=app.config["DEBUG"])

@@ -13,7 +13,7 @@ SQLALCHEMY_DATABASE_URI = \
 
 # Redis configuration for socket.io
 SOCKETIO_MESSAGE_QUEUE = "redis://127.0.0.1:6379/3"
-SOCKETIO_CORS_ALLOWED_ORIGINS = "https://pyairwaves.some.where/"
+SOCKETIO_CORS_ALLOWED_ORIGINS = ["https://pyairwaves.some.where/"]
 
 # URL to FAA Archive
 FAA_ARCHIVE_URL = "https://registry.faa.gov/database/ReleasableAircraft.zip"

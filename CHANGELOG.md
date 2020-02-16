@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Canvas bounding box of Plane and Boat have been reduced to bigger-length of extremities of the icon plus a small margin
 - Header now uses bootstrap
 - Removed old sidebar, superseeded by the new v2
+- CORS are now forced to uses the config value
 
 
 ### Fixed
