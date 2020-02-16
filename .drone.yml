@@ -13,6 +13,12 @@ pipeline:
       volumes:
           - /tmp/cache:/cache
 
+  test:
+    image: postgres
+    commands:
+      - sleep 15
+      - psql -U postgres -d pyairwaves_test -h database
+
   build:
     image: python:3-alpine
     commands:
