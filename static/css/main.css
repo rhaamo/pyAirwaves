@@ -1,9 +1,9 @@
 * {
-    font-size: 0.9rem;
+    /*font-size: 0.9rem;
     font-family: Helvetica,
     Arial,
     "Lucida Grande",
-    sans-serif;
+    sans-serif;*/
 }
 
 .msgBx {
@@ -53,13 +53,4 @@ span.icon-socket-ok {
 
 span.icon-socket-nok {
     color: red;
-}
-
-.sidebar {
-    top: 3.7rem !important;
-    bottom: 1.8rem !important;
-}
-
-.sidebar-header {
-    margin-bottom: 10px !important;
 }
