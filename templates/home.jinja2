@@ -9,6 +9,21 @@
           <li><a href="#settings" role="tab"><i class="fa fa-cogs"></i></a></li>
           <li><a href="#aircrafts" role="tab"><i class="fa fa-plane"></i></a></li>
           <li><a href="#ships" role="tab"><i class="fa fa-ship"></i></a></li>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          <li title="Zoom in">
+            <a href="javascript:zoomIn()" role="tab">
+              <i class="fa fa-plus-square"></i>
+            </a>
+          </li>
+          <li title="Zoom out">
+            <a href="javascript:zoomOut()" role="tab">
+              <i class="fa fa-minus-square"></i>
+            </a>
+          </li>
         </ul>
       </div>
 
@@ -123,5 +138,12 @@
               Logger.info("Removed greyline");
           }
       })
+
+      function zoomIn(){
+        map.zoomIn(1)
+      }
+      function zoomOut(){
+        map.zoomOut(1)
+      }
     </script>
     {% endblock %}
