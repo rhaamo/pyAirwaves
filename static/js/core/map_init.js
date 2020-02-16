@@ -60,6 +60,9 @@ function initMap() {
     // Add layers control
     L.control.layers(baseLayers, overlaysLayers).addTo(map);
 
+    // Add a scale on bottom left
+    L.control.scale().addTo(map);
+
     // The map loaded.
     window.mapLoaded = true;
 }

@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Proper Logging support in frontend javascript
 - Day/Night overlay switch
 - Markers change color to grey when halflife is reached before deletion
-
+- Scale on bottom-left of the map
 
 ### Changed
 - **Breaking:** Services files now uses gunicorn for production, please update according to `installation/pyairwaves-*.service` and `installation/nginx.conf`
