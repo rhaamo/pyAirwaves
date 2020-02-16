@@ -106,7 +106,7 @@ Ship.prototype.createTableEntry = function () {
     </tr>\
     <tr id="' + this.addr + '-row-detail" class="vehicle-table-detail">\
       <td colspan="' + colLength + '">\
-        <table class="infoTable"><tbody>\
+        <table class="table table-sm infoTable"><tbody>\
           <tr>\
             <td class="tblHeader">MMSI Type</td>\
             <td class="tblCell">' + ((this.mmsiType == null) ? '--' : this.mmsiType) + '</td>\
@@ -230,7 +230,7 @@ Ship.prototype.updateTableEntry = function () {
     <td>' + spinnerAnim[this.spinState] + '</td>');
   $('#' + this.addr + '-row-detail').html('\
     <td colspan="' + colLength + '">\
-      <table class="infoTable"><tbody>\
+      <table class="table table-sm infoTable"><tbody>\
         <tr>\
           <td class="tblHeader">MMSI Type</td>\
           <td class="tblCell">' + ((this.mmsiType == null) ? '--' : this.mmsiType) + '</td>\

@@ -23,7 +23,7 @@ function handleMessage(msgJSON) {
     }
     // Dump the JSON string to the message box.
     if (debug) {
-        $('#' + messageBx).attr('value', JSON.stringify(msgJSON, null, 10));
+        $('#' + messageBx).attr('value', JSON.stringify(msgJSON, null, 2));
     }
 
     // Return early - don't continue processing the keepalive.

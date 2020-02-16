@@ -178,7 +178,7 @@ Aircraft.prototype.createTableEntry = function () {
     </tr>\
     <tr id="' + this.addr + '-row-detail" class="vehicle-table-detail">\
       <td colspan="' + colLength + '">\
-        <table class="infoTable"><tbody>\
+        <table class="table table-sm infoTable"><tbody>\
            <tr>\
         <td class="tblHeader">Air/Gnd</td>\
         <td class="tblCell">' + ((this.vertStat == null) ? '--' : this.vertStat) + '</td>\
