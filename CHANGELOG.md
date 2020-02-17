@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Leaflet hash handling in URL for hotlinking URLs
 - Leaflet "Locate Me" control
 - Proper /about page
+- Ship MMSI always shown in extra infos
 
 
 ### Changed

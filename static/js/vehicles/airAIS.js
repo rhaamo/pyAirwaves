@@ -133,7 +133,9 @@ Ship.prototype.createTableEntry = function () {
           </tr>\
           <tr>\
             <td class="tblHeader">Ship type</td>\
-            <td class="tblCell" colspan=3>' + ((this.shipTypeMeta == null) ? '--' : this.shipTypeMeta) + '</td>\
+            <td class="tblCell">' + ((this.shipTypeMeta == null) ? '--' : this.shipTypeMeta) + '</td>\
+            <td class="tblHeader">MMSI</td>\
+            <td class="tblCell">' + ((this.mmsi == null) ? '--' : this.mmsi) + '</td>\
           </tr>\
           <tr>\
             <td class="tblHeader">Position</td>\
@@ -256,9 +258,11 @@ Ship.prototype.updateTableEntry = function () {
           <td class="tblCell">' + etaStr + '</td>\
         </tr>\
         <tr>\
-            <td class="tblHeader">Ship type</td>\
-            <td class="tblCell" colspan=3>' + ((this.shipTypeMeta == null) ? '--' : this.shipTypeMeta) + '</td>\
-          </tr>\
+          <td class="tblHeader">Ship type</td>\
+          <td class="tblCell">' + ((this.shipTypeMeta == null) ? '--' : this.shipTypeMeta) + '</td>\
+          <td class="tblHeader">MMSI</td>\
+          <td class="tblCell">' + ((this.mmsi == null) ? '--' : this.mmsi) + '</td>\
+        </tr>\
         <tr>\
           <td class="tblHeader">Position</td>\
           <td colspan=3 class="tblCell">' + ((this.lat == null) ? '--' : this.lat.toFixed(4) + ', ' + this.lon.toFixed(4)) + '</td>\
