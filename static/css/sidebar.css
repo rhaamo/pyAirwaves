@@ -28,6 +28,10 @@
     margin-bottom: 0 !important;
 }
 
+.sidebar-tabs .controlZoomIn {
+    margin-top: 3em;
+}
+
 /* Vehicle List Container */
 
 .vehicle-table {
