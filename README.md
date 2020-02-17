@@ -37,7 +37,8 @@ Daemons/scripts:
 - `simulator_adsb_real_datas.py` instead of connecting to a remote dump1090, it will replay 15minutes of ADS-B datas
 - `simulator_adsb_coordinates.py` instead of connecting to a remote dump1090, it will replay three planes looping somewhere in the USA
 - `simulator_ais_real_datas.py` instead of connecting to a remote rtl-ais, it will replay a few minutes of AIS datas
-- `flask run` will start the Flask-SocketIO server for development
+- `python app.py` will start the Flask-SocketIO server for development ONLY
+- `installation/*.service` systemd services files for the daemons and production server
 
 ## Docs
 
