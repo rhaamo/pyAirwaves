@@ -30,6 +30,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Removed old sidebar, superseeded by the new v2
 - CORS are now forced to uses the config value
 - Zoom controls migrated to the sidebar
+- Moved version from header to help menu
 
 
 ### Fixed
