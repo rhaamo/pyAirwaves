@@ -172,7 +172,7 @@ class Vehicle {
     constructor(msgJSON, protocol) {
         this.spinState = 0; // This is just for tracking the spinner animation state.
         this.addr = msgJSON.addr;
-        this.protocol = protocol; // communications protocol used (AIS,SSR)
+        this.protocol = protocol; // communications protocol used (AIS,ADSB)
         this.lastPos = "none";
         this.lastLat = null;
         this.lastLon = null;

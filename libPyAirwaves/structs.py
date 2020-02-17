@@ -9,7 +9,7 @@ class DefaultType:
     """
 
     def __init__(self):
-        # Incoming data type – airAIS or airSSR
+        # Incoming data type – airAIS or airADSB
         self.type: str = None
 
 
@@ -20,7 +20,7 @@ class AdsbType(DefaultType):
 
     def __init__(self):
         DefaultType.__init__(self)
-        self.type: str = "airSSR"
+        self.type: str = "airADSB"
 
         # Vehicle address – will be a ICAO aircraft address or MMSI
         self.addr: str = None

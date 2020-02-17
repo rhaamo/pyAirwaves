@@ -14,23 +14,23 @@
 /* jshint multistr: true */
 
 // Register vehicle type
-Logger.info('Registering vehicle type: SSR');
-registerVehicleType('airSSR', 'SSR', 'fa-plane', function (msgJSON) {
+Logger.info('Registering vehicle type: ADSB');
+registerVehicleType('airADSB', 'ADSB', 'fa-plane', function (msgJSON) {
   return new Aircraft(msgJSON);
 });
 
 /***************************************************
- * SSR OBJECT DECLARATION
+ * ADSB OBJECT DECLARATION
  **************************************************/
 class Aircraft extends Vehicle {
   constructor(msgJSON) {
     // create the generic vehicle object
-    super(msgJSON, 'SSR');
-    // extend with SSR specific data
+    super(msgJSON, 'ADSB');
+    // extend with ADSB specific data
     $.extend(true, this, msgJSON);
     // add additional parameters
     this.lastAltitudes = []; // Will contains the five last altitudes reported
-    this.domName = 'SSR';
+    this.domName = 'ADSB';
     this.maxAge = 2 * (60 * 1000); // How long to retain an aircraft after losing contact (miliseconds)
     // Icon variables
     this.dirIcoPath = "m 0,0 -20,50 20,-20 20,20 -20,-50"; // Path we want to use for ADS-B targets we have direction data for.

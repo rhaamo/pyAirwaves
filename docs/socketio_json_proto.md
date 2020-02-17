@@ -9,7 +9,7 @@ SBS Reference: http://woodair.net/sbs/article/barebones42_socket_data.htm
 | Field name | Description | Type | SBS Field | Example,value |
 | ---------- | ----------- | ---- | --------- | ------------- |
 |   required   |
-|type|Incoming data type – airAIS or airSSR|string| |airAIS,airSSR
+|type|Incoming data type – airAIS or airADSB|string| |airAIS,airADSB
 |addr|Vehicle address – will be a ICAO aircraft address or MMSI|string|field 5|3C6426
 |idInfo|Aircraft ID string|string|field 4|1
 |aSquawk|Mode A squawk code. 4 character string representing four octal numbers.|string|field 18|
@@ -67,7 +67,7 @@ This is currently untested.
 | ---------- | ----------- | ---- |
 |entryPoint|Connector component the data arrived in the stack from|string|
 |dataOrigin|Data origin describes the software source of the data (dump1090/aisConn)|string|
-|type|Incoming data type – airAIS or airSSR|string|
+|type|Incoming data type – airAIS or airADSB|string|
 |dts|Date/time stamp data hits system or is generated|str(datetime.utcnow())||
 |src|Name of source host.|string|
 |data|Raw data frame.|string|

@@ -32,6 +32,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - CORS are now forced to uses the config value
 - Zoom controls migrated to the sidebar
 - Moved version from header to help menu
+- SSR renamed to ADSB
 
 
 ### Fixed

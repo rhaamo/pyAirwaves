@@ -21,7 +21,7 @@ var debug = false; // Do we want to have debugging data onscreen and in the cons
 /***************************************************
  * CUSTOM VEHICLES TO INCLUDE - from the js/vehicles directory
  **************************************************/
-var loadCustomVehicles = ['airSSR.js', 'airAIS.js']; //order determines the sidebar arrangement
+var loadCustomVehicles = ['airADSB.js', 'airAIS.js'];
 
 /***************************************************
  * VEHICLE ARRAYS AND RELATED
