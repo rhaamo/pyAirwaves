@@ -32,6 +32,10 @@ div.content {
     height: 100%;
 }
 
+div.content .noMap {
+    padding-top: 1rem;
+}
+
 html, body {
     height: 100%;
 }

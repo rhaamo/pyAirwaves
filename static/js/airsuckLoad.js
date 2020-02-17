@@ -117,5 +117,6 @@ $(document).ready(function () {
     window.vehData = {}; // Create a generic array to hold our vehicle data
     $.getScript("static/js/core/map_init.js", function () {
         initMap();
+        Logger.info("Map initialized.")
     });
 });

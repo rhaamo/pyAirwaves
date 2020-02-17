@@ -1,16 +1,18 @@
-from flask import Blueprint, render_template, redirect
+from flask import Blueprint, render_template
 
 bp_main = Blueprint("bp_main", __name__)
 
 
-# Show public logbooks
+# Show map
 @bp_main.route("/")
 def home():
-    pcfg = {"title": "Home"}
+    pcfg = {"title": "Map"}
 
     return render_template("home.jinja2", pcfg=pcfg)
 
 
 @bp_main.route("/about")
 def about():
-    return redirect("https://github.com/rhaamo/pyAirwaves/")
+    pcfg = {"title": "About"}
+
+    return render_template("about.jinja2", pcfg=pcfg)
