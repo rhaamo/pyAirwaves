@@ -28,8 +28,13 @@
     margin-bottom: 0 !important;
 }
 
-.sidebar-tabs .controlZoomIn {
+.sidebar-tabs .locateMe {
     margin-top: 3em;
+    padding-left: 3px;
+}
+
+#LocateMe .leaflet-control-locate {
+    left: 10.5px;
 }
 
 /* Vehicle List Container */

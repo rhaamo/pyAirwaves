@@ -66,6 +66,25 @@ function initMap() {
     // Handle a dynamic hash in URL for hotlinking
     window.hash = new L.Hash(map);
 
+    // Location Controller
+    window.positioncontrol = L.control.locate({
+		position: 'topleft',
+		showCompass: true,
+		strings: {title: "Show my location"},
+		icon: 'fa fa-map-marker',
+        locateOptions: {enableHighAccuracy: true},
+        keepCurrentZoomLevel: true,
+        returnToPrevBounds: true,
+	}).addTo(map);
+
+    var htmlObject = positioncontrol.getContainer();
+	var a = document.getElementById('LocateMe')
+	function setParent(el, newParent){
+		newParent.appendChild(el);
+	}
+    setParent(htmlObject, a);
+    $('div.leaflet-control-locate').removeClass('leaflet-bar');
+
     // The map loaded.
     window.mapLoaded = true;
 }
