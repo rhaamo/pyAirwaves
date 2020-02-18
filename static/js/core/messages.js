@@ -16,7 +16,6 @@
  **************************************************/
 
 function handleMessage(event) {
-    console.log('Got websock event:', event);
     const msgJSON = JSON.parse(event.data);
     if (!mapLoaded) {
         // Return early - the map isn't loaded yet
