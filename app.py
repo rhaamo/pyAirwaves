@@ -158,7 +158,7 @@ def create_app(config_filename="config.py"):
         utils_download_and_ingest_faa()
 
     @app.cli.command()
-    def update_db():
+    def update_aircrafts_db():
         """Downloads and ingest various datas"""
         update_all_db()
 

@@ -44,8 +44,14 @@ Please makes sure your postgresql is in UTF8 ! In doubt uses `-E UTF8` when doin
     # mode_s aco ~94924
     # mode_s acm ~176708
     # mode_s ogn ~16240
-    flask update-db
+    flask update-aircrafts-db
 
 # Automatic run
 
 Look at the `installation/` folder, there is sample SystemD services for each part.
+
+# Crontabs for regular imports
+```
+# Run one time every month
+flask update-aircrafts-db
+```
