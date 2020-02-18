@@ -46,9 +46,8 @@ $.getScript("static/js/config.js")
         console.log("ERROR: Cannot load configuration file", exception)
     });
 
-
-// Initiate Socket.IO, it will connect back to the server automatically
-window.socket = io();
+// Initiate the WebSocket
+window.socket = new WebSocket('ws://' + document.domain + ':' + location.port + '/ws');
 
 function socketOk(msg) {
     $("#websocket-status").removeClass().addClass(["badge badge-pill", "badge-success"]).prop('title', msg);
@@ -63,14 +62,17 @@ function socketNok(msg) {
 
 }
 
-// Error handling
-// https://socket.io/docs/client-api/#Event-%E2%80%98connect%E2%80%99
-socket.on('connect', function () {
+socket.onopen = function(event) {
     socketOk("Websocket is connected");
-});
-socket.on('connect_error', function (error) {
-    socketNok("Websocket error", error);
-});
+};
+
+socket.onclose = function(event) {
+    socketNok("Websocket error", event);
+};
+
+socket.onerror = function(event) {
+    socketNok("Websocket error", event);
+};
 
 /***************************************************
  * SETUP AND LOAD VEHICLES

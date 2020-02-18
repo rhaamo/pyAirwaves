@@ -14,12 +14,19 @@ from libPyAirwaves.adsb import is_valid_adsb_message
 from libPyAirwaves.structs import AdsbType
 from models import db, Aircrafts, AircraftModes, AircraftOwner, AircraftRegistration
 from app import create_app
+import redis
+import json
 
 count_failed_connection = 0
 max_failed_connection = 10
 
 app = create_app()
 app.app_context().push()
+
+redis = redis.Redis(host="localhost", port=6379, db=4)
+pubsub = redis.pubsub()
+pubsub.subscribe("chan:1")
+
 
 if __name__ == "__main__":
     socketio = SocketIO(message_queue=cfg.SOCKETIO_MESSAGE_QUEUE)
@@ -133,6 +140,7 @@ if __name__ == "__main__":
 
                             print(adsb_message.to_dict())
                             socketio.emit("message", adsb_message.to_dict())
+                            redis.publish("chan:1", json.dumps(adsb_message.to_dict()))
                     # It's valid, reset stream message
                     data_str = ""
                 else:

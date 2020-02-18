@@ -15,7 +15,9 @@
  * SOCKET MESSAGE HANDLER
  **************************************************/
 
-function handleMessage(msgJSON) {
+function handleMessage(event) {
+    console.log('Got websock event:', event);
+    const msgJSON = JSON.parse(event.data);
     if (!mapLoaded) {
         // Return early - the map isn't loaded yet
         Logger.error("Maps not loaded. Discarding aircraft data.");
@@ -80,4 +82,6 @@ function handleMessage(msgJSON) {
 }
 
 // Register the message handler
-socket.on('message', handleMessage);
+socket.onmessage = function (event) {
+    handleMessage(event);
+}
