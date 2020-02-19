@@ -6,9 +6,6 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-from flask import current_app
-
-import models
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -21,11 +18,10 @@ logger = logging.getLogger("alembic.env")
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
+# target_metadata = None
+from server import Base  # noqa: E402
 
-config.set_main_option("sqlalchemy.url", "postgresql+psycopg2://dashie@localhost/pyairwaves")
-target_metadata = models.db.metadata
+target_metadata = Base.metadata
 
 
 # other values from the config, defined by the needs of env.py,
@@ -81,7 +77,6 @@ def run_migrations_online():
         target_metadata=target_metadata,
         process_revision_directives=process_revision_directives,
         transaction_per_migration=True,
-        **current_app.extensions["migrate"].configure_args,
     )
 
     try:

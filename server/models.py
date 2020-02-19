@@ -1,12 +1,15 @@
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy_searchable import make_searchable
-import datetime
+""" Module for handling all database models.
+Notes:
+    The models created with the inherited `Base` constant
+    must be imported below the declaration for `Alembic`
+    autogenerate to work.
+"""
+from sqlalchemy.ext.declarative import declarative_base
 
-db = SQLAlchemy()
-make_searchable(db.metadata)
+Base = declarative_base()
 
 
-class Translation(db.Model):
+class Translation(Base):
     """Translation table for ACARSD"""
 
     __tablename__ = "translation"
@@ -23,7 +26,7 @@ class Translation(db.Model):
     )
 
 
-class Aircrafts(db.Model):
+class Aircrafts(Base):
     __tablename__ = "aircraft"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -39,7 +42,7 @@ class Aircrafts(db.Model):
     mfr = db.Column(db.String(255), default=None)
 
 
-class AircraftModes(db.Model):
+class AircraftModes(Base):
     __tablename__ = "aircraft_modes"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -54,7 +57,7 @@ class AircraftModes(db.Model):
     source_type = db.Column(db.String(255), default="modes")
 
 
-class AircraftOwner(db.Model):
+class AircraftOwner(Base):
     __tablename__ = "aircraft_owner"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -66,7 +69,7 @@ class AircraftOwner(db.Model):
     is_private = db.Column(db.Boolean, default=False)
 
 
-class AircraftRegistration(db.Model):
+class AircraftRegistration(Base):
     __tablename__ = "aircraft_registration"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -74,7 +77,7 @@ class AircraftRegistration(db.Model):
     prefix = db.Column(db.String(10), nullable=False)
 
 
-class ArchiveAdsbMessage(db.Model):
+class ArchiveAdsbMessage(Base):
     __tablename__ = "archive_adsb_message"
 
     id = db.Column(db.Integer, primary_key=True)
