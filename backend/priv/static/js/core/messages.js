@@ -80,6 +80,12 @@ function handleMessage(event) {
     }
 }
 
+// Initiate the WebSocket
+window.socket = new Phoenix.Socket("/ws", {params: {}});
+socket.connect();
+window.vehiclesChannel = socket.channel("room:vehicles")
+
+
 // Register the message handlers
 vehiclesChannel.on("new_msg", msg => handleMessage(msg));
 

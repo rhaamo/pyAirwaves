@@ -46,12 +46,6 @@ $.getScript("/js/config.js")
         console.log("ERROR: Cannot load configuration file", exception)
     });
 
-
-// Initiate the WebSocket
-window.socket = new Phoenix.Socket("/ws", {params: {}});
-socket.connect();
-window.vehiclesChannel = socket.channel("room:vehicles")
-
 /***************************************************
  * SETUP AND LOAD VEHICLES
  **************************************************/

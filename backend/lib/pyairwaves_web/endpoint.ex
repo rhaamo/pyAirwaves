@@ -12,7 +12,7 @@ defmodule PyairwavesWeb.Endpoint do
 
   socket "/ws", PyairwavesWeb.WebSocket,
     websocket: true,
-    longpoll: true
+    longpoll: false
 
   # Serve at "/" the static files from "priv/static" directory.
   #

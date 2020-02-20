@@ -17,7 +17,7 @@ config :pyairwaves, PyairwavesWeb.Endpoint,
   render_errors: [view: PyairwavesWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Pyairwaves.PubSub, adapter: Phoenix.PubSub.PG2],
   live_view: [signing_salt: "q2gfUiPH"],
-  pubsub: [name: PyairwavesWeb.PubSub, adapter: Phoenix.PubSub.Redis, url: "redis://127.0.0.1:6379/0", node_name: "pyairwaves_web"]
+  pubsub: [name: PyairwavesWeb.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
