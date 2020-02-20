@@ -11,9 +11,10 @@ defmodule Pyairwaves.Application do
       # Start the Ecto repository
       Pyairwaves.Repo,
       # Start the endpoint when the application starts
-      PyairwavesWeb.Endpoint
+      PyairwavesWeb.Endpoint,
       # Starts a worker by calling: Pyairwaves.Worker.start_link(arg)
       # {Pyairwaves.Worker, arg},
+      Pyairwaves.RedisEater
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

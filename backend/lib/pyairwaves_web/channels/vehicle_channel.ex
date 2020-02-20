@@ -5,5 +5,4 @@ defmodule PyairwavesWeb.VehicleChannel do
   def join("room:vehicles", _message, socket) do
     {:ok, socket}
   end
-
 end

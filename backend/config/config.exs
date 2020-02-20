@@ -10,6 +10,9 @@ use Mix.Config
 config :pyairwaves,
   ecto_repos: [Pyairwaves.Repo]
 
+# Configuration of the PubSub Redis server used between the backend and the data parsers
+config :pyairwaves, redis: "redis://127.0.0.1:6379/4"
+
 # Configures the endpoint
 config :pyairwaves, PyairwavesWeb.Endpoint,
   url: [host: "localhost"],
