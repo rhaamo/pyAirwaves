@@ -8,6 +8,5 @@ defmodule Pyairwaves.Repo.Migrations.CreateAircraftRegistration do
     end
 
     create index(:aircraft_registration, :country)
-
   end
 end

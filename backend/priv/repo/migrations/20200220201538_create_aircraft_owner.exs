@@ -12,6 +12,5 @@ defmodule Pyairwaves.Repo.Migrations.CreateAircraftOwner do
     end
 
     create index(:aircraft_owner, :registration)
-
   end
 end

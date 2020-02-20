@@ -5,7 +5,7 @@ defmodule Pyairwaves.AircraftMode do
   @primary_key {:id, :id, autogenerate: true}
 
   # Indexes on: mode_s, mode_s_country, registration and icao_type_code
-  
+
   schema "aircraft_mode" do
     field :icao_type_code, :string, size: 4
     field :mode_s, :string, size: 6
@@ -21,7 +21,15 @@ defmodule Pyairwaves.AircraftMode do
   @doc false
   def changeset(aircraft_mode, attrs) do
     aircraft_mode
-    |> cast(attrs, [:mode_s, :mode_s_country, :registration, :icao_type_code, :type_flight, :source, :source_type])
+    |> cast(attrs, [
+      :mode_s,
+      :mode_s_country,
+      :registration,
+      :icao_type_code,
+      :type_flight,
+      :source,
+      :source_type
+    ])
     |> validate_required([:mode_s])
   end
 end

@@ -20,8 +20,19 @@ defmodule Pyairwaves.Aircraft do
   @doc false
   def changeset(aircraft, attrs) do
     aircraft
-    |> cast(attrs, [:icao, :type, :manufacturer, :official_page, :aircraft_shadow, :aircraft_description, :engine_type, :engine_count, :wake_category, :mfr])
-    |> validate_required([:icao, :type, :manufacturer, :official_page])
+    |> cast(attrs, [
+      :icao,
+      :type,
+      :manufacturer,
+      :official_page,
+      :aircraft_shadow,
+      :aircraft_description,
+      :engine_type,
+      :engine_count,
+      :wake_category,
+      :mfr
+    ])
+    |> validate_required([:icao, :type, :manufacturer])
     |> unique_constraint(:icao)
   end
 end

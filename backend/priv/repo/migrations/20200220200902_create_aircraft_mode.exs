@@ -18,6 +18,5 @@ defmodule Pyairwaves.Repo.Migrations.CreateAircraftMode do
     create index(:aircraft_mode, :mode_s_country)
     create index(:aircraft_mode, :registration)
     create index(:aircraft_mode, :icao_type_code)
-
   end
 end

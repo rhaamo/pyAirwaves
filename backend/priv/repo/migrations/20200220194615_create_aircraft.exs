@@ -14,6 +14,5 @@ defmodule Pyairwaves.Repo.Migrations.CreateAircraft do
       add :type, :string, size: 255
       add :wake_category, :string, size: 10
     end
-
   end
 end
