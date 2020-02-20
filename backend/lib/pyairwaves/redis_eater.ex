@@ -1,5 +1,6 @@
 defmodule Pyairwaves.RedisEater do
   use GenServer
+  require Logger
 
   def start_link(_) do
     GenServer.start_link(__MODULE__, [])
@@ -14,14 +15,14 @@ defmodule Pyairwaves.RedisEater do
 
   # pubsub listener subscribed to the channel
   def handle_info({:redix_pubsub, _pubsub, _ref, :subscribed, %{channel: channel}}, state) do
-    IO.puts("The pub/sub listener is subscribed to the #{inspect(channel)} channel")
+    Logger.debug("The pub/sub listener is subscribed to the #{inspect(channel)} channel")
     {:noreply, state}
   end
 
   # Handle incoming messages and dispatch then through our internal PubSub channel
   def handle_info({:redix_pubsub, _pubsub, _ref, :message, %{channel: _channel, payload: message}}, state) do
-    Phoenix.PubSub.broadcast(Pyairwaves.PubSub, message, message)
-    IO.puts("Received from redis: #{inspect(message)}")
+    Phoenix.PubSub.broadcast(Pyairwaves.PubSub, "room:vehicles", {:redis_eat, message})
+    Logger.debug("Received from redis: #{inspect(message)}")
     {:noreply, state}
   end
 end
