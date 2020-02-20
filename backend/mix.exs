@@ -20,7 +20,7 @@ defmodule Pyairwaves.MixProject do
   def application do
     [
       mod: {Pyairwaves.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :phoenix, :phoenix_pubsub_redis]
     ]
   end
 
@@ -35,6 +35,7 @@ defmodule Pyairwaves.MixProject do
     [
       {:phoenix, "~> 1.4.13"},
       {:phoenix_pubsub, "~> 1.1"},
+      {:phoenix_pubsub_redis, "~> 2.1"},
       {:phoenix_ecto, "~> 4.0"},
       {:ecto_sql, "~> 3.1"},
       {:postgrex, ">= 0.0.0"},

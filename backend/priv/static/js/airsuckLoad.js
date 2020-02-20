@@ -48,32 +48,9 @@ $.getScript("/js/config.js")
 
 
 // Initiate the WebSocket
-window.socket = new WebSocket('ws://' + document.domain + ':' + location.port + '/ws');
-
-function socketOk(msg) {
-    $("#websocket-status").removeClass().addClass(["badge badge-pill", "badge-success"]).prop('title', msg);
-    $("#websocket-status i").removeClass().addClass(["fa", "fa-check icon-socket-ok"]);
-    Logger.info("SocketIO OK: " + msg);
-}
-
-function socketNok(msg) {
-    $("#websocket-status").removeClass().addClass(["badge badge-pill", "badge-success"]).prop('title', msg);
-    $("#websocket-status i").removeClass().addClass(["fa", "fa-close icon-socket-nok"]);
-    Logger.info("SocketIO Err: " + msg);
-
-}
-
-socket.onopen = function(event) {
-    socketOk("Websocket is connected");
-};
-
-socket.onclose = function(event) {
-    socketNok("Websocket error", event);
-};
-
-socket.onerror = function(event) {
-    socketNok("Websocket error", event);
-};
+window.socket = new Phoenix.Socket("/ws", {params: {}});
+socket.connect();
+window.vehiclesChannel = socket.channel("room:vehicles")
 
 /***************************************************
  * SETUP AND LOAD VEHICLES

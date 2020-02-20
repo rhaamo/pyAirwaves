@@ -10,9 +10,9 @@ defmodule PyairwavesWeb.Endpoint do
     signing_salt: "JJiGDZOW"
   ]
 
-  socket "/socket", PyairwavesWeb.UserSocket,
+  socket "/ws", PyairwavesWeb.WebSocket,
     websocket: true,
-    longpoll: false
+    longpoll: true
 
   # Serve at "/" the static files from "priv/static" directory.
   #

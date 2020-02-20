@@ -1,8 +1,8 @@
-defmodule PyairwavesWeb.UserSocket do
+defmodule PyairwavesWeb.WebSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", PyairwavesWeb.RoomChannel
+  channel "room:vehicles", PyairwavesWeb.VehicleChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

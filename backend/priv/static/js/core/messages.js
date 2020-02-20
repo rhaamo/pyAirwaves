@@ -80,7 +80,23 @@ function handleMessage(event) {
     }
 }
 
-// Register the message handler
-socket.onmessage = function (event) {
-    handleMessage(event);
+// Register the message handlers
+vehiclesChannel.on("new_msg", msg => handleMessage(msg));
+
+vehiclesChannel.join()
+    .receive("ok", (msg) => socketOk(msg))
+    .receive("error", (reasons) => socketNok(reasons))
+    .receive("timeout", () => socketNok('timeout'));
+
+function socketOk(msg) {
+    $("#websocket-status").removeClass().addClass(["badge badge-pill", "badge-success"]).prop('title', "WebSocket OK");
+    $("#websocket-status i").removeClass().addClass(["fa", "fa-check icon-socket-ok"]);
+    Logger.info("WebSocket OK: ", msg);
+}
+
+function socketNok(msg) {
+    $("#websocket-status").removeClass().addClass(["badge badge-pill", "badge-danger"]).prop('title', "WebSocket KO");
+    $("#websocket-status i").removeClass().addClass(["fa", "fa-close icon-socket-nok"]);
+    Logger.info("WebSocket Err: ", msg);
+
 }
