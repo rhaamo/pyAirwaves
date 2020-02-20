@@ -85,6 +85,39 @@ function initMap() {
     setParent(htmlObject, a);
     $('div.leaflet-control-locate').removeClass('leaflet-bar');
 
+
+    // L.Terminator (greyline)
+    var t = L.terminator();
+    setInterval(function(){updateTerminator(t)}, 1000);
+
+    function updateTerminator(t) {
+        var check = $('input#toggleGreyline').is(':checked');
+        if (!check) {
+            return;
+        }
+        var t2 = L.terminator();
+        t.setLatLngs(t2.getLatLngs());
+        t.redraw();
+    }
+
+    $('input#toggleGreyline').change(function() {
+        var checked = this.checked;
+        if (checked) {
+            t.addTo(map);
+            Logger.info("Added greyline");
+        } else {
+            map.removeLayer(t);
+            Logger.info("Removed greyline");
+        }
+    })
+
+    function zoomIn(){
+    map.zoomIn(1)
+    }
+    function zoomOut(){
+    map.zoomOut(1)
+    }
+
     // The map loaded.
     window.mapLoaded = true;
 }
