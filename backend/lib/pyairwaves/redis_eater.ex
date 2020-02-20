@@ -20,7 +20,10 @@ defmodule Pyairwaves.RedisEater do
   end
 
   # Handle incoming messages and dispatch then through our internal PubSub channel
-  def handle_info({:redix_pubsub, _pubsub, _ref, :message, %{channel: _channel, payload: message}}, state) do
+  def handle_info(
+        {:redix_pubsub, _pubsub, _ref, :message, %{channel: _channel, payload: message}},
+        state
+      ) do
     Phoenix.PubSub.broadcast(Pyairwaves.PubSub, "room:vehicles", {:redis_eat, message})
     Logger.debug("Received from redis: #{inspect(message)}")
     {:noreply, state}

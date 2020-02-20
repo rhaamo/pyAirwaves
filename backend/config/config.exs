@@ -12,12 +12,12 @@ config :pyairwaves,
   ecto_repos: [Pyairwaves.Repo]
 
 config :pyairwaves, Pyairwaves.Repo,
-adapter: Ecto.Adapters.Postgres,
-username: "pyairwaves",
-password: "",
-database: "pyairwaves",
-hostname: "127.0.0.1",
-pool_size: 10
+  adapter: Ecto.Adapters.Postgres,
+  username: "pyairwaves",
+  password: "",
+  database: "pyairwaves",
+  hostname: "127.0.0.1",
+  pool_size: 10
 
 # Configuration of the PubSub Redis server used between the backend and the data parsers
 config :pyairwaves, redis: "redis://127.0.0.1:6379/4"

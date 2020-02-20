@@ -61,7 +61,6 @@ defmodule Pyairwaves.MixProject do
     ]
   end
 
-
   # Builds a version string made of:
   # * the application version
   # * a pre-release if ahead of the tag: the describe string (-count-commithash)
@@ -147,5 +146,4 @@ defmodule Pyairwaves.MixProject do
     |> Enum.filter(fn string -> string && string != "" end)
     |> Enum.join()
   end
-
 end

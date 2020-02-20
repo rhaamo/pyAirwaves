@@ -1,6 +1,5 @@
 defmodule PyairwavesWeb.VehicleChannel do
   use Phoenix.Channel
-  alias Phoenix.Socket.Broadcast
 
   require Logger
 
