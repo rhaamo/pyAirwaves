@@ -8,12 +8,12 @@ import config
 import socket
 import time
 import datetime
-from flask_socketio import SocketIO
-import config as cfg
 from libPyAirwaves.adsb import is_valid_adsb_message
 from libPyAirwaves.structs import AdsbType
 from models import db, Aircrafts, AircraftModes, AircraftOwner, AircraftRegistration
 from app import create_app
+import redis
+import json
 
 count_failed_connection = 0
 max_failed_connection = 10
@@ -21,9 +21,11 @@ max_failed_connection = 10
 app = create_app()
 app.app_context().push()
 
-if __name__ == "__main__":
-    socketio = SocketIO(message_queue=cfg.SOCKETIO_MESSAGE_QUEUE)
+redis = redis.Redis(host="localhost", port=6379, db=4)
+pubsub = redis.pubsub()
+pubsub.subscribe("room:vehicles")
 
+if __name__ == "__main__":
     while count_failed_connection < max_failed_connection:
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -132,7 +134,7 @@ if __name__ == "__main__":
                                 None
 
                             print(adsb_message.to_dict())
-                            socketio.emit("message", adsb_message.to_dict())
+                            redis.publish("room:vehicles", json.dumps(adsb_message.to_dict()))
                     # It's valid, reset stream message
                     data_str = ""
                 else:
