@@ -15,9 +15,8 @@ config :pyairwaves, PyairwavesWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "+suJD4RiZN0AFqOGYPGZJUVOhaVnEovOOO8Jt7ft3xrzwlW6OTZ++2eJc/vxrQKr",
   render_errors: [view: PyairwavesWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Pyairwaves.PubSub, adapter: Phoenix.PubSub.PG2],
   live_view: [signing_salt: "q2gfUiPH"],
-  pubsub: [name: PyairwavesWeb.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Pyairwaves.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
