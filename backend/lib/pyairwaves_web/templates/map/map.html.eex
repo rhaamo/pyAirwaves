@@ -29,7 +29,7 @@
         <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
         </h1>
 
-        <p>pyAirwaves {{ g.cfg['PYAIRWAVES_VERSION'] }}</p>
+        <p>pyAirwaves <%= @version %></p>
         <hr>
 
         <p>

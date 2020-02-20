@@ -33,10 +33,10 @@ This file is part of the airSuck project (https://github.com/rhaamo/pyAirwaves).
 
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item {% if request.endpoint == 'bp_main.home' %}active{% endif %}">
+          <li class="nav-item <%= if @page == "map" do %>active<% end %>">
             <a class="nav-link" href="/">Map</a>
           </li>
-          <li class="nav-item {% if request.endpoint == 'bp_main.about' %}active{% endif %}">
+          <li class="nav-item <%= if @page == "about" do %>active<% end %>">
             <a class="nav-link" href="/about">About</a>
           </li>
         </ul>

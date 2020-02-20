@@ -1,0 +1,6 @@
+<div class="noMap row justify-content-md-center">
+    <div class="col-md-10">
+    <p>This website runs pyAirwaves <%= @version %></p>
+    <p>Sources of pyAirwaves can be found <a href="https://github.com/rhaamo/pyAirwaves" target="_blank">here</a>.
+    </div>
+</div>

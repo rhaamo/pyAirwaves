@@ -4,7 +4,7 @@ defmodule Pyairwaves.MixProject do
   def project do
     [
       app: :pyairwaves,
-      version: "0.1.0",
+      version: version("0.1.0"),
       elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
@@ -60,4 +60,92 @@ defmodule Pyairwaves.MixProject do
       test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
+
+
+  # Builds a version string made of:
+  # * the application version
+  # * a pre-release if ahead of the tag: the describe string (-count-commithash)
+  # * branch name
+  # * build metadata:
+  #   * a build name if `PYAIRWAVES_BUILD_NAME` or `:pyairwaves, :build_name` is defined
+  #   * the mix environment if different than prod
+  defp version(version) do
+    identifier_filter = ~r/[^0-9a-z\-]+/i
+
+    # Pre-release version, denoted from patch version with a hyphen
+    git_pre_release =
+      with {tag, 0} <-
+             System.cmd("git", ["describe", "--tags", "--abbrev=0"], stderr_to_stdout: true),
+           {describe, 0} <- System.cmd("git", ["describe", "--tags", "--abbrev=8"]) do
+        describe
+        |> String.trim()
+        |> String.replace(String.trim(tag), "")
+        |> String.trim_leading("-")
+        |> String.trim()
+      else
+        _ ->
+          {commit_hash, 0} = System.cmd("git", ["rev-parse", "--short", "HEAD"])
+          "0-g" <> String.trim(commit_hash)
+      end
+
+    # Branch name as pre-release version component, denoted with a dot
+    branch_name =
+      with {branch_name, 0} <- System.cmd("git", ["rev-parse", "--abbrev-ref", "HEAD"]),
+           branch_name <- String.trim(branch_name),
+           branch_name <- System.get_env("PYAIRWAVES_BUILD_BRANCH") || branch_name,
+           true <-
+             !Enum.any?(["master", "HEAD", "release/", "stable"], fn name ->
+               String.starts_with?(name, branch_name)
+             end) do
+        branch_name =
+          branch_name
+          |> String.trim()
+          |> String.replace(identifier_filter, "-")
+
+        branch_name
+      end
+
+    build_name =
+      cond do
+        name = Application.get_env(:pyairwaves, :build_name) -> name
+        name = System.get_env("PYAIRWAVES_BUILD_NAME") -> name
+        true -> nil
+      end
+
+    env_name = if Mix.env() != :prod, do: to_string(Mix.env())
+    env_override = System.get_env("PYAIRWAVES_BUILD_ENV")
+
+    env_name =
+      case env_override do
+        nil -> env_name
+        env_override when env_override in ["", "prod"] -> nil
+        env_override -> env_override
+      end
+
+    # Pre-release version, denoted by appending a hyphen
+    # and a series of dot separated identifiers
+    pre_release =
+      [git_pre_release, branch_name]
+      |> Enum.filter(fn string -> string && string != "" end)
+      |> Enum.join(".")
+      |> (fn
+            "" -> nil
+            string -> "-" <> String.replace(string, identifier_filter, "-")
+          end).()
+
+    # Build metadata, denoted with a plus sign
+    build_metadata =
+      [build_name, env_name]
+      |> Enum.filter(fn string -> string && string != "" end)
+      |> Enum.join(".")
+      |> (fn
+            "" -> nil
+            string -> "+" <> String.replace(string, identifier_filter, "-")
+          end).()
+
+    [version, pre_release, build_metadata]
+    |> Enum.filter(fn string -> string && string != "" end)
+    |> Enum.join()
+  end
+
 end

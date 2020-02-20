@@ -5,6 +5,10 @@ defmodule Pyairwaves.Application do
 
   use Application
 
+  @version Mix.Project.config()[:version]
+
+  def version, do: @version
+  
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [

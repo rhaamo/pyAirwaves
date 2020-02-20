@@ -17,7 +17,7 @@ defmodule PyairwavesWeb.Router do
     pipe_through :browser
 
     get "/", MapController, :map
-    # /about
+    get "/about", AppController, :about
   end
 
   # Other scopes may use custom stacks.
