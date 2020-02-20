@@ -1,0 +1,109 @@
+<div id="sidebar" class="sidebar collapsed">
+    <!-- navigation tabs -->
+    <div class="sidebar-tabs">
+    <ul role="tablist">
+        <li title="Help"><a href="#help" role="tab"><i class="fa fa-question"></i></a></li>
+        <li title="Settings"><a href="#settings" role="tab"><i class="fa fa-cogs"></i></a></li>
+        <li title="Aircrafts list"><a href="#aircrafts" role="tab"><i class="fa fa-plane"></i></a></li>
+        <li title="Ships list"><a href="#ships" role="tab"><i class="fa fa-ship"></i></a></li>
+        <li class="locateMe" title="Locate Me"><a href="javascript:void(0)" role="tab"><div id="LocateMe"></div></a></li>
+        <li class="controlZoomIn" title="Zoom in">
+        <a href="javascript:zoomIn()" role="tab">
+            <i class="fa fa-plus-square"></i>
+        </a>
+        </li>
+        <li class="controlZoomOut" title="Zoom out">
+        <a href="javascript:zoomOut()" role="tab">
+            <i class="fa fa-minus-square"></i>
+        </a>
+        </li>
+    </ul>
+    </div>
+
+    <!-- tab panes -->
+    <div class="sidebar-content">
+    <!-- help pane -->
+    <div class="sidebar-pane" id="help">
+        <h1 class="sidebar-header">
+        Help
+        <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
+        </h1>
+
+        <p>pyAirwaves {{ g.cfg['PYAIRWAVES_VERSION'] }}</p>
+        <hr>
+
+        <p>
+        The following actions are available on every markers:
+        <ul>
+        <li>Left click: highlight row in sidebar if open, also shows a popup.</li>
+        <li>Right click: show the path made by the vehicle, if any in memory.</li>
+        </p>
+    </div>
+    <!-- settings pane -->
+    <div class="sidebar-pane" id="settings">
+        <h1 class="sidebar-header">
+        Settings
+        <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
+        </h1>
+
+        <p>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="toggleGreyline">
+            <label class="form-check-label" for="toggleGreyline">
+            Show day/night
+            </label>
+        </div>
+        </p>
+    </div>
+    <!-- aircrafts pane -->
+    <div class="sidebar-pane" id="aircrafts">
+        <h1 class="sidebar-header">
+        Vehicles broadcasting over ADSB
+        <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
+        </h1>
+
+        <div id="container-list-ADSB" class="container-list-vehicles">
+        <table id="table-ADSB" class="table table-sm vehicle-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cat.</th>
+                <th>Flag</th>
+                <th>Altitude</th>
+                <th>Velocity</th>
+                <th>Heading</th>
+                <th>Pos</th>
+                <th>Sig</th>
+            </tr>
+            </thead>
+        </table>
+        </div>
+    </div>
+    <!-- ships pane -->
+    <div class="sidebar-pane" id="ships">
+        <h1 class="sidebar-header">
+        Vehicles broadcasting over AIS
+        <span class="sidebar-close"><i class="fa fa-caret-right"></i></span>
+        </h1>
+
+        <div id="container-list-AIS" class="container-list-vehicles">
+        <table id="table-AIS" class="table table-sm vehicle-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Flag</th>
+                <th>Velocity</th>
+                <th>Course</th>
+                <th>Destination</th>
+                <th>Pos</th>
+                <th>Sig</th>
+            </tr>
+            </thead>
+        </table>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- The Leaflet map goes here. -->
+<div id="map" class="sidebar-map"></div>

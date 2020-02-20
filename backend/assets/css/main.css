@@ -1,0 +1,66 @@
+* {
+    /*font-size: 0.9rem;
+    font-family: Helvetica,
+    Arial,
+    "Lucida Grande",
+    sans-serif;*/
+}
+
+.msgBx {
+    font-size: 0.5rem;
+    font-family: monospace;
+    width: 100%;
+    border: 1px solid #000000;
+    background-color: #cccccc;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0.85;
+}
+
+.dbgInactive {
+    display: none;
+}
+
+.dbgActive {
+    z-index: 9999;
+}
+
+div.content {
+    padding-top: 3rem;
+    height: 100%;
+}
+
+div.content .noMap {
+    padding-top: 1rem;
+}
+
+html, body {
+    height: 100%;
+}
+
+#map {
+    height: 100%;
+}
+
+#mapStyleBox {
+    text-align: left;
+    font-family: Roboto, Arial, sans-serif;
+    position: absolute;
+    top: 5px !important;
+    left: 35px !important;
+}
+
+.mapStyleSelector {
+    font-size: 12px;
+    z-index: 9999;
+}
+
+span.icon-socket-ok {
+    color: green;
+}
+
+span.icon-socket-nok {
+    color: red;
+}

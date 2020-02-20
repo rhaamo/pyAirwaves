@@ -13,7 +13,7 @@ module.exports = (env, options) => ({
     ]
   },
   entry: {
-    './js/app.js': glob.sync('./vendor/**/*.js').concat(['./js/app.js'])
+    './js/app.js': glob.sync('./vendor/**/*.js').concat(['./js/app.js']),
   },
   output: {
     filename: 'app.js',
@@ -25,17 +25,51 @@ module.exports = (env, options) => ({
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader'
+          loader: 'imports-loader'
         }
       },
       {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader']
+      },
+      {
+        test: /\.scss$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+      },
+      {
+        test: /jquery.+\.js$/,
+        use: [
+          {
+            loader: 'expose-loader',
+            options: 'jQuery'
+          },
+          {
+            loader: 'expose-loader',
+            options: '$'
+          }
+        ]
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf|jpe?g|png|gif|svg)$/,
+        use: ["file-loader"],
       }
     ]
   },
   plugins: [
     new MiniCssExtractPlugin({ filename: '../css/app.css' }),
-    new CopyWebpackPlugin([{ from: 'static/', to: '../' }])
-  ]
+    new CopyWebpackPlugin([{ from: 'static/', to: '../' }]),
+    new CopyWebpackPlugin(
+        [
+          { from: 'static/', to: '../' },
+          {
+            context: "./node_modules/fork-awesome/fonts",
+            from: "*",
+            to: "../fonts",
+          }
+        ]
+      )
+  ],
+  externals: {
+    jquery: 'jQuery'
+  }
 });

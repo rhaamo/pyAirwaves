@@ -1,3 +1,7 @@
-/* This file is for your main application css. */
+@import "main.css";
+@import "sidebar.css";
 
-@import "./phoenix.css";
+@import "../node_modules/bootstrap/dist/css/bootstrap.css";
+@import "../node_modules/leaflet/dist/leaflet.css";
+@import "../node_modules/sidebar-v2/css/leaflet-sidebar.css";
+@import "../node_modules/fork-awesome/css/fork-awesome.css";

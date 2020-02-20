@@ -1,31 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
+<!--
+pyAirwaves geospatial viewer by Dashie (https://github.com/rhaamo)
+
+This project is licensed under GPLv3. See COPYING for dtails.
+
+This file is part of the airSuck project (https://github.com/rhaamo/pyAirwaves).
+-->
+
+<!doctype html>
+<html>
   <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title><%= assigns[:page_title] || "Pyairwaves · Phoenix Framework" %></title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    
+    <title>pyAirwaves geospatial viewer</title>
+    
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
     <%= csrf_meta_tag() %>
   </head>
   <body>
-    <header>
-      <section class="container">
-        <nav role="navigation">
-          <ul>
-            <li><a href="https://hexdocs.pm/phoenix/overview.html">Get Started</a></li>
-          </ul>
-        </nav>
-        <a href="https://phoenixframework.org/" class="phx-logo">
-          <img src="<%= Routes.static_path(@conn, "/images/phoenix.png") %>" alt="Phoenix Framework Logo"/>
-        </a>
-      </section>
-    </header>
-    <main role="main" class="container">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="/">pyAirwaves</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item {% if request.endpoint == 'bp_main.home' %}active{% endif %}">
+            <a class="nav-link" href="/">Map</a>
+          </li>
+          <li class="nav-item {% if request.endpoint == 'bp_main.about' %}active{% endif %}">
+            <a class="nav-link" href="/about">About</a>
+          </li>
+        </ul>
+        <span id="websocket-status" class="badge badge-pill badge-secondary" title="WebSocket status unknown"><i class="fa fa-question-circle-o"></i></span>
+      </div>
+    </nav>
+
+    <div class="content">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
       <%= render @view_module, @view_template, assigns %>
-    </main>
+    </div>
+
+    <form><input type="text" class="msgBx dbgInactive" id="message" value="Waiting for message data..." /></form>
+
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
