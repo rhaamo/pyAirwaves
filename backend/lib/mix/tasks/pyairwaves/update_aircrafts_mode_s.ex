@@ -49,6 +49,7 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
     url = "http://data.flightairmap.com/data/BaseStation.sqb.gz"
 
     Pyairwaves.Repo.delete_all(Pyairwaves.AircraftMode)
+    Pyairwaves.Repo.delete_all(Pyairwaves.AircraftOwner)
     Logger.info("Table cleaned.")
 
     temp_file = Temp.path!
@@ -67,12 +68,12 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
       |> elem(1)
       |> Enum.map(fn (row) ->
         Pyairwaves.Repo.insert!(parse_aircraft_mode(row), log: false)
-        case row[:RegisteredOwners] do
+        is_private = case String.downcase(to_string(row[:RegisteredOwners])) do
           "" -> nil
-          nil -> nil
-          "private" -> Pyairwaves.Repo.insert!(parse_owner(row, true), log: false)
-          _ -> Pyairwaves.Repo.insert!(parse_owner(row, false), log: false)
+          "private" -> true
+          _ -> false
         end
+        Pyairwaves.Repo.insert!(parse_owner(row, is_private), log: false)
       end)
     end, timeout: :infinity, log: false)
 
