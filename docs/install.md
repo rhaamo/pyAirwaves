@@ -1,14 +1,13 @@
 # Installation
 
-# Prerequirements
+# Prerequisites
 
-    sudo apt install build-essential libcurl4-openssl-dev libssl-dev libncursesw5-dev libsqlite3-dev libbz2-dev zlib1g-dev
-    sudo useradd -m -s /bin/bash pyairwaves
-    sudo su - pyairwaves
-    python3 -m venv venv
-    git clone https://github.com/rhaamo/pyAirwaves
-    # don't forget to always enable the virtualenv
-    source ~/venv/bin/activate
+- PostgreSQL 9.6+, uses the latest if possible. Official repositories for RH/Debian and Ubuntu availables: https://www.postgresql.org/download/
+- postgresql-contrib 9.6+, same as above
+- Elixir 1.5+, [install from here, Debian and Ubuntu ship older versions](https://elixir-lang.org/install.html#unix-and-unix-like) or uses [asdf](https://github.com/asdf-vm/asdf) under the pyairwaves user
+- erlang-dev
+- git
+- build-essentials
 
 # PostgreSQL
 
@@ -18,28 +17,32 @@ Please makes sure your postgresql is in UTF8 ! In doubt uses `-E UTF8` when doin
 
 # Install
 
+    useradd -m -s /bin/bash pyairwaves
     sudo su - pyairwaves
-    cd pyAirwaves
-    # don't forget to always enable the virtualenv
-    source ~/venv/bin/activate
-    pip install -r requirements.txt
-    # copy sample config and edit to your needs
-    cp config.py.sample config.py
-    $EDITOR config.py
+    git clone https://github.com/rhaamo/pyAirwaves
+    cd pyAirwaves/backend
+    mix deps.get
+    cp config/prod.secret.exs.sample config/prod.secret.exs
+    $EDITOR config/prod.secret.exs
+    mix compile
     
     # Edit frontend config to your needs
-    $EDITOR static/js/config.js
+    $EDITOR ~/backend/priv/static/js/config.js
     
     # Setup database
-    flask db upgrade
+    cd ~/backend/
+    mix ecto.create
+    mix ecto.migrate
+
+
     
-    # Import datas in database (offline ones)
-    # expected around 2693 items
-    flask import-aircrafts
+    # Import datas in database
+    # expected around 10191 items
+    mix pyairwaves.update_aircrafts
     # expected around 234 items
-    flask import-registrations
+    mix pyairwaves.update_aircrafts_registrations
     
-    # Import more datas (online)
+    # Import more datas
     # expected:
     # mode_s aco ~94924
     # mode_s acm ~176708
@@ -50,8 +53,20 @@ Please makes sure your postgresql is in UTF8 ! In doubt uses `-E UTF8` when doin
 
 Look at the `installation/` folder, there is sample SystemD services for each part.
 
-# Crontabs for regular imports
+# CLI commands
+
+See commands with:
 ```
-# Run one time every month
-flask update-aircrafts-db
+cd ~/backend
+mix pyairwaves
 ```
+
+And extended help for a command with:
+```
+cd ~/backend
+mix help pyairwaves.update_aircrafts
+```
+
+# Crontabs
+
+- pyairwaves.update_aircrafts: one time per month max
