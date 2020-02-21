@@ -76,6 +76,12 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
       end)
     end, timeout: :infinity, log: false)
 
+    # TODO cleanup from ACARS
+    # q = db.session.query(AircraftModes.mode_s).filter(AircraftModes.source == "ACARS")
+    # db.session.query(AircraftModes).filter(and_(AircraftModes.source == fname, AircraftModes.mode_s.in_(q))).delete(
+    #     synchronize_session="fetch"
+    # )
+
     Temp.cleanup
     Logger.info("Update finished.")
   end
