@@ -17,12 +17,11 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsRegistrations do
     Pyairwaves.Repo.delete_all(Pyairwaves.AircraftRegistration)
     Logger.info("Table cleaned.")
 
-    regs =
-      registrations()
-      |> Enum.chunk_every(1000)
-      |> Enum.map(fn chunk ->
-        Pyairwaves.Repo.insert_all(Pyairwaves.AircraftRegistration, chunk, on_conflict: :nothing)
-      end)
+    registrations()
+    |> Enum.chunk_every(1000)
+    |> Enum.map(fn chunk ->
+      Pyairwaves.Repo.insert_all(Pyairwaves.AircraftRegistration, chunk, on_conflict: :nothing)
+    end)
 
     Logger.info("Update finished, handled #{length(registrations())} items.")
   end
