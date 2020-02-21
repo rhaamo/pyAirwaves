@@ -69,4 +69,5 @@ mix help pyairwaves.update_aircrafts
 
 # Crontabs
 
-- pyairwaves.update_aircrafts: one time per month max
+- pyairwaves.update_aircrafts: one time per month
+- pyairwaves.update_translations: one time per month

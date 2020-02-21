@@ -17,6 +17,5 @@ defmodule Pyairwaves.Translation do
   def changeset(translation, attrs) do
     translation
     |> cast(attrs, [:reg, :reg_correct, :operator, :operator_correct, :source])
-    |> validate_required([:reg, :reg_correct, :operator, :operator_correct, :source])
   end
 end
