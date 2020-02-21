@@ -7,6 +7,7 @@
 - Elixir 1.5+, [install from here, Debian and Ubuntu ship older versions](https://elixir-lang.org/install.html#unix-and-unix-like) or uses [asdf](https://github.com/asdf-vm/asdf) under the pyairwaves user
 - erlang-dev
 - git
+- libsqlite3-dev
 - build-essentials
 
 # PostgreSQL
@@ -71,3 +72,4 @@ mix help pyairwaves.update_aircrafts
 
 - pyairwaves.update_aircrafts: one time per month
 - pyairwaves.update_translations: one time per month
+- pyairwaves.update_aircrafts_mode_s: one time per month

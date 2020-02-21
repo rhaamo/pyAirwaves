@@ -45,7 +45,10 @@ defmodule Pyairwaves.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:redix, ">= 0.0.0"},
       {:nimble_csv, "~> 0.6"},
-      {:httpoison, "~> 1.6"}
+      {:httpoison, "~> 1.6"},
+      {:esqlite, "~> 0.4.0"},
+      {:sqlitex, "~> 1.7"},
+      {:temp, "~> 0.4"}
     ]
   end
 
