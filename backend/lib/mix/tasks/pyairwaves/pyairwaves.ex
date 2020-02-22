@@ -10,6 +10,17 @@ defmodule Mix.Tasks.Pyairwaves do
 
   """
 
+  @start_apps [
+    :crypto,
+    :ssl,
+    :postgrex,
+    :ecto,
+    :ecto_sql
+  ]
+  @repos [
+    Pyairwaves.Repo
+  ]
+
   @doc false
   def run(args) do
     {_opts, args} = OptionParser.parse!(args, strict: [])
@@ -25,5 +36,13 @@ defmodule Mix.Tasks.Pyairwaves do
     Mix.shell().info("ADSB and AIS mapper and logger")
     Mix.shell().info("\nAvailable tasks:\n")
     Mix.Tasks.Help.run(["--search", "pyairwaves."])
+  end
+
+  @doc "Start the required stuff for the repository"
+  def start_apps do
+    IO.puts("Starting apps...")
+    Enum.each(@start_apps, &Application.ensure_all_started/1)
+    IO.puts("Starting repos.")
+    Enum.each(@repos, & &1.start_link(pool_size: 2))
   end
 end

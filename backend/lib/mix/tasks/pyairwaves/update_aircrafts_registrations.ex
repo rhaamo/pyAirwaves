@@ -1,5 +1,6 @@
 defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsRegistrations do
   use Mix.Task
+  import Mix.Tasks.Pyairwaves
 
   require Logger
 
@@ -11,7 +12,9 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsRegistrations do
 
   @shortdoc "Update the list of known aircrafts registrations"
   def run(_) do
-    Application.ensure_all_started(:pyairwaves)
+    # start the required apps & repos
+    start_apps()
+
     Logger.info("Starting aircraft registrations update. (Offline)")
 
     Pyairwaves.Repo.delete_all(Pyairwaves.AircraftRegistration)

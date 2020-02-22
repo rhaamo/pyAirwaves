@@ -1,5 +1,6 @@
 defmodule Mix.Tasks.Pyairwaves.UpdateAircrafts do
   use Mix.Task
+  import Mix.Tasks.Pyairwaves
 
   require Logger
 
@@ -36,7 +37,9 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircrafts do
 
   @shortdoc "Update the list of known aircrafts models"
   def run(_) do
-    Application.ensure_all_started(:pyairwaves)
+    # start the required apps & repos
+    start_apps()
+
     Logger.info("Starting aircrafts update. (Online)")
     HTTPoison.start()
 

@@ -1,5 +1,6 @@
 defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
   use Mix.Task
+  import Mix.Tasks.Pyairwaves
 
   require Logger
 
@@ -42,7 +43,9 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
 
   @shortdoc "Update the list of Aircraft Mode S and Aircraft Owners"
   def run(_) do
-    Application.ensure_all_started(:pyairwaves)
+    # start the required apps & repos
+    start_apps()
+
     Temp.track!()
 
     Logger.info("Starting Aircrafts ModeS update. (Online)")

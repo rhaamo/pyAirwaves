@@ -1,5 +1,6 @@
 defmodule Mix.Tasks.Pyairwaves.UpdateTranslations do
   use Mix.Task
+  import Mix.Tasks.Pyairwaves
 
   require Logger
 
@@ -13,7 +14,9 @@ defmodule Mix.Tasks.Pyairwaves.UpdateTranslations do
 
   @shortdoc "Update the list of operators translations"
   def run(_) do
-    Application.ensure_all_started(:pyairwaves)
+    # start the required apps & repos
+    start_apps()
+
     Logger.info("Starting translations update. (Online)")
     HTTPoison.start()
 

@@ -1,5 +1,6 @@
 defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeSogn do
   use Mix.Task
+  import Mix.Tasks.Pyairwaves
 
   require Logger
   require Ecto.Query
@@ -57,7 +58,8 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeSogn do
 
   @shortdoc "Update the list of aircrafts Mode S from Open Glider Network"
   def run(_) do
-    Application.ensure_all_started(:pyairwaves)
+    # start the required apps & repos
+    start_apps()
 
     Logger.info("Starting Aircrafts ModeS from Open Glider Network update. (Online)")
     HTTPoison.start()
