@@ -26,6 +26,6 @@ defmodule Pyairwaves.RedisEater do
       ) do
     Phoenix.PubSub.broadcast(Pyairwaves.PubSub, "room:vehicles", {:redis_eat, message})
     # Logger.debug("Received from redis: #{inspect(message)}")
-    {:noreply, state}
+    {:noreply, state, :hibernate}
   end
 end
