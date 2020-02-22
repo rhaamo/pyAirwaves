@@ -16,26 +16,28 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeSogn do
     [_device_type, device_id, aircraft_model, registration, _cn, _tracked, _identified] = row
 
     # Try to determine ICAO, default is GLID (not handled)
-    [an0, an1] = case String.split(aircraft_model, " ") do
-      [a, b, _, _] -> [a, b]
-      [a, b, _] -> [a, b]
-      [a, b] -> [a, b]
-      [a] -> [a, ""]
-    end
+    [an0, an1] =
+      case String.split(aircraft_model, " ") do
+        [a, b, _, _] -> [a, b]
+        [a, b, _] -> [a, b]
+        [a, b] -> [a, b]
+        [a] -> [a, ""]
+      end
 
-    aircraft = if String.length(an0) > 1 and String.length(an1) > 3 do
-      Pyairwaves.Aircraft
-      |> Ecto.Query.where([a], a.type == ^"%#{aircraft_model}%" and a.type == ^"%#{an0}%")
-      |> Ecto.Query.select([a], a.icao)
-      |> Ecto.Query.first
-      |> Pyairwaves.Repo.one(log: false)
-    else
-      Pyairwaves.Aircraft
-      |> Ecto.Query.where([a], like(a.type, ^"%#{aircraft_model}%"))
-      |> Ecto.Query.select([a], a.icao)
-      |> Ecto.Query.first
-      |> Pyairwaves.Repo.one(log: false)
-    end
+    aircraft =
+      if String.length(an0) > 1 and String.length(an1) > 3 do
+        Pyairwaves.Aircraft
+        |> Ecto.Query.where([a], a.type == ^"%#{aircraft_model}%" and a.type == ^"%#{an0}%")
+        |> Ecto.Query.select([a], a.icao)
+        |> Ecto.Query.first()
+        |> Pyairwaves.Repo.one(log: false)
+      else
+        Pyairwaves.Aircraft
+        |> Ecto.Query.where([a], like(a.type, ^"%#{aircraft_model}%"))
+        |> Ecto.Query.select([a], a.icao)
+        |> Ecto.Query.first()
+        |> Pyairwaves.Repo.one(log: false)
+      end
 
     icao_type_code = aircraft || ""
 
@@ -82,7 +84,8 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeSogn do
           Pyairwaves.Repo.insert!(am, log: false)
         end)
       end,
-      log: false, timeout: :infinity
+      log: false,
+      timeout: :infinity
     )
 
     # TODO cleanup from ACARS
