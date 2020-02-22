@@ -4,16 +4,18 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
   require Logger
 
   @moduledoc """
-  Update the list of aircrafts Mode S
+  Update the list of aircrafts Mode S and Aircraft Owners
 
   Cron recommanded: run one time per month
   """
 
   defp parse_aircraft_mode(row) do
-    type_flight = case row[:UserString4] do
-      "M" -> "military"
-      _ -> nil
-    end
+    type_flight =
+      case row[:UserString4] do
+        "M" -> "military"
+        _ -> nil
+      end
+
     %Pyairwaves.AircraftMode{
       # updated_at: row[:LastModified],
       # inserted_at: row[:LastModified],
@@ -33,15 +35,15 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
       registration: row[:Registration],
       source: "BaseStation.sqb",
       owner: row[:RegisteredOwners],
-      is_private: private  # might be useful one day
+      # might be useful one day
+      is_private: private
     }
   end
 
-
-  @shortdoc "Update the list of Aircraft Mode S"
+  @shortdoc "Update the list of Aircraft Mode S and Aircraft Owners"
   def run(_) do
     Application.ensure_all_started(:pyairwaves)
-    Temp.track!
+    Temp.track!()
 
     Logger.info("Starting Aircrafts ModeS update. (Online)")
     HTTPoison.start()
@@ -52,30 +54,42 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
     Pyairwaves.Repo.delete_all(Pyairwaves.AircraftOwner)
     Logger.info("Table cleaned.")
 
-    temp_file = Temp.path!
+    temp_file = Temp.path!()
 
-    datas = HTTPoison.get!(url, [], []).body
-    |> :zlib.gunzip()
+    datas =
+      HTTPoison.get!(url, [], []).body
+      |> :zlib.gunzip()
+
     File.write!(temp_file, datas)
 
     Logger.info("File downloaded.")
 
-    Pyairwaves.Repo.transaction(fn ->
-      # It uses SQlite3...
-      Sqlitex.with_db(temp_file, fn (db) ->
-        Sqlitex.query(db, "SELECT LastModified, ModeS, ModeSCountry, Registration, ICAOTypeCode, UserString4, RegisteredOwners, Registration from Aircraft")
-      end)
-      |> elem(1)
-      |> Enum.map(fn (row) ->
-        Pyairwaves.Repo.insert!(parse_aircraft_mode(row), log: false)
-        is_private = case String.downcase(to_string(row[:RegisteredOwners])) do
-          "" -> nil
-          "private" -> true
-          _ -> false
-        end
-        Pyairwaves.Repo.insert!(parse_owner(row, is_private), log: false)
-      end)
-    end, timeout: :infinity, log: false)
+    Pyairwaves.Repo.transaction(
+      fn ->
+        # It uses SQlite3...
+        Sqlitex.with_db(temp_file, fn db ->
+          Sqlitex.query(
+            db,
+            "SELECT LastModified, ModeS, ModeSCountry, Registration, ICAOTypeCode, UserString4, RegisteredOwners, Registration from Aircraft"
+          )
+        end)
+        |> elem(1)
+        |> Enum.map(fn row ->
+          Pyairwaves.Repo.insert!(parse_aircraft_mode(row), log: false)
+
+          is_private =
+            case String.downcase(to_string(row[:RegisteredOwners])) do
+              "" -> nil
+              "private" -> true
+              _ -> false
+            end
+
+          Pyairwaves.Repo.insert!(parse_owner(row, is_private), log: false)
+        end)
+      end,
+      timeout: :infinity,
+      log: false
+    )
 
     # TODO cleanup from ACARS
     # q = db.session.query(AircraftModes.mode_s).filter(AircraftModes.source == "ACARS")
@@ -83,7 +97,7 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
     #     synchronize_session="fetch"
     # )
 
-    Temp.cleanup
+    Temp.cleanup()
     Logger.info("Update finished.")
   end
 end
