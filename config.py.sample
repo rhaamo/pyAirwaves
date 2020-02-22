@@ -4,6 +4,14 @@ SQLALCHEMY_DATABASE_URI = \
 # Redis configuration for the ingesters<>backend pubsub
 REDIS_URL = "redis://127.0.0.1:6379/3"
 
+# Hostname on where this server is running
+PYAW_HOSTNAME = 'potato'
+
+# Sources for ADS-B and AIS, PLEASE NOTE that currently only one source is handled for each !
+# Port for ADSB (dump1090) needs to be 30003 (SBS BaseStation)
+# Port for AIS (rtl-ais) needs to be 10110
+ADSB_SOURCE = {"host": "patate", "port": 30003, "name": "patate", "reconnect_delay": 5, "thread_timeout": 30}
+AIS_SOURCE = {'host': 'patate', 'port': 10110, "name": "patate", "reconnect_delay": 5, "thread_timeout": 30}
+
 # Do not touch that
-SQLALCHEMY_TRACK_MODIFICATIONS = False
-SQLALCHEMY_RECORD_QUERIES = True
+SQLALCHEMY_RECORD_QUERIES = False

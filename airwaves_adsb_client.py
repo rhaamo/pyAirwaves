@@ -10,7 +10,7 @@ import time
 import datetime
 from libPyAirwaves.adsb import is_valid_adsb_message
 from libPyAirwaves.structs import AdsbType
-from models import db, Aircrafts, AircraftModes, AircraftOwner, AircraftRegistration
+from models import Session, Aircrafts, AircraftModes, AircraftOwner, AircraftRegistration
 import redis
 import json
 
@@ -20,6 +20,7 @@ max_failed_connection = 10
 redis = redis.from_url(config.REDIS_URL)
 pubsub = redis.pubsub()
 pubsub.subscribe("room:vehicles")
+session = Session()
 
 if __name__ == "__main__":
     while count_failed_connection < max_failed_connection:
@@ -98,7 +99,7 @@ if __name__ == "__main__":
 
                             # Get more datas from SQL
                             sqlcraft = (
-                                db.session.query(
+                                session.query(
                                     AircraftModes.icao_type_code,
                                     Aircrafts.type,
                                     Aircrafts.manufacturer,
