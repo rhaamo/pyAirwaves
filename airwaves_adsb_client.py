@@ -21,7 +21,7 @@ max_failed_connection = 10
 app = create_app()
 app.app_context().push()
 
-redis = redis.Redis(host="localhost", port=6379, db=4)
+redis = redis.from_url(config.REDIS_URL)
 pubsub = redis.pubsub()
 pubsub.subscribe("room:vehicles")
 

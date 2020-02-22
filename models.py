@@ -40,7 +40,7 @@ class Aircrafts(db.Model):
 
 
 class AircraftModes(db.Model):
-    __tablename__ = "aircraft_modes"
+    __tablename__ = "aircraft_mode"
 
     id = db.Column(db.Integer, primary_key=True)
     first_created = db.Column(db.DateTime(timezone=False), default=datetime.datetime.utcnow)
