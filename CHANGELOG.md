@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 ### Changed
 - **Breaking:** Backend rewritten from python to Elixir
+- Frontend: Markers out of the current displayed map bounds are dropped when received
 
 ## [0.0.1]
 ### Added

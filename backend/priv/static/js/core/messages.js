@@ -35,6 +35,13 @@ function handleMessage(event) {
     // Store the vehicle name for reference in the function
     let vehName = "veh" + msgJSON.addr.toString();
 
+    if (msgJSON.lon && msgJSON.lat) {
+        const markerBounds = L.latLngBounds(L.latLng(msgJSON.lat, msgJSON.lon), L.latLng(msgJSON.lat, msgJSON.lon));
+        if (!map.getBounds().contains(markerBounds)) {
+            return; // Marker is out of bounds, just drop it
+        }
+    }
+
     // See if we have a vehicle in our vehicle data.
     if (vehName in vehicles && vehicles[vehName] != null) {
         // existing vehicle, call the update function
@@ -51,11 +58,6 @@ function handleMessage(event) {
                 // Add marker and listeners only if we have a Latitude and Longitude
                 // Cannot create a marker without geoposition datas
                 if (vehicles[vehName].lat && vehicles[vehName].lon) {
-                    const markerBounds = L.latLngBounds(L.latLng(msgJSON.lat, msgJSON.lon), L.latLng(msgJSON.lat, msgJSON.lon));
-                    if (!map.getBounds().contains(markerBounds)) {
-                        // Do something if out-of-bounds
-                        // Ideally we would drop the message in the future
-                    }
                     // create a marker icon for the vehicle (may move to the constructor)
                     vehicles[vehName].setMarker();
 
