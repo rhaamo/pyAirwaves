@@ -20,9 +20,13 @@ Please makes sure your postgresql is in UTF8 ! In doubt uses `-E UTF8` when doin
     useradd -m -s /bin/bash pyairwaves
     sudo su - pyairwaves
     git clone https://github.com/rhaamo/pyAirwaves
+    echo "export MIX_ENV=prod" >> .profile
+    export MIX_ENV=prod
     cd pyAirwaves/backend
-    mix deps.get
     cp config/prod.secret.exs.sample config/prod.secret.exs
+    mix deps.get
+    mix phx.gen.secret
+    # save the secret and fill it in the config below
     $EDITOR config/prod.secret.exs
     mix compile
     

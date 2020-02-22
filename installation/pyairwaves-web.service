@@ -9,6 +9,7 @@ RestartSec=5
 Restart=on-failure
 User=pyairwaves
 WorkingDirectory=/home/pyairwaves/pyAirwaves/backend
+Environment=MIX_ENV=prod
 
 [Install]
 WantedBy=multi-user.target
