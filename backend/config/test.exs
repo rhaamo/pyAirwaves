@@ -5,7 +5,7 @@ config :pyairwaves, Pyairwaves.Repo,
   username: "postgres",
   password: "postgres",
   database: "pyairwaves_test",
-  hostname: "localhost",
+  hostname: "database",
   pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test. If one is required,
