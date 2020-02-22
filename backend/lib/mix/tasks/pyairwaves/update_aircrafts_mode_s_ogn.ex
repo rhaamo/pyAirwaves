@@ -27,19 +27,17 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeSogn do
       Pyairwaves.Aircraft
       |> Ecto.Query.where([a], a.type == ^"%#{aircraft_model}%" and a.type == ^"%#{an0}%")
       |> Ecto.Query.select([a], a.icao)
+      |> Ecto.Query.first
       |> Pyairwaves.Repo.one(log: false)
     else
       Pyairwaves.Aircraft
       |> Ecto.Query.where([a], like(a.type, ^"%#{aircraft_model}%"))
       |> Ecto.Query.select([a], a.icao)
+      |> Ecto.Query.first
       |> Pyairwaves.Repo.one(log: false)
     end
 
-    icao_type_code = if aircraft do
-      aircraft.icao
-    else
-      ""
-    end
+    icao_type_code = aircraft || ""
 
     am = %Pyairwaves.AircraftMode{
       mode_s: device_id,
