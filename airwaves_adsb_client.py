@@ -11,15 +11,11 @@ import datetime
 from libPyAirwaves.adsb import is_valid_adsb_message
 from libPyAirwaves.structs import AdsbType
 from models import db, Aircrafts, AircraftModes, AircraftOwner, AircraftRegistration
-from app import create_app
 import redis
 import json
 
 count_failed_connection = 0
 max_failed_connection = 10
-
-app = create_app()
-app.app_context().push()
 
 redis = redis.from_url(config.REDIS_URL)
 pubsub = redis.pubsub()
