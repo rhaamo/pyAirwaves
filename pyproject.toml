@@ -8,6 +8,7 @@ exclude = '''
   | \__pycache__
   | venv
   | front
+  | backend
 )/
 '''
 skip-numeric-underscore-normalization = true

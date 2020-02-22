@@ -34,21 +34,23 @@ Please makes sure your postgresql is in UTF8 ! In doubt uses `-E UTF8` when doin
     cd ~/backend/
     mix ecto.create
     mix ecto.migrate
-
-
     
     # Import datas in database
-    # expected around 10191 items
     mix pyairwaves.update_aircrafts
-    # expected around 234 items
     mix pyairwaves.update_aircrafts_registrations
-    
-    # Import more datas
-    # expected:
-    # mode_s aco ~94924
-    # mode_s acm ~176708
-    # mode_s ogn ~16240
-    flask update-aircrafts-db
+    mix pyairwaves.update_translations
+    mix pyairwaves.update_aircrafts_mode_s
+    mix pyairwaves.update_aircrafts_mode_sogn
+
+    # Python part for the ingesters
+    cd ~/
+    python3 -m venv venv
+    cd pyAirwaves
+    $EDITOR config.py
+    # don't forget to always enable the virtualenv
+    source ~/venv/bin/activate
+    pip install -r requirements.txt
+
 
 # Automatic run
 
