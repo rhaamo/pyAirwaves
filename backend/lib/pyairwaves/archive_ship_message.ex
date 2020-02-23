@@ -7,14 +7,14 @@ defmodule Pyairwaves.ArchiveShipMessage do
   schema "archive_ship_message" do
     field :mmsi, :integer
     field :raw, :string
-    field :assembled, :boolean
+    field :assembled, :boolean, default: false
     field :geom, Geo.PostGIS.Geometry
     field :heading, :float
     field :course_over_ground, :float
     field :turn_rate, :float
-    field :position_accuracy, :boolean
+    field :position_accuracy, :boolean, default: false
     field :maneuver, :integer
-    field :raim, :boolean
+    field :raim, :boolean, default: true
     field :radio_status, :integer
     field :destination, :string
     field :callsign, :string
@@ -34,17 +34,23 @@ defmodule Pyairwaves.ArchiveShipMessage do
     aircraft
     |> cast(attrs, [
       :mmsi,
-      :mmsi_type,
-      :mmsi_cc,
+      :raw,
+      :assembled,
+      :geom,
+      :heading,
+      :course_over_ground,
+      :turn_rate,
+      :position_accuracy,
+      :maneuver,
+      :raim,
+      :radio_status,
+      :destination,
       :callsign,
-      :dim_to_bow,
-      :dim_to_stern,
-      :dim_to_port,
-      :dim_to_starboard,
-      :ship_type
+      :epfd,
+      :navigation_status,
+      :draught,
+      :eta
     ])
-    |> validate_required([:mmsi, :mmsi_type, :mmsi_cc])
-    |> unique_constraint(:mmsi)
-    |> unique_constraint(:callsign)
+    |> validate_required([:mmsi, :raw])
   end
 end

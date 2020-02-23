@@ -218,13 +218,13 @@ class AisType(DefaultType):
         # Maritime Mobile Service Identity ID
         self.mmsi: int = None
 
-        # Position Accuracy ?
+        # Position Accuracy. true = high <10m; false low >10m; default=false
         self.posAcc: bool = None
 
         # FIXME (libAirSuck/aisParse.py:616)
         self.maneuver: int = None
 
-        # Unknown
+        # Receiver autonomous integrity monitoring; false=not in use; true=in use; default=true
         self.raim: bool = None
 
         # Radio status
