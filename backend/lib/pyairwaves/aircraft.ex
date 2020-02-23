@@ -33,6 +33,5 @@ defmodule Pyairwaves.Aircraft do
       :mfr
     ])
     |> validate_required([:icao, :type, :manufacturer])
-    |> unique_constraint(:icao)
   end
 end

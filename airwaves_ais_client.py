@@ -42,7 +42,7 @@ def broadcast(msg: pyais.messages.NMEAMessage):
 
     # Valid message and emit if lat/lon are present
     # if ais_message.lat and ais_message.lon:
-    # print(ais_message.to_dict())
+    print(ais_message.to_dict())
     redis.publish("room:vehicles", json.dumps(ais_message.to_dict()))
 
 
