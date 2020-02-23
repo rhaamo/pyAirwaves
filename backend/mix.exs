@@ -48,7 +48,8 @@ defmodule Pyairwaves.MixProject do
       {:httpoison, "~> 1.6"},
       {:esqlite, "~> 0.4.0"},
       {:sqlitex, "~> 1.7"},
-      {:temp, "~> 0.4"}
+      {:temp, "~> 0.4"},
+      {:geo_postgis, "~> 3.1"}
     ]
   end
 

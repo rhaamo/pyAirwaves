@@ -88,7 +88,7 @@ ADSB broadcasts only one kind of packet, but the structure contains more data, f
     'srcPos': False, 
     'srcLat': None, 
     'srcLon': None, 
-    'srcPosMeta': None, 
+    'srcPosMode': None, 
     'vertStat': 'air', 
     'vertRate': None, 
     'category': None, 

@@ -71,8 +71,8 @@ class AdsbType(DefaultType):
         # Data source longitude
         self.srcLon: float = None
 
-        # Metadata about how srcLat and srcLon are derived.
-        self.srcPosMeta: str = None
+        # Mode on how the source position is determined.
+        self.srcPosMode: str = None
 
         # Vertical status of vehicle (air/gnd)
         self.vertStat: str = None
@@ -194,8 +194,8 @@ class AisType(DefaultType):
         # Data source longitude
         self.srcLon: float = None
 
-        # Metadata about how srcLat and srcLon are derived.
-        self.srcPosMeta: str = None
+        # Mode on how the source position is determined.
+        self.srcPosMode: str = None
 
         # Decoded longitude
         self.lon: float = None
@@ -254,7 +254,7 @@ class AisType(DefaultType):
         self.dimToPort: int = None
         self.dimToStarboard: int = None
 
-        # ?
+        # Distance between "water line" and water
         self.draught: float = None
 
         # Ship ETA

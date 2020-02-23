@@ -4,6 +4,7 @@
 
 - PostgreSQL 9.6+, uses the latest if possible. Official repositories for RH/Debian and Ubuntu availables: https://www.postgresql.org/download/
 - postgresql-contrib 9.6+, same as above
+- postgresql postgis extension (`postgresql-*-postgis-*`)
 - Elixir 1.5+, [install from here, Debian and Ubuntu ship older versions](https://elixir-lang.org/install.html#unix-and-unix-like) or uses [asdf](https://github.com/asdf-vm/asdf) under the pyairwaves user
 - git
 - libsqlite3-dev
@@ -14,6 +15,15 @@
 Create an user and database.
 
 Please makes sure your postgresql is in UTF8 ! In doubt uses `-E UTF8` when doing `createdb`.
+
+Then create the required extensions on the database:
+
+```
+sudo su - postgres
+psql pyairwaves
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "postgis";
+```
 
 # Install
 
@@ -35,7 +45,6 @@ Please makes sure your postgresql is in UTF8 ! In doubt uses `-E UTF8` when doin
     
     # Setup database
     cd ~/backend/
-    mix ecto.create
     mix ecto.migrate
     
     # Import datas in database

@@ -13,6 +13,7 @@ config :pyairwaves,
 
 config :pyairwaves, Pyairwaves.Repo,
   adapter: Ecto.Adapters.Postgres,
+  types: Pyairwaves.PostgresTypes,
   username: "pyairwaves",
   password: "",
   database: "pyairwaves",
@@ -37,6 +38,10 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+# Sams for Geo Postgis
+config :geo_postgis,
+  json_library: Jason
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
