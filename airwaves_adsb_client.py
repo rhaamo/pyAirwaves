@@ -93,8 +93,11 @@ if __name__ == "__main__":
                         # AKA a "MSG,3" message and perhaps a "MSG,2" (Surface position)
                         if adsb_message.has_location():
                             adsb_message.entryPoint = "airwaves_adsb_client"
-                            adsb_message.src = config.PYAW_HOSTNAME
-                            adsb_message.clientName = config.ADSB_SOURCE["name"]
+                            adsb_message.ourName = config.PYAW_HOSTNAME
+                            adsb_message.srcName = config.ADSB_SOURCE["name"]
+                            adsb_message.srcLat = config.ADSB_SOURCE["lat"]
+                            adsb_message.srcLon = config.ADSB_SOURCE["lon"]
+                            adsb_message.srcPosMode = config.ADSB_SOURCE["posMode"]
                             adsb_message.dataOrigin = "dump1090"
 
                             # Get more datas from SQL

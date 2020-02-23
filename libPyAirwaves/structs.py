@@ -49,21 +49,14 @@ class AdsbType(DefaultType):
         # Date/time stamp data hits system or is generated
         self.dts: datetime = None
 
-        # Name of source host.
-        self._src: str = None
-        # Equals to src
-        self.lastSrc: str = None
-
         # Raw data frame.
         self.data: str = None
 
-        # I don't know, probably unused
-        self._clientName: str = None
-        # Equals to clientName
-        self.lastClientName: str = None
+        # Name for the source giving out datas
+        self.srcName: str = None
 
-        # Is srcPos available
-        self.srcPos: bool = False
+        # Name for the server gathering the clients datas
+        self.ourName: str = None
 
         # Data source latitude
         self.srcLat: float = None
@@ -138,25 +131,6 @@ class AdsbType(DefaultType):
         else:
             return False
 
-    # Setters and Getters
-
-    def set_src(self, value):
-        self._src = value
-        self.lastSrc = value
-
-    def get_src(self):
-        return self._src
-
-    def set_client_name(self, value):
-        self._clientName = value
-        self.lastClientName = value
-
-    def get_client_name(self):
-        return self._clientName
-
-    src = property(get_src, set_src)
-    clientName = property(get_client_name, set_client_name)
-
 
 class AisType(DefaultType):
     """
@@ -177,10 +151,11 @@ class AisType(DefaultType):
         # Date/time stamp data hits system or is generated
         self.dts: datetime = None
 
-        # Name of source host.
-        self._src: str = None
-        # Equals to src
-        self.lastSrc: str = None
+        # Name for the source giving out datas
+        self.srcName: str = None
+
+        # Name for the server gathering the clients datas
+        self.ourName: str = None
 
         # vdm[vdm] Raw data frame.
         self.data: str = None
@@ -310,7 +285,6 @@ class AisType(DefaultType):
             self.maneuver = message["maneuver"].numerator
         self.raim = message["raim"]
         self.radioStatus = message["radio"]
-        self.srcPos = False  # TODO add source position support
 
         # Extract MMSI Datas
         mmsiMeta = self.__getMMSIMeta()
@@ -529,22 +503,3 @@ class AisType(DefaultType):
             return True
         else:
             return False
-
-    # Setters and Getters
-
-    def set_src(self, value):
-        self._src = value
-        self.lastSrc = value
-
-    def get_src(self):
-        return self._src
-
-    def set_client_name(self, value):
-        self._clientName = value
-        self.lastClientName = value
-
-    def get_client_name(self):
-        return self._clientName
-
-    src = property(get_src, set_src)
-    clientName = property(get_client_name, set_client_name)

@@ -7,7 +7,9 @@ defmodule Pyairwaves.ArchiveSource do
   schema "archive_source" do
     field :name, :string
     field :geom, Geo.PostGIS.Geometry
-    field :position_mode, :integer, default: 0
+    field :position_mode, :integer, default: 0  # see docs/PubSub_structure srcPosMode list
+    field :entrypoint, :string
+    field :data_origin, :string
 
     has_many :archive_ship_messages, Pyairwaves.ArchiveShipMessage
 
@@ -18,7 +20,7 @@ defmodule Pyairwaves.ArchiveSource do
   def changeset(aircraft, attrs) do
     aircraft
     |> cast(attrs, [:name, :geom, :position_mode])
-    |> validate_required([:name, :geom, :position_mode])
+    |> validate_required([:name])
     |> unique_constraint(:name)
   end
 end

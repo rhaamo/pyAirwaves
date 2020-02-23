@@ -147,7 +147,7 @@ Ship.prototype.createTableEntry = function () {
           </tr>\
           <tr>\
             <td class="tblHeader">Data src.</td>\
-            <td class="tblCell" colspan=3>' + this.lastClientName + ' -&gt; ' + this.lastSrc + '</td>\
+            <td class="tblCell" colspan=3>' + this.srcName + ' -&gt; ' + this.ourName + '</td>\
           </tr>\
         </tbody></table>\
       </td>\
@@ -273,7 +273,7 @@ Ship.prototype.updateTableEntry = function () {
         </tr>\
         <tr>\
           <td class="tblHeader">Data src.</td>\
-          <td class="tblCell" colspan=3>' + this.lastClientName + ' -&gt; ' + this.lastSrc + '</td>\
+          <td class="tblCell" colspan=3>' + this.srcName + ' -&gt; ' + this.ourName + '</td>\
         </tr>\
       </tbody></table>\
     </td>\

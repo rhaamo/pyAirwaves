@@ -10,8 +10,9 @@ PYAW_HOSTNAME = 'potato'
 # Sources for ADS-B and AIS, PLEASE NOTE that currently only one source is handled for each !
 # Port for ADSB (dump1090) needs to be 30003 (SBS BaseStation)
 # Port for AIS (rtl-ais) needs to be 10110
-ADSB_SOURCE = {"host": "patate", "port": 30003, "name": "patate", "reconnect_delay": 5, "thread_timeout": 30}
-AIS_SOURCE = {'host': 'patate', 'port': 10110, "name": "patate", "reconnect_delay": 5, "thread_timeout": 30}
+# See docs/PubSub_structure.md for the value of (src)PosMode
+ADSB_SOURCE = {"host": "patate", "port": 30003, "name": "patate", "posMode": 0, "lon": None, "lat": None, "reconnect_delay": 5, "thread_timeout": 30}
+AIS_SOURCE = {'host': 'patate', 'port': 10110, "name": "patate", "posMode": 0, "lon": None, "lat": None, "reconnect_delay": 5, "thread_timeout": 30}
 
 # Do not touch that
 SQLALCHEMY_RECORD_QUERIES = False

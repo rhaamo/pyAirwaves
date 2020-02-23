@@ -21,7 +21,11 @@ try:
         adsb_msg = AdsbType()
         adsb_msg.populate_from_string(msg)
         adsb_msg.entryPoint = "simulator"
-        adsb_msg.src = cfg.PYAW_HOSTNAME
+        adsb_msg.ourName = cfg.PYAW_HOSTNAME
+        adsb_msg.srcName = cfg.ADSB_SOURCE["name"]
+        adsb_msg.srcLat = cfg.ADSB_SOURCE["lat"]
+        adsb_msg.srcLon = cfg.ADSB_SOURCE["lon"]
+        adsb_msg.srcPosMode = cfg.ADSB_SOURCE["posMode"]
         adsb_msg.clientName = "sim_host"
         adsb_msg.dataOrigin = "dump1090"
 

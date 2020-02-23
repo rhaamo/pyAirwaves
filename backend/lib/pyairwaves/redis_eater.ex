@@ -35,7 +35,17 @@ defmodule Pyairwaves.RedisEater do
   end
 
   defp archive_and_enhance_message(%{"type" => "airAIS"} = msg) do
-    # 1/ Fetch the ship and update if necessary
+    # 1/ Fetch or create the ArchiveSource
+    source = %Pyairwaves.ArchiveSource{
+      name: msg["srcName"],
+      entrypoint: msg["entryPoint"],
+      data_origin: msg["dataOrigin"],
+      position_mode: msg["srcPosMode"]
+    }
+    |> Pyairwaves.Utils.put_if(:geom, Pyairwaves.Utils.to_geo_point(msg["lon"], msg["lat"]))
+    |> Pyairwaves.Repo.insert!(on_conflict: :nothing)
+
+    # 2/ Fetch the ship and update if necessary
     ship = Pyairwaves.Repo.get_by(Pyairwaves.ArchiveShip, mmsi: msg["mmsi"])
 
     ship =
@@ -73,13 +83,15 @@ defmodule Pyairwaves.RedisEater do
     # Build a changeset
     Pyairwaves.ArchiveShip.changeset(ship, changes)
     # Save it
-    |> Pyairwaves.Repo.insert_or_update!()
+    |> Pyairwaves.Repo.insert_or_update!(log: false)
 
-    # 2/ Archive the rest of the message
+    # 3/ Archive the rest of the message
     %Pyairwaves.ArchiveShipMessage{
       mmsi: msg["mmsi"],
       raw: msg["raw"],
-      assembled: msg["isAssembled"]
+      assembled: msg["isAssembled"],
+      archive_ship_id: ship.id,
+      archive_source_id: source.id
     }
     |> Pyairwaves.Utils.put_if(:geom, Pyairwaves.Utils.to_geo_point(msg["lon"], msg["lat"]))
     |> Pyairwaves.Utils.put_if(:position_accuracy, msg["posAcc"])
@@ -95,7 +107,7 @@ defmodule Pyairwaves.RedisEater do
     |> Pyairwaves.Utils.put_if(:course_over_ground, Pyairwaves.Utils.to_float(msg["courseOverGnd"]))
     |> Pyairwaves.Utils.put_if(:turn_rate, Pyairwaves.Utils.to_float(msg["turnRt"]))
     |> Pyairwaves.Utils.put_if(:draught, Pyairwaves.Utils.to_float(msg["draught"]))
-    |> Pyairwaves.Repo.insert!
+    |> Pyairwaves.Repo.insert!(log: false)
 
     # Return the initial struct
     # TODO add missing callsign, dim_*, ship type, etc. if missing
