@@ -38,32 +38,42 @@ defmodule Pyairwaves.RedisEater do
     # 1/ Fetch the ship
     ship = Pyairwaves.Repo.get_by(Pyairwaves.ArchiveShip, mmsi: msg["mmsi"])
 
-    ship = if is_nil(ship) do
-      # Create one because it does not exists
-      %Pyairwaves.ArchiveShip{
-        mmsi: msg["mmsi"],
-        mmsi_type: msg["mmsiType"],
-        mmsi_cc: msg["mmsiCC"],
-        inserted_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second),
-      }
-    else
-      # Ship exists, return it
-      ship
-    end
+    ship =
+      if is_nil(ship) do
+        # Create one because it does not exists
+        %Pyairwaves.ArchiveShip{
+          mmsi: msg["mmsi"],
+          mmsi_type: msg["mmsiType"],
+          mmsi_cc: msg["mmsiCC"],
+          inserted_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second)
+        }
+      else
+        # Ship exists, return it
+        ship
+      end
 
     # Then build the changeset of changing things
-    changes = %{updated_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second)}
-    |> Pyairwaves.Utils.put_if(:callsign, msg["callsign"])
-    |> Pyairwaves.Utils.put_if(:dim_to_bow, msg["dimToBow"])
-    |> Pyairwaves.Utils.put_if(:dim_to_stern, msg["dimToStern"])
-    |> Pyairwaves.Utils.put_if(:dim_to_port, msg["dimToPort"])
-    |> Pyairwaves.Utils.put_if(:dim_to_starboard, msg["dimToStarboard"])
-    |> Pyairwaves.Utils.put_if(:ship_type, msg["shipTypeMeta"])
+    changes =
+      %{}
+      |> Pyairwaves.Utils.put_if(:callsign, msg["callsign"])
+      |> Pyairwaves.Utils.put_if(:dim_to_bow, msg["dimToBow"])
+      |> Pyairwaves.Utils.put_if(:dim_to_stern, msg["dimToStern"])
+      |> Pyairwaves.Utils.put_if(:dim_to_port, msg["dimToPort"])
+      |> Pyairwaves.Utils.put_if(:dim_to_starboard, msg["dimToStarboard"])
+      |> Pyairwaves.Utils.put_if(:ship_type, msg["shipTypeMeta"])
+
+    # Update timestamp if anything changed
+    changes =
+      if Enum.count(changes) > 0 do
+        Map.put(changes, :updated_at, NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second))
+      else
+        changes
+      end
 
     # Build a changeset
     Pyairwaves.ArchiveShip.changeset(ship, changes)
     # Save it
-    |> Pyairwaves.Repo.insert_or_update!
+    |> Pyairwaves.Repo.insert_or_update!()
 
     # Return the initial struct
     msg
