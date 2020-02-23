@@ -42,11 +42,11 @@ defmodule Pyairwaves.RedisEater do
       updated_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second)
     }
     |> Pyairwaves.Utils.put_if(:callsign, msg["callsign"])
-    |> Pyairwaves.Utils.put_if(:dim_to_bow, msg["dim_to_bow"])
-    |> Pyairwaves.Utils.put_if(:dim_to_stern, msg["dim_to_stern"])
-    |> Pyairwaves.Utils.put_if(:dim_to_port, msg["dim_to_port"])
-    |> Pyairwaves.Utils.put_if(:dim_to_starboard, msg["dim_to_starboard"])
-    |> Pyairwaves.Utils.put_if(:shipType, msg["shipType"])
+    |> Pyairwaves.Utils.put_if(:dim_to_bow, msg["dimToBow"])
+    |> Pyairwaves.Utils.put_if(:dim_to_stern, msg["dimToStern"])
+    |> Pyairwaves.Utils.put_if(:dim_to_port, msg["dimToPort"])
+    |> Pyairwaves.Utils.put_if(:dim_to_starboard, msg["dimToStarboard"])
+    |> Pyairwaves.Utils.put_if(:ship_type, msg["shipTypeMeta"])
 
     Pyairwaves.Repo.insert!(ship,
       on_conflict:
