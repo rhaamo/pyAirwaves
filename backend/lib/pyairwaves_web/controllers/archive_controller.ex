@@ -20,8 +20,9 @@ defmodule PyairwavesWeb.ArchiveController do
       sources: sources,
       ships: ships,
       count_sources: Enum.count(sources),
-      count_ships: Pyairwaves.Repo.one(Ecto.Query.from a in "archive_ship", select: count(a.id)),
-      count_messages: Pyairwaves.Repo.one(Ecto.Query.from a in "archive_ship_message", select: count(a.id))
+      count_ships: Pyairwaves.Repo.one(Ecto.Query.from(a in "archive_ship", select: count(a.id))),
+      count_messages:
+        Pyairwaves.Repo.one(Ecto.Query.from(a in "archive_ship_message", select: count(a.id)))
     )
   end
 end
