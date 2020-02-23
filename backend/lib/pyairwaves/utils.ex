@@ -6,4 +6,21 @@ defmodule Pyairwaves.Utils do
       n -> Map.put(acc, key, n)
     end
   end
+
+  @doc "Floatizify an Integer"
+  def to_float(val) when is_integer(val) do
+    val / 1
+  end
+  def to_float(val) do
+    val
+  end
+
+  @doc "Returns a Geo.Point from lon/lat"
+  def to_geo_point(lon, lat) do
+    if is_nil(lon) or is_nil(lat) do
+      nil
+    else
+      %Geo.Point{coordinates: {lon, lat}, srid: 4326}
+    end
+  end
 end
