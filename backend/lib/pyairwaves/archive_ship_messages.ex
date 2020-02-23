@@ -24,7 +24,7 @@ defmodule Pyairwaves.ArchiveShipMessage do
     field :eta, :string
 
     belongs_to :archive_ship, Pyairwaves.ArchiveShip
-    belongs_to :source, Pyairwaves.ArchiveSource
+    belongs_to :archive_source, Pyairwaves.ArchiveSource
 
     timestamps()
   end

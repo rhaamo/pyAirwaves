@@ -13,10 +13,10 @@ defmodule Pyairwaves.Repo.Migrations.AddUuidExtension do
       "sudo -u postgres psql pyairwaves -c \"create extension if not exists uuid-ossp\"\n"
     )
 
-    execute("create extension if not exists uuid-ossp")
+    execute("create extension if not exists \"uuid-ossp\"")
   end
 
   def down do
-    execute("drop extension if exists uuid-ossp")
+    execute("drop extension if exists \"uuid-ossp\"")
   end
 end
