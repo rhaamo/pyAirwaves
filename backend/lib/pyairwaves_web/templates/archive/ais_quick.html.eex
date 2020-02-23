@@ -1,0 +1,52 @@
+<div class="noMap row justify-content-md-center">
+    <div class="col-md-10">
+        <h3>Stats</h3>
+        <ul>
+        <li>Sources: <%= @count_sources %></li>
+        <li>Known ships: <%= @count_ships %></li>
+        <li>Archived AIS Messages: <%= @count_messages %></li>
+        </ul>
+    </div>
+</div>
+
+<div class="noMap row justify-content-md-center">
+    <div class="col-md-10">
+        <h3>AIS Sources</h3>
+        <table class="table table-sm table-striped">
+        <thead>
+        <tr><th>Name</th><th>Type</th><th>Entrypoint</th><th>Data Origin</th></tr>
+        </thead>
+        <tbody>
+        <%= for source <- @sources do %>
+        <tr>
+            <td><%= source.name %></td>
+            <td><%= source.type %></td>
+            <td><%= source.entrypoint %></td>
+            <td><%= source.data_origin %></td>
+        </tr>
+        <% end %>
+        </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="noMap row justify-content-md-center">
+    <div class="col-md-10">
+        <h3>AIS Ships (last 15 detected)</h3>
+        <table class="table table-sm table-striped">
+        <thead>
+        <tr><th>Callsign</th><th>MMSI</th><th>MMSI Type</th><th>Ship Type</th></tr>
+        </thead>
+        <tbody>
+        <%= for ship <- @ships do %>
+        <tr>
+            <td><%= ship.callsign %></td>
+            <td><%= ship.mmsi %></td>
+            <td><%= ship.mmsi_type %></td>
+            <td><%= ship.ship_type %></td>
+        </tr>
+        <% end %>
+        </tbody>
+        </table>
+    </div>
+</div>

@@ -18,6 +18,8 @@ defmodule PyairwavesWeb.Router do
 
     get "/", MapController, :map
     get "/about", AppController, :about
+
+    get "/archives/ais/quick", ArchiveController, :ais_quick
   end
 
   # Other scopes may use custom stacks.
