@@ -41,7 +41,8 @@ defmodule Pyairwaves.RedisEater do
         name: msg["srcName"],
         entrypoint: msg["entryPoint"],
         data_origin: msg["dataOrigin"],
-        position_mode: msg["srcPosMode"]
+        position_mode: msg["srcPosMode"],
+        type: msg["type"]
       }
       |> Pyairwaves.Utils.put_if(:geom, Pyairwaves.Utils.to_geo_point(msg["lon"], msg["lat"]))
       |> Pyairwaves.Repo.insert!(on_conflict: :nothing)
