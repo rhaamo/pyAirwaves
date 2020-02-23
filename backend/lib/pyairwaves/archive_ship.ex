@@ -34,7 +34,7 @@ defmodule Pyairwaves.ArchiveShip do
       :dim_to_starboard,
       :ship_type
     ])
-    |> validate_required([:mmsi, :mmsi_type, :mmsi_cc])
+    |> validate_required([:mmsi, :mmsi_type])
     |> unique_constraint(:mmsi)
     |> unique_constraint(:callsign)
   end

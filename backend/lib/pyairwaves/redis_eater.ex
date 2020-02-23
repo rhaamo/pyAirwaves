@@ -25,22 +25,34 @@ defmodule Pyairwaves.RedisEater do
         {:redix_pubsub, _pubsub, _ref, :message, %{channel: _channel, payload: message}},
         state
       ) do
-    decoded_message = Jason.decode!(message)
-    Phoenix.PubSub.broadcast(Pyairwaves.PubSub, "room:vehicles", {:redis_eat, decoded_message})
+    message =
+      Jason.decode!(message)
+      |> archive_and_enhance_message
+
+    Phoenix.PubSub.broadcast(Pyairwaves.PubSub, "room:vehicles", {:redis_eat, message})
     # Logger.debug("Received from redis: #{inspect(message)}")
-    archive_message(decoded_message)
     {:noreply, state, :hibernate}
   end
 
-  defp archive_message(%{"type" => "airAIS"} = msg) do
-    # 1/ Store the ship itself
-    ship = %Pyairwaves.ArchiveShip{
-      mmsi: msg["mmsi"],
-      mmsi_type: msg["mmsiType"],
-      mmsi_cc: msg["mmsiCC"],
-      inserted_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second),
-      updated_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second)
-    }
+  defp archive_and_enhance_message(%{"type" => "airAIS"} = msg) do
+    # 1/ Fetch the ship
+    ship = Pyairwaves.Repo.get_by(Pyairwaves.ArchiveShip, mmsi: msg["mmsi"])
+
+    ship = if is_nil(ship) do
+      # Create one because it does not exists
+      %Pyairwaves.ArchiveShip{
+        mmsi: msg["mmsi"],
+        mmsi_type: msg["mmsiType"],
+        mmsi_cc: msg["mmsiCC"],
+        inserted_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second),
+      }
+    else
+      # Ship exists, return it
+      ship
+    end
+
+    # Then build the changeset of changing things
+    changes = %{updated_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second)}
     |> Pyairwaves.Utils.put_if(:callsign, msg["callsign"])
     |> Pyairwaves.Utils.put_if(:dim_to_bow, msg["dimToBow"])
     |> Pyairwaves.Utils.put_if(:dim_to_stern, msg["dimToStern"])
@@ -48,26 +60,17 @@ defmodule Pyairwaves.RedisEater do
     |> Pyairwaves.Utils.put_if(:dim_to_starboard, msg["dimToStarboard"])
     |> Pyairwaves.Utils.put_if(:ship_type, msg["shipTypeMeta"])
 
-    Pyairwaves.Repo.insert!(ship,
-      on_conflict:
-        {:replace,
-         [
-           :mmsi_cc,
-           :callsign,
-           :dim_to_bow,
-           :dim_to_stern,
-           :dim_to_port,
-           :dim_to_starboard,
-           :ship_type,
-           :updated_at
-         ]},
-         conflict_target: [:mmsi]
-    )
+    # Build a changeset
+    Pyairwaves.ArchiveShip.changeset(ship, changes)
+    # Save it
+    |> Pyairwaves.Repo.insert_or_update!
 
-    # 2/ Then the message
+    # Return the initial struct
+    msg
   end
 
-  defp archive_message(%{"type" => "airADSB"} = _message) do
+  defp archive_and_enhance_message(%{"type" => "airADSB"} = msg) do
     IO.puts("storing ADSB message...")
+    msg
   end
 end
