@@ -36,14 +36,15 @@ defmodule Pyairwaves.RedisEater do
 
   defp archive_and_enhance_message(%{"type" => "airAIS"} = msg) do
     # 1/ Fetch or create the ArchiveSource
-    source = %Pyairwaves.ArchiveSource{
-      name: msg["srcName"],
-      entrypoint: msg["entryPoint"],
-      data_origin: msg["dataOrigin"],
-      position_mode: msg["srcPosMode"]
-    }
-    |> Pyairwaves.Utils.put_if(:geom, Pyairwaves.Utils.to_geo_point(msg["lon"], msg["lat"]))
-    |> Pyairwaves.Repo.insert!(on_conflict: :nothing)
+    source =
+      %Pyairwaves.ArchiveSource{
+        name: msg["srcName"],
+        entrypoint: msg["entryPoint"],
+        data_origin: msg["dataOrigin"],
+        position_mode: msg["srcPosMode"]
+      }
+      |> Pyairwaves.Utils.put_if(:geom, Pyairwaves.Utils.to_geo_point(msg["lon"], msg["lat"]))
+      |> Pyairwaves.Repo.insert!(on_conflict: :nothing)
 
     # 2/ Fetch the ship and update if necessary
     ship = Pyairwaves.Repo.get_by(Pyairwaves.ArchiveShip, mmsi: msg["mmsi"])
@@ -104,7 +105,10 @@ defmodule Pyairwaves.RedisEater do
     |> Pyairwaves.Utils.put_if(:navigation_status, msg["navStatMeta"])
     |> Pyairwaves.Utils.put_if(:eta, msg["navStatMeta"])
     |> Pyairwaves.Utils.put_if(:heading, Pyairwaves.Utils.to_float(msg["heading"]))
-    |> Pyairwaves.Utils.put_if(:course_over_ground, Pyairwaves.Utils.to_float(msg["courseOverGnd"]))
+    |> Pyairwaves.Utils.put_if(
+      :course_over_ground,
+      Pyairwaves.Utils.to_float(msg["courseOverGnd"])
+    )
     |> Pyairwaves.Utils.put_if(:turn_rate, Pyairwaves.Utils.to_float(msg["turnRt"]))
     |> Pyairwaves.Utils.put_if(:draught, Pyairwaves.Utils.to_float(msg["draught"]))
     |> Pyairwaves.Repo.insert!(log: false)

@@ -7,7 +7,8 @@ defmodule Pyairwaves.ArchiveSource do
   schema "archive_source" do
     field :name, :string
     field :geom, Geo.PostGIS.Geometry
-    field :position_mode, :integer, default: 0  # see docs/PubSub_structure srcPosMode list
+    # see docs/PubSub_structure srcPosMode list
+    field :position_mode, :integer, default: 0
     field :entrypoint, :string
     field :data_origin, :string
 

@@ -11,6 +11,7 @@ defmodule Pyairwaves.Utils do
   def to_float(val) when is_integer(val) do
     val / 1
   end
+
   def to_float(val) do
     val
   end
