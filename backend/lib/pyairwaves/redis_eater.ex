@@ -45,10 +45,10 @@ defmodule Pyairwaves.RedisEater do
         type: msg["type"]
       }
       |> Pyairwaves.Utils.put_if(:geom, Pyairwaves.Utils.to_geo_point(msg["lon"], msg["lat"]))
-      |> Pyairwaves.Repo.insert!(on_conflict: :nothing)
+      |> Pyairwaves.Repo.insert!(on_conflict: :nothing, log: false)
 
     # 2/ Fetch the ship and update if necessary
-    ship = Pyairwaves.Repo.get_by(Pyairwaves.ArchiveShip, mmsi: msg["mmsi"])
+    ship = Pyairwaves.Repo.get_by(Pyairwaves.ArchiveShip, [mmsi: msg["mmsi"]], log: false)
 
     ship =
       if is_nil(ship) do
