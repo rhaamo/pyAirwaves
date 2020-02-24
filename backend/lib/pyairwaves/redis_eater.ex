@@ -34,18 +34,21 @@ defmodule Pyairwaves.RedisEater do
     {:noreply, state, :hibernate}
   end
 
+  def get_or_create_archive_source(msg) do
+    %Pyairwaves.ArchiveSource{
+      name: msg["srcName"],
+      entrypoint: msg["entryPoint"],
+      data_origin: msg["dataOrigin"],
+      position_mode: msg["srcPosMode"],
+      type: msg["type"]
+    }
+    |> Pyairwaves.Utils.put_if(:geom, Pyairwaves.Utils.to_geo_point(msg["lon"], msg["lat"]))
+    |> Pyairwaves.Repo.insert!(on_conflict: :nothing, log: false)
+  end
+
   defp archive_and_enhance_message(%{"type" => "airAIS"} = msg) do
     # 1/ Fetch or create the ArchiveSource
-    source =
-      %Pyairwaves.ArchiveSource{
-        name: msg["srcName"],
-        entrypoint: msg["entryPoint"],
-        data_origin: msg["dataOrigin"],
-        position_mode: msg["srcPosMode"],
-        type: msg["type"]
-      }
-      |> Pyairwaves.Utils.put_if(:geom, Pyairwaves.Utils.to_geo_point(msg["lon"], msg["lat"]))
-      |> Pyairwaves.Repo.insert!(on_conflict: :nothing, log: false)
+    source = get_or_create_archive_source(msg)
 
     # 2/ Fetch the ship and update if necessary
     ship = Pyairwaves.Repo.get_by(Pyairwaves.ArchiveShip, [mmsi: msg["mmsi"]], log: false)
@@ -120,7 +123,13 @@ defmodule Pyairwaves.RedisEater do
   end
 
   defp archive_and_enhance_message(%{"type" => "airADSB"} = msg) do
-    IO.puts("storing ADSB message...")
+    # 1/ Fetch or create the ArchiveSource
+    _source = get_or_create_archive_source(msg)
+
+    # 2/ Fetch the aircraft and update if necessary
+    # 3/ Archive the rest of the message
+    # 4/ Add additionnal stuff to the msg
+    # 5/ Return it
     msg
   end
 end
