@@ -36,12 +36,22 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :logger,
+  backends: [:console, Sentry.LoggerBackend]
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
 # Sams for Geo Postgis
 config :geo_postgis,
   json_library: Jason
+
+# Optional sentry config
+config :sentry,
+  environment_name: Mix.env(),
+  included_environments: [:prod],
+  enable_source_code_context: true,
+  root_source_code_path: File.cwd!()
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

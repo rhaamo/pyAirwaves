@@ -41,6 +41,7 @@ defmodule Pyairwaves.MixProject do
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.11"},
+      {:sentry, "~> 7.2.2"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:redix, ">= 0.0.0"},
@@ -49,7 +50,7 @@ defmodule Pyairwaves.MixProject do
       {:esqlite, "~> 0.4.0"},
       {:sqlitex, "~> 1.7"},
       {:temp, "~> 0.4"},
-      {:geo_postgis, "~> 3.1"}
+      {:geo_postgis, "~> 3.1"},
     ]
   end
 
