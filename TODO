@@ -34,3 +34,9 @@ enum sourcePositionReporting { manual, gps_manual, gps_auto } (auto unsupported 
 
 
 FRONT FRONT FRONT; ADSB Struct changed (like alt->altitude, addr->hexIdent etc.)
+
+in SBS:
+course over ground isn't airspeed
+and track isn't heading
+
+hhhh
