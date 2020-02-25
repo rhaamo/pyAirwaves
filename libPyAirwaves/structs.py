@@ -22,24 +22,6 @@ class AdsbType(DefaultType):
         DefaultType.__init__(self)
         self.type: str = "airADSB"
 
-        # Vehicle address – will be a ICAO aircraft address or MMSI
-        self.addr: str = None
-
-        # Aircraft ID string
-        self.idInfo: str = None
-
-        # Mode A squawk code. 4 character string representing four octal numbers.
-        self.aSquawk: str = None
-
-        # Altitude data in feet
-        self.alt: int = None
-
-        # Decoded longitude
-        self.lon: float = None
-
-        # Decoded latitude
-        self.lat: float = None
-
         # Connector component the data arrived in the stack from
         self.entryPoint: str = None
 
@@ -67,6 +49,39 @@ class AdsbType(DefaultType):
         # Mode on how the source position is determined.
         self.srcPosMode: str = None
 
+        # ADSB Fields
+        # 1 - (MSG, STA, ID, AIR, SEL or CLK)
+        self.msgType: str = None
+
+        # 2 - MSG sub types 1 to 8. Not used by other message types.
+        self.transmissionType: int = None
+
+        # 3 - Database Session record number
+        self.sessionId: str = None
+
+        # 4 - Database Aircraft record number
+        self.aircraftId: str = None
+
+        # 5 - Aircraft Mode S hexadecimal code
+        self.hexIdent: str = None
+
+        # EOA
+
+        # Aircraft ID string
+        self.idInfo: str = None
+
+        # Mode A squawk code. 4 character string representing four octal numbers.
+        self.aSquawk: str = None
+
+        # Altitude data in feet
+        self.alt: int = None
+
+        # Decoded longitude
+        self.lon: float = None
+
+        # Decoded latitude
+        self.lat: float = None
+
         # Vertical status of vehicle (air/gnd)
         self.vertStat: str = None
 
@@ -88,32 +103,73 @@ class AdsbType(DefaultType):
         # True if aircraft is moving at supersonic speeds
         self.supersonic: bool = None
 
+        # Alert (Squawk change) 	 Flag to indicate squawk has changed.
+        self.alertSquawk: bool = None
+
+        # Flag to indicate emergency code has been set
+        self.emergency: bool = None
+
+        # Flag to indicate transponder Ident has been activated
+        self.spiIdent: bool = None
+
+    # A SBS flag is -1 for True, 0 for False...
+    def flag(self, f):
+        return False if f in ["0", 0] else True
+
+    def populate_from_raw(self, msg: dict):
+        print(msg)
+        if "rawLat" in msg:
+            print(type(msg["rawLat"]))
+
     # Populate class with datas
     # TODO: add remaining fields of the ADS-B transmission message
-    # Remember that fields start at 1 but python array at 0, so field 3 (session ID) is at position 2
-    def populate_from_list(self, fields):
-        self.addr = fields[4]  # int(fields[4], 16)
-        self.idInfo = "@@@@@@@@"  # what is this thing ?
+    # http://woodair.net/sbs/article/barebones42_socket_data.htm
+    # Python arrays starts at 0, ADSB doc at 1, we pad the first entry to avoid messing with our brain
+    def populate_from_sbs(self, fields):
+        # pad first entry because lazyness
+        fields = ["pad"] + fields
+        print(fields)
+
+        self.data = ",".join(fields[1:])  # exclude the padding
+
+        self.msgType = fields[1]
+        self.transmissionType = int(fields[2])
+        self.sessionId = fields[3]
+        self.aircraftId = fields[4]
+        self.hexIdent = fields[5]
+
+        self.addr = fields[4]  # int(fields[4], 16) XXX
+        self.idInfo = str(fields[10]) if fields[10] else "@@@@@@@@"  # the callsign, can change, not fixed
         self.aSquawk = int(fields[17]) if fields[17] else None
         self.alt = int(fields[11]) if fields[11] else None
         self.lon = float(fields[15]) if fields[15] else None
         self.lat = float(fields[14]) if fields[14] else None
         self.dts = str(datetime.datetime.utcnow())
         self.data = ",".join(fields)
-        self.srcPos = False  # TODO add position support
-        if fields[21] == 0 or fields[21] == "0":
+        if fields[21] in ["0", 0]:
             self.vertStat = "air"
         else:
             self.vertStat = "gnd"
         self.vertRate = int(fields[16]) if fields[16] else None
-        self.category = None
-        self.icaoAACC = None
+        self.category = None  # filled later by backend
+        self.icaoAACC = None  # filled later by backend
         self.velo = None
         self.heading = None
         self.supersonic = None
+        if fields[18] in ["0", 0]:
+            self.alertSquawk = False
+        else:
+            self.alertSquawk = True
 
-    def populate_from_string(self, msg):
-        self.populate_from_list(msg.split(","))
+        if fields[19] in ["0", 0]:
+            self.emergency = False
+        else:
+            self.emergency = True
+
+        if fields[20] in ["0", 0]:
+            self.spiIdent = False
+        else:
+            self.spiIdent = True
 
     # Various functions
 
