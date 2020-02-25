@@ -10,7 +10,6 @@ import time
 import datetime
 from libPyAirwaves.adsb import is_valid_adsb_message
 from libPyAirwaves.structs import AdsbType
-from models import Session, Aircrafts, AircraftModes, AircraftOwner, AircraftRegistration
 import redis
 import json
 
@@ -20,7 +19,6 @@ max_failed_connection = 10
 redis = redis.from_url(config.REDIS_URL)
 pubsub = redis.pubsub()
 pubsub.subscribe("room:vehicles")
-session = Session()
 
 if __name__ == "__main__":
     while count_failed_connection < max_failed_connection:
@@ -101,38 +99,7 @@ if __name__ == "__main__":
                             adsb_message.srcPosMode = config.ADSB_SOURCE["posMode"]
                             adsb_message.dataOrigin = "dump1090"
 
-                            # Get more datas from SQL
-                            sqlcraft = (
-                                session.query(
-                                    AircraftModes.icao_type_code,
-                                    AircraftModes.mode_s_country,
-                                    Aircrafts.type,
-                                    Aircrafts.manufacturer,
-                                    Aircrafts.aircraft_description,
-                                    Aircrafts.engine_type,
-                                    Aircrafts.engine_count,
-                                    AircraftOwner.registration,
-                                    AircraftOwner.owner,
-                                    AircraftRegistration.country,
-                                    AircraftRegistration.prefix,
-                                )
-                                .filter(AircraftModes.mode_s == adsb_message.hexIdent)
-                                .join(Aircrafts, Aircrafts.icao == AircraftModes.icao_type_code)
-                                .join(AircraftOwner, AircraftOwner.registration == AircraftModes.registration)
-                                .first()
-                            )
-
-                            try:
-                                adsb_message.icaoAACC = sqlcraft.mode_s_country
-                            except AttributeError:
-                                None
-
-                            try:
-                                adsb_message.category = sqlcraft.aircraft_description
-                            except AttributeError:
-                                None
-
-                            # print(adsb_message.to_dict())
+                            print(adsb_message.to_dict())
                             redis.publish("room:vehicles", json.dumps(adsb_message.to_dict()))
                     # It's valid, reset stream message
                     data_str = ""

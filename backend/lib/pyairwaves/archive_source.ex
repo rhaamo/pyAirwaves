@@ -14,6 +14,7 @@ defmodule Pyairwaves.ArchiveSource do
     field :data_origin, :string
 
     has_many :archive_ship_messages, Pyairwaves.ArchiveShipMessage
+    has_many :archive_aircraft_messages, Pyairwaves.ArchiveShipMessage
 
     timestamps()
   end

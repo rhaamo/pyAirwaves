@@ -7,7 +7,7 @@ defmodule Pyairwaves.ArchiveAircraft do
   schema "archive_aircraft" do
     field :hex_ident, :string
 
-    # has_many :archive_ship_messages, Pyairwaves.ArchiveShipMessage
+    has_many :archive_aircraft_messages, Pyairwaves.ArchiveAircraftMessage
 
     # has one aircraft, registration, ...
 

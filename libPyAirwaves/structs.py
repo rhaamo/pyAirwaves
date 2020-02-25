@@ -71,17 +71,11 @@ class AdsbType(DefaultType):
         # 6 - Database Flight record number
         self.flightId: str = None
 
-        # 7 - Date message generated
-        self.generated_date: str = None
+        # 7,8 - Date message generated
+        self.generated: str = None
 
-        # 8 - Time message generated
-        self.generated_time: str = None
-
-        # 9 - Date message logged
-        self.logged_date: str = None
-
-        # 10 - Time message logged
-        self.logged_time: str = None
+        # 9,10 - Date message logged
+        self.logged: str = None
 
         # End of standard fields
         # Now aircraft specific
@@ -152,6 +146,9 @@ class AdsbType(DefaultType):
     def flag(self, f):
         return False if f in ["0", 0] else True
 
+    def date_time_to_datetime(self, d, t):
+        return datetime.datetime.strptime(d + " " + t, "%Y/%m/%d %H:%M:%S.%f")
+
     def populate_from_raw(self, msg: dict):
         print(msg)
         self.srcAdsb = "RAW MODE-S"
@@ -166,7 +163,6 @@ class AdsbType(DefaultType):
     def populate_from_sbs(self, fields):
         # pad first entry because lazyness
         fields = ["pad"] + fields
-        print(fields)
 
         self.data = ",".join(fields[1:])  # exclude the padding
         self.srcAdsb = "SBS"
@@ -177,10 +173,8 @@ class AdsbType(DefaultType):
         self.aircraftId = fields[4]
         self.hexIdent = fields[5]  # Aircraft MODE S Address
         self.flightId = fields[6]
-        self.generated_date = fields[7]
-        self.generated_time = fields[8]
-        self.logged_date = fields[9]
-        self.logged_time = fields[10]
+        self.generated = str(self.date_time_to_datetime(fields[7], fields[8]))
+        self.logged = str(self.date_time_to_datetime(fields[9], fields[10]))
 
         self.callsign = fields[11] if fields[11] else "@@@@@@@@"
         self.altitude = int(fields[12]) if fields[12] else None

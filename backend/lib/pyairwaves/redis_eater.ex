@@ -29,6 +29,7 @@ defmodule Pyairwaves.RedisEater do
       Jason.decode!(message)
       |> archive_and_enhance_message
 
+    # Broadcast only if alt/lat/lon defined TODO FIXME
     Phoenix.PubSub.broadcast(Pyairwaves.PubSub, "room:vehicles", {:redis_eat, message})
     # Logger.debug("Received from redis: #{inspect(message)}")
     {:noreply, state, :hibernate}
@@ -134,6 +135,8 @@ defmodule Pyairwaves.RedisEater do
     # 2/ Fetch the aircraft and update if necessary
     # 3/ Archive the rest of the message
     # 4/ Add additionnal stuff to the msg
+    # add icaoAACC (AircraftModes.mode_s_country)
+    # add category (aircraft Aircrafts.description)
     # 5/ Return it
     msg
     |> Map.put("alt", msg["altitude"]) # renamed but not in front yet and ais
