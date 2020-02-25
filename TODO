@@ -31,3 +31,6 @@ Add config field for srcPosMode, c'est la position déterminée de la source, ma
 Utiliser un Enum
 Initier une lib interne en elixir qui reprendra ces déclarations
 enum sourcePositionReporting { manual, gps_manual, gps_auto } (auto unsupported yet)
+
+
+FRONT FRONT FRONT; ADSB Struct changed (like alt->altitude, addr->hexIdent etc.)
