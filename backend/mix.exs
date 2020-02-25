@@ -10,7 +10,8 @@ defmodule Pyairwaves.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      dialyzer: [plt_add_deps: :transitive]
     ]
   end
 
@@ -51,7 +52,8 @@ defmodule Pyairwaves.MixProject do
       {:sqlitex, "~> 1.7"},
       {:temp, "~> 0.4"},
       {:geo_postgis, "~> 3.1"},
-      {:timex, "~> 3.5"}
+      {:timex, "~> 3.5"},
+      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false}
     ]
   end
 
