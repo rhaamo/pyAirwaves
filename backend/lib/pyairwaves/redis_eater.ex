@@ -135,6 +135,8 @@ defmodule Pyairwaves.RedisEater do
     # 3/ Archive the rest of the message
     # 4/ Add additionnal stuff to the msg
     # 5/ Return it
+    msg["alt"] = msg["altitude"] # renamed but not in front yet and ais
+    msg["addr"] = msg["hexIdent"] # same
     msg
   end
 
