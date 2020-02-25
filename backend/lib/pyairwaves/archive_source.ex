@@ -24,6 +24,6 @@ defmodule Pyairwaves.ArchiveSource do
     aircraft
     |> cast(attrs, [:name, :geom, :position_mode])
     |> validate_required([:name, :type])
-    |> unique_constraint([:name, :type])
+    |> unique_constraint(:unique_name_and_type, name: :unique_name_type)
   end
 end
