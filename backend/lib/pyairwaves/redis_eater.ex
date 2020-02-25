@@ -133,7 +133,8 @@ defmodule Pyairwaves.RedisEater do
     source = get_or_create_archive_source(msg)
 
     # 2/ Fetch the aircraft and update if necessary
-    aircraft = Pyairwaves.Repo.get_by(Pyairwaves.ArchiveAircraft, [hex_ident: msg["hexIdent"]], log: false)
+    aircraft =
+      Pyairwaves.Repo.get_by(Pyairwaves.ArchiveAircraft, [hex_ident: msg["hexIdent"]], log: false)
 
     aircraft =
       if is_nil(aircraft) do
@@ -152,9 +153,10 @@ defmodule Pyairwaves.RedisEater do
     # Save it
     |> Pyairwaves.Repo.insert_or_update!(log: false)
 
-    generated = msg["generated"]
-    |> Timex.parse!("%Y-%m-%d %H:%M:%S.%f", :strftime)
-    |> NaiveDateTime.truncate(:second)
+    generated =
+      msg["generated"]
+      |> Timex.parse!("%Y-%m-%d %H:%M:%S.%f", :strftime)
+      |> NaiveDateTime.truncate(:second)
 
     # 3/ Archive the rest of the message
     %Pyairwaves.ArchiveAircraftMessage{
@@ -177,18 +179,24 @@ defmodule Pyairwaves.RedisEater do
       emergency: msg["emergency"],
       spi_ident: msg["spi_ident"],
       is_on_ground: msg["is_on_ground"],
-      inserted_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second), # "logged"
+      # "logged"
+      inserted_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second),
       archive_aircraft_id: aircraft.id,
       archive_source_id: source.id
     }
-    |> Pyairwaves.Repo.insert!(log: false)    # 4/ Add additionnal stuff to the msg
+    |> Pyairwaves.Repo.insert!(log: false)
+
+    # 4/ Add additionnal stuff to the msg
     # add icaoAACC (AircraftModes.mode_s_country)
     # add category (aircraft Aircrafts.description)
     # 5/ Return it
     msg
-    |> Map.put("heading", msg["track"]) # In dump1090 this is aircraft heading, consider it for all
-    |> Map.put("alt", msg["altitude"]) # renamed but not in front yet and ais
-    |> Map.put("addr", msg["hexIdent"]) # same
+    # In dump1090 this is aircraft heading, consider it for all
+    |> Map.put("heading", msg["track"])
+    # renamed but not in front yet and ais
+    |> Map.put("alt", msg["altitude"])
+    # same
+    |> Map.put("addr", msg["hexIdent"])
   end
 
   # Handle and save a packet from RAW Mode-S format
@@ -201,7 +209,9 @@ defmodule Pyairwaves.RedisEater do
     # 4/ Add additionnal stuff to the msg
     # 5/ Return it
     msg
-    |> Map.put("alt", msg["altitude"]) # renamed but not in front yet and ais
-    |> Map.put("addr", msg["hexIdent"]) # same
+    # renamed but not in front yet and ais
+    |> Map.put("alt", msg["altitude"])
+    # same
+    |> Map.put("addr", msg["hexIdent"])
   end
 end

@@ -6,7 +6,8 @@ defmodule Pyairwaves.ArchiveAircraftMessage do
 
   schema "archive_aircraft_message" do
     # Specific to source
-    field :source_type, :string # SBS, RAW MODE-S, ...
+    # SBS, RAW MODE-S, ...
+    field :source_type, :string
 
     # Specific to SBS
     field :hex_ident, :string
@@ -38,9 +39,26 @@ defmodule Pyairwaves.ArchiveAircraftMessage do
   @doc false
   def changeset(aircraft, attrs) do
     aircraft
-    |> cast(attrs, [:source_type,
-      :hex_ident, :msg_type, :transmission_type, :session_id, :aircraft_id, :flight_id, :generated, :callsign, :altitude, :ground_speed, :track,
-      :geom, :vertical_rate, :squawk, :alert, :emergency, :spi_ident, :is_on_ground
+    |> cast(attrs, [
+      :source_type,
+      :hex_ident,
+      :msg_type,
+      :transmission_type,
+      :session_id,
+      :aircraft_id,
+      :flight_id,
+      :generated,
+      :callsign,
+      :altitude,
+      :ground_speed,
+      :track,
+      :geom,
+      :vertical_rate,
+      :squawk,
+      :alert,
+      :emergency,
+      :spi_ident,
+      :is_on_ground
     ])
     |> validate_required([:source_type, :hex_ident])
     |> validate_number(:transmission_type, greater_than_or_equal_to: 1, less_than_or_equal_to: 8)
