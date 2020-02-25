@@ -126,7 +126,7 @@ defmodule Pyairwaves.RedisEater do
   # Mode-S has more useful infos that SBS doesn't
   # But we still handle both to not have much feeder requirements
 
-  @doc "Handle and save a packet from SBS format"
+  # Handle and save a packet from SBS format
   defp archive_and_enhance_message(%{"type" => "airADSB", "srcAdsb" => "SBS"} = msg) do
     # 1/ Fetch or create the ArchiveSource
     _source = get_or_create_archive_source(msg)
@@ -135,12 +135,12 @@ defmodule Pyairwaves.RedisEater do
     # 3/ Archive the rest of the message
     # 4/ Add additionnal stuff to the msg
     # 5/ Return it
-    msg["alt"] = msg["altitude"] # renamed but not in front yet and ais
-    msg["addr"] = msg["hexIdent"] # same
     msg
+    |> Map.put("alt", msg["altitude"]) # renamed but not in front yet and ais
+    |> Map.put("addr", msg["hexIdent"]) # same
   end
 
-  @doc "Handle and save a packet from RAW Mode-S format"
+  # Handle and save a packet from RAW Mode-S format
   defp archive_and_enhance_message(%{"type" => "airADSB", "srcAdsb" => "RAW MODE-S"} = msg) do
     # 1/ Fetch or create the ArchiveSource
     _source = get_or_create_archive_source(msg)
@@ -149,9 +149,9 @@ defmodule Pyairwaves.RedisEater do
     # 3/ Archive the rest of the message
     # 4/ Add additionnal stuff to the msg
     # 5/ Return it
-    msg["heading"] = msg["track"] # In dump1090 this is aircraft heading, consider it for all
-    msg["alt"] = msg["altitude"] # renamed but not in front yet and ais
-    msg["addr"] = msg["hexIdent"] # same
     msg
+    |> Map.put("heading", msg["track"]) # In dump1090 this is aircraft heading, consider it for all
+    |> Map.put("alt", msg["altitude"]) # renamed but not in front yet and ais
+    |> Map.put("addr", msg["hexIdent"]) # same
   end
 end
