@@ -96,6 +96,7 @@ class AdsbType(DefaultType):
         self.ground_speed: int = None
 
         # 14 - Track of aircraft (not heading). Derived from the velocity E/W and velocity N/S
+        # FYI in dump1090 this is the aircraft heading
         self.track: int = None
 
         # 15 - North and East positive. South and West negative

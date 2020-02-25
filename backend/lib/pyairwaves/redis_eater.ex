@@ -147,6 +147,9 @@ defmodule Pyairwaves.RedisEater do
     # 3/ Archive the rest of the message
     # 4/ Add additionnal stuff to the msg
     # 5/ Return it
+    msg["heading"] = msg["track"] # In dump1090 this is aircraft heading, consider it for all
+    msg["alt"] = msg["altitude"] # renamed but not in front yet and ais
+    msg["addr"] = msg["hexIdent"] # same
     msg
   end
 end
