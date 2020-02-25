@@ -122,7 +122,24 @@ defmodule Pyairwaves.RedisEater do
     msg
   end
 
-  defp archive_and_enhance_message(%{"type" => "airADSB"} = msg) do
+  # Two different methods for SBS and RAW Mode-S
+  # Mode-S has more useful infos that SBS doesn't
+  # But we still handle both to not have much feeder requirements
+
+  @doc "Handle and save a packet from SBS format"
+  defp archive_and_enhance_message(%{"type" => "airADSB", "srcAdsb" => "SBS"} = msg) do
+    # 1/ Fetch or create the ArchiveSource
+    _source = get_or_create_archive_source(msg)
+
+    # 2/ Fetch the aircraft and update if necessary
+    # 3/ Archive the rest of the message
+    # 4/ Add additionnal stuff to the msg
+    # 5/ Return it
+    msg
+  end
+
+  @doc "Handle and save a packet from RAW Mode-S format"
+  defp archive_and_enhance_message(%{"type" => "airADSB", "srcAdsb" => "RAW MODE-S"} = msg) do
     # 1/ Fetch or create the ArchiveSource
     _source = get_or_create_archive_source(msg)
 

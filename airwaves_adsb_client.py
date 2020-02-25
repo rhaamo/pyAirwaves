@@ -132,7 +132,7 @@ if __name__ == "__main__":
                             except AttributeError:
                                 None
 
-                            print(adsb_message.to_dict())
+                            # print(adsb_message.to_dict())
                             redis.publish("room:vehicles", json.dumps(adsb_message.to_dict()))
                     # It's valid, reset stream message
                     data_str = ""
