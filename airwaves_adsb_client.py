@@ -105,6 +105,7 @@ if __name__ == "__main__":
                             sqlcraft = (
                                 session.query(
                                     AircraftModes.icao_type_code,
+                                    AircraftModes.mode_s_country,
                                     Aircrafts.type,
                                     Aircrafts.manufacturer,
                                     Aircrafts.aircraft_description,
@@ -122,7 +123,6 @@ if __name__ == "__main__":
                             )
 
                             try:
-                                # does not work for some reasons
                                 adsb_message.icaoAACC = sqlcraft.mode_s_country
                             except AttributeError:
                                 None
