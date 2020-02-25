@@ -49,6 +49,9 @@ class AdsbType(DefaultType):
         # Mode on how the source position is determined.
         self.srcPosMode: str = None
 
+        # ADS-B Data "source" between "SBS" and "RAW MODE-S"
+        self.srcAdsb: str = None
+
         # ADSB Fields
         # 1 - (MSG, STA, ID, AIR, SEL or CLK)
         self.msgType: str = None
@@ -65,33 +68,74 @@ class AdsbType(DefaultType):
         # 5 - Aircraft Mode S hexadecimal code
         self.hexIdent: str = None
 
+        # 6 - Database Flight record number
+        self.flightId: str = None
+
+        # 7 - Date message generated
+        self.generated_date: str = None
+
+        # 8 - Time message generated
+        self.generated_time: str = None
+
+        # 9 - Date message logged
+        self.logged_date: str = None
+
+        # 10 - Time message logged
+        self.logged_time: str = None
+
+        # End of standard fields
+        # Now aircraft specific
+
+        # 11 - An eight digit flight ID - can be flight number or registration (or even nothing).
+        self.callsign: str = "@@@@@@@@"
+
+        # 12 - Mode C altitude. Height relative to 1013.2mb (Flight Level). Not height AMSL
+        self.altitude: int = None
+
+        # 13 - Speed over ground (not indicated airspeed)
+        self.ground_speed: int = None
+
+        # 14 - Track of aircraft (not heading). Derived from the velocity E/W and velocity N/S
+        self.track: int = None
+
+        # 15 - North and East positive. South and West negative
+        self.lat: float = None
+
+        # 16 - North and East positive. South and West negative
+        self.lon: float = None
+
+        # 17 - 64ft resolution
+        self.vertical_rate: int = None
+
+        # 18 - Assigned Mode A squawk code
+        self.squawk: str = None
+
+        # 19 - Flag to indicate squawk has changed
+        self.alert: bool = None
+
+        # 20 - Flag to indicate emergency code has been set
+        self.emergency: bool = None
+
+        # 21 - Flag to indicate transponder Ident has been activated
+        self.spi_ident: bool = None
+
+        # 22 - Flag to indicate ground squat switch is active
+        self.is_on_ground: bool = None
+
         # EOA
 
         # Aircraft ID string
         self.idInfo: str = None
 
-        # Mode A squawk code. 4 character string representing four octal numbers.
-        self.aSquawk: str = None
-
-        # Altitude data in feet
-        self.alt: int = None
-
-        # Decoded longitude
-        self.lon: float = None
-
-        # Decoded latitude
-        self.lat: float = None
-
         # Vertical status of vehicle (air/gnd)
         self.vertStat: str = None
 
-        # Aircraft climb or decline rate in feet/min.
-        self.vertRate: int = None
-
         # Category
+        # Filled by SQL
         self.category: str = None
 
         # Country code of the block the ICAO AA is in. (Might also be “ICAO” reserved)
+        # Filled by SQL
         self.icaoAACC: str = None
 
         # Veocity in knots
@@ -103,21 +147,14 @@ class AdsbType(DefaultType):
         # True if aircraft is moving at supersonic speeds
         self.supersonic: bool = None
 
-        # Alert (Squawk change) 	 Flag to indicate squawk has changed.
-        self.alertSquawk: bool = None
-
-        # Flag to indicate emergency code has been set
-        self.emergency: bool = None
-
-        # Flag to indicate transponder Ident has been activated
-        self.spiIdent: bool = None
-
     # A SBS flag is -1 for True, 0 for False...
     def flag(self, f):
         return False if f in ["0", 0] else True
 
     def populate_from_raw(self, msg: dict):
         print(msg)
+        self.srcAdsb = "RAW MODE-S"
+
         if "rawLat" in msg:
             print(type(msg["rawLat"]))
 
@@ -131,45 +168,39 @@ class AdsbType(DefaultType):
         print(fields)
 
         self.data = ",".join(fields[1:])  # exclude the padding
+        self.srcAdsb = "SBS"
 
         self.msgType = fields[1]
         self.transmissionType = int(fields[2])
         self.sessionId = fields[3]
         self.aircraftId = fields[4]
-        self.hexIdent = fields[5]
+        self.hexIdent = fields[5]  # Aircraft MODE S Address
+        self.flightId = fields[6]
+        self.generated_date = fields[7]
+        self.generated_time = fields[8]
+        self.logged_date = fields[9]
+        self.logged_time = fields[10]
 
-        self.addr = fields[4]  # int(fields[4], 16) XXX
-        self.idInfo = str(fields[10]) if fields[10] else "@@@@@@@@"  # the callsign, can change, not fixed
-        self.aSquawk = int(fields[17]) if fields[17] else None
-        self.alt = int(fields[11]) if fields[11] else None
-        self.lon = float(fields[15]) if fields[15] else None
-        self.lat = float(fields[14]) if fields[14] else None
-        self.dts = str(datetime.datetime.utcnow())
-        self.data = ",".join(fields)
-        if fields[21] in ["0", 0]:
-            self.vertStat = "air"
-        else:
-            self.vertStat = "gnd"
-        self.vertRate = int(fields[16]) if fields[16] else None
-        self.category = None  # filled later by backend
-        self.icaoAACC = None  # filled later by backend
-        self.velo = None
+        self.callsign = fields[11] if fields[11] else "@@@@@@@@"
+        self.altitude = int(fields[12]) if fields[12] else None
+        self.ground_speed = int(fields[13]) if fields[13] else None
+        self.track = int(fields[14]) if fields[14] else None
+        self.lat = float(fields[15]) if fields[15] else None
+        self.lon = float(fields[16]) if fields[16] else None
+        self.vertical_rate = int(fields[17]) if fields[17] else None
+        self.squawk = fields[18] if fields[18] else None
+        self.alert = self.flag(fields[19]) if fields[19] else None
+        self.emergency = self.flag(fields[20]) if fields[20] else None
+        self.spi_ident = self.flag(fields[21]) if fields[21] else None
+        self.is_on_ground = self.flag(fields[22]) if fields[22] else None
+
+        # custom
+        self.vertStat = "gnd" if self.is_on_ground else "air"
+        self.supersonic = None  # unknown in SBS
         self.heading = None
-        self.supersonic = None
-        if fields[18] in ["0", 0]:
-            self.alertSquawk = False
-        else:
-            self.alertSquawk = True
-
-        if fields[19] in ["0", 0]:
-            self.emergency = False
-        else:
-            self.emergency = True
-
-        if fields[20] in ["0", 0]:
-            self.spiIdent = False
-        else:
-            self.spiIdent = True
+        self.velo = None
+        self.icaoAACC = None
+        self.category = None
 
     # Various functions
 
@@ -182,7 +213,7 @@ class AdsbType(DefaultType):
         }
 
     def has_location(self):
-        if self.lat and self.lon and self.alt:
+        if self.lat and self.lon and self.altitude:
             return True
         else:
             return False

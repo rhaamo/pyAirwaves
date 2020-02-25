@@ -88,7 +88,8 @@ if __name__ == "__main__":
                 if len(line) == 22:
                     if is_valid_adsb_message(line):
                         adsb_message = AdsbType()
-                        adsb_message.populate_from_list(line)
+                        adsb_message.populate_from_sbs(line)
+                        # print(adsb_message.to_dict())
                         # Emit Socket.IO message only if altitude, latitude and longitude are set
                         # AKA a "MSG,3" message and perhaps a "MSG,2" (Surface position)
                         if adsb_message.has_location():
@@ -114,17 +115,15 @@ if __name__ == "__main__":
                                     AircraftRegistration.country,
                                     AircraftRegistration.prefix,
                                 )
-                                .filter(AircraftModes.mode_s == adsb_message.addr)
+                                .filter(AircraftModes.mode_s == adsb_message.hexIdent)
                                 .join(Aircrafts, Aircrafts.icao == AircraftModes.icao_type_code)
                                 .join(AircraftOwner, AircraftOwner.registration == AircraftModes.registration)
-                                .join(
-                                    AircraftRegistration, AircraftRegistration.country == AircraftModes.mode_s_country
-                                )
                                 .first()
                             )
 
                             try:
-                                adsb_message.icaoAACC = sqlcraft.country
+                                # does not work for some reasons
+                                adsb_message.icaoAACC = sqlcraft.mode_s_country
                             except AttributeError:
                                 None
 
@@ -133,7 +132,7 @@ if __name__ == "__main__":
                             except AttributeError:
                                 None
 
-                            # print(adsb_message.to_dict())
+                            print(adsb_message.to_dict())
                             redis.publish("room:vehicles", json.dumps(adsb_message.to_dict()))
                     # It's valid, reset stream message
                     data_str = ""
