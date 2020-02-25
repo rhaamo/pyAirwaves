@@ -20,7 +20,7 @@ defmodule Pyairwaves.MixProject do
   def application do
     [
       mod: {Pyairwaves.Application, []},
-      extra_applications: [:logger, :runtime_tools, :phoenix]
+      extra_applications: [:logger, :runtime_tools, :phoenix, :timex]
     ]
   end
 
@@ -51,6 +51,7 @@ defmodule Pyairwaves.MixProject do
       {:sqlitex, "~> 1.7"},
       {:temp, "~> 0.4"},
       {:geo_postgis, "~> 3.1"},
+      {:timex, "~> 3.5"}
     ]
   end
 

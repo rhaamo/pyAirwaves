@@ -130,11 +130,58 @@ defmodule Pyairwaves.RedisEater do
   # Handle and save a packet from SBS format
   defp archive_and_enhance_message(%{"type" => "airADSB", "srcAdsb" => "SBS"} = msg) do
     # 1/ Fetch or create the ArchiveSource
-    _source = get_or_create_archive_source(msg)
+    source = get_or_create_archive_source(msg)
 
     # 2/ Fetch the aircraft and update if necessary
+    aircraft = Pyairwaves.Repo.get_by(Pyairwaves.ArchiveAircraft, [hex_ident: msg["hexIdent"]], log: false)
+
+    aircraft =
+      if is_nil(aircraft) do
+        # Create one because it does not exists
+        %Pyairwaves.ArchiveAircraft{
+          hex_ident: msg["hexIdent"],
+          inserted_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second)
+        }
+      else
+        # Aircraft exists, return it
+        aircraft
+      end
+
+    # Build a changeset
+    Pyairwaves.ArchiveAircraft.changeset(aircraft, %{})
+    # Save it
+    |> Pyairwaves.Repo.insert_or_update!(log: false)
+
+    generated = msg["generated"]
+    |> Timex.parse!("%Y-%m-%d %H:%M:%S.%f", :strftime)
+    |> NaiveDateTime.truncate(:second)
+
     # 3/ Archive the rest of the message
-    # 4/ Add additionnal stuff to the msg
+    %Pyairwaves.ArchiveAircraftMessage{
+      source_type: "SBS",
+      hex_ident: msg["hexIdent"],
+      msg_type: msg["msgType"],
+      transmission_type: msg["transmissionType"],
+      session_id: msg["sessionId"],
+      aircraft_id: msg["aircraftId"],
+      flight_id: msg["flightId"],
+      generated: generated,
+      callsign: msg["callsign"],
+      altitude: msg["altitude"],
+      ground_speed: msg["ground_speed"],
+      track: msg["track"],
+      geom: Pyairwaves.Utils.to_geo_point(msg["lon"], msg["lat"]),
+      vertical_rate: msg["vertical_rate"],
+      squawk: msg["squawk"],
+      alert: msg["alert"],
+      emergency: msg["emergency"],
+      spi_ident: msg["spi_ident"],
+      is_on_ground: msg["is_on_ground"],
+      inserted_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second), # "logged"
+      archive_aircraft_id: aircraft.id,
+      archive_source_id: source.id
+    }
+    |> Pyairwaves.Repo.insert!(log: false)    # 4/ Add additionnal stuff to the msg
     # add icaoAACC (AircraftModes.mode_s_country)
     # add category (aircraft Aircrafts.description)
     # 5/ Return it
