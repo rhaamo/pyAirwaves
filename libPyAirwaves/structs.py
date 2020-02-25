@@ -147,7 +147,8 @@ class AdsbType(DefaultType):
         return False if f in ["0", 0] else True
 
     def date_time_to_datetime(self, d, t):
-        return datetime.datetime.strptime(d + " " + t, "%Y/%m/%d %H:%M:%S.%f")
+        # Strip microseconds because if 0, datetime will not have microseconds and will fuckup everything
+        return datetime.datetime.strptime(d + " " + t, "%Y/%m/%d %H:%M:%S.%f").replace(microsecond=0)
 
     def populate_from_raw(self, msg: dict):
         print(msg)

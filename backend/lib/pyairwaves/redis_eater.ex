@@ -154,9 +154,10 @@ defmodule Pyairwaves.RedisEater do
     # Save it
     |> Pyairwaves.Repo.insert_or_update!(log: false)
 
+    # No microseconds from the struct
     generated =
       msg["generated"]
-      |> Timex.parse!("%Y-%m-%d %H:%M:%S.%f", :strftime)
+      |> Timex.parse!("%Y-%m-%d %H:%M:%S", :strftime)
       |> NaiveDateTime.truncate(:second)
 
     # 3/ Archive the rest of the message
