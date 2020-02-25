@@ -139,6 +139,7 @@ defmodule Pyairwaves.RedisEater do
     # add category (aircraft Aircrafts.description)
     # 5/ Return it
     msg
+    |> Map.put("heading", msg["track"]) # In dump1090 this is aircraft heading, consider it for all
     |> Map.put("alt", msg["altitude"]) # renamed but not in front yet and ais
     |> Map.put("addr", msg["hexIdent"]) # same
   end
@@ -153,7 +154,6 @@ defmodule Pyairwaves.RedisEater do
     # 4/ Add additionnal stuff to the msg
     # 5/ Return it
     msg
-    |> Map.put("heading", msg["track"]) # In dump1090 this is aircraft heading, consider it for all
     |> Map.put("alt", msg["altitude"]) # renamed but not in front yet and ais
     |> Map.put("addr", msg["hexIdent"]) # same
   end
