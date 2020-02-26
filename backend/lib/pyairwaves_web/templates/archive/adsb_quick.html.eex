@@ -34,13 +34,19 @@
     <div class="col-md-10">
         <h3>ADSB Aircrafts (last 15 detected)</h3>
         <table class="table table-sm table-striped">
-        <thead>
-        <tr><th>Ident</th></tr>
-        </thead>
+            <thead>
+                <tr>
+                    <th>Ident</th>
+                    <th>Type</th>
+                    <th>Flag</th>
+                </tr>
+            </thead>
         <tbody>
         <%= for aircraft <- @aircrafts do %>
         <tr>
-            <td><%= aircraft.hex_ident %></td>
+            <td><%= aircraft.mode_s %></td>
+            <td><%= aircraft.description || "Unknown" %></td>
+            <td><%= aircraft.mode_s_country %></td>
         </tr>
         <% end %>
         </tbody>

@@ -34,11 +34,18 @@ defmodule PyairwavesWeb.ArchiveController do
       |> Ecto.Query.order_by([a], asc: a.inserted_at)
       |> Pyairwaves.Repo.all()
 
-      aircrafts =
-      Pyairwaves.ArchiveAircraft
-      |> Ecto.Query.order_by([a], asc: a.inserted_at)
-      |> Ecto.Query.limit(15)
-      |> Pyairwaves.Repo.all()
+      q_aircrafts =
+        Ecto.Query.from(aa in Pyairwaves.ArchiveAircraft,
+          left_join: am in Pyairwaves.AircraftMode,
+          left_join: a in Pyairwaves.Aircraft,
+          on: am.mode_s == aa.hex_ident,
+          on: am.icao_type_code == a.icao,
+          select: %{mode_s: am.mode_s, mode_s_country: am.mode_s_country, description: a.aircraft_description},
+          limit: 15,
+          order_by: [asc: aa.inserted_at]
+        )
+
+      aircrafts = Pyairwaves.Repo.all(q_aircrafts, timeout: :infinity)
 
     render(conn, "adsb_quick.html",
       version: Pyairwaves.Application.version(),

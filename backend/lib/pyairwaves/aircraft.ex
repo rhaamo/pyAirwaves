@@ -13,7 +13,7 @@ defmodule Pyairwaves.Aircraft do
     field :manufacturer, :string, size: 255
     field :mfr, :string, default: nil
     field :official_page, :string, size: 255
-    field :type, :string, size: 255
+    field :type, :string
     field :wake_category, :string, size: 10
   end
 
