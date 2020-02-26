@@ -53,6 +53,7 @@ CREATE EXTENSION IF NOT EXISTS "postgis";
     mix pyairwaves.update_translations
     mix pyairwaves.update_aircrafts_mode_s
     mix pyairwaves.update_aircrafts_mode_sogn
+    mix pyairwaves.update_aircrafts_owner
 
     # Python part for the ingesters
     cd ~/
@@ -88,3 +89,4 @@ mix help pyairwaves.update_aircrafts
 - pyairwaves.update_translations: one time per month
 - pyairwaves.update_aircrafts_mode_s: one time per month
 - pyairwaves.update_aircrafts_mode_sogn: one time per month
+- pyairwaves.update_aircrafts_owner: one time per month

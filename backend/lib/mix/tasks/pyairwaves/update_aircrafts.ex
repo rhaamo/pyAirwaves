@@ -13,7 +13,6 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircrafts do
   # FIXME TODO; The initial list contains multiple ModelFullName per Designator
   # We need to rebuild a new list, with unique Designator and a ModelFullName concatennating all the available ones
 
-
   defp parse_aircraft(aircraft) do
     aircraft_shadow =
       "generic_#{String.slice(aircraft["EngineType"], 0, 1)}#{aircraft["EngineCount"]}#{
@@ -44,11 +43,12 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircrafts do
   defp dedupe_list(from, to) when length(from) > 0 do
     [item | tail] = from
 
-    type = if Map.has_key?(to, item["Designator"]) do
-      Map.get(to, item["Designator"])["ModelFullName"] <> ", " <> item["ModelFullName"]
-    else
-      item["ModelFullName"]
-    end
+    type =
+      if Map.has_key?(to, item["Designator"]) do
+        Map.get(to, item["Designator"])["ModelFullName"] <> ", " <> item["ModelFullName"]
+      else
+        item["ModelFullName"]
+      end
 
     new_entry = item |> Map.put("ModelFullName", type)
 
@@ -88,6 +88,7 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircrafts do
     {:ok, aircrafts} =
       HTTPoison.post!(url, "", headers, options).body
       |> Jason.decode()
+
     aircrafts = dedupe_list(aircrafts, %{})
 
     Enum.map(aircrafts, fn {_icao, ac} -> parse_aircraft(ac) end)
