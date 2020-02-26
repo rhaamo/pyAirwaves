@@ -35,7 +35,13 @@
         <h3>AIS Ships (last 15 detected)</h3>
         <table class="table table-sm table-striped">
         <thead>
-        <tr><th>Callsign</th><th>MMSI</th><th>MMSI Type</th><th>Ship Type</th></tr>
+        <tr>
+            <th>Callsign</th>
+            <th>MMSI</th>
+            <th>MMSI Type</th>
+            <th>Ship Type</th>
+            <th>Found on</th>
+        </tr>
         </thead>
         <tbody>
         <%= for ship <- @ships do %>
@@ -44,6 +50,7 @@
             <td><%= ship.mmsi %></td>
             <td><%= ship.mmsi_type %></td>
             <td><%= ship.ship_type %></td>
+            <td><%= ship.inserted_at %></td>
         </tr>
         <% end %>
         </tbody>

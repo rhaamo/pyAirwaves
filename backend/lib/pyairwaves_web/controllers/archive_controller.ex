@@ -43,10 +43,11 @@ defmodule PyairwavesWeb.ArchiveController do
         select: %{
           mode_s: am.mode_s,
           mode_s_country: am.mode_s_country,
-          description: a.aircraft_description
+          description: a.aircraft_description,
+          found: aa.inserted_at
         },
         limit: 15,
-        order_by: [asc: aa.inserted_at]
+        order_by: [desc: aa.inserted_at]
       )
 
     aircrafts = Pyairwaves.Repo.all(q_aircrafts, timeout: :infinity)

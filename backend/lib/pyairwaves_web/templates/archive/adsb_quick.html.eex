@@ -39,6 +39,7 @@
                     <th>Ident</th>
                     <th>Type</th>
                     <th>Flag</th>
+                    <th>Found on</th>
                 </tr>
             </thead>
         <tbody>
@@ -47,6 +48,7 @@
             <td><%= aircraft.mode_s %></td>
             <td><%= aircraft.description || "Unknown" %></td>
             <td><%= aircraft.mode_s_country %></td>
+            <td><%= aircraft.found %></td>
         </tr>
         <% end %>
         </tbody>
