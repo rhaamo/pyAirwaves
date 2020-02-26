@@ -198,7 +198,7 @@ defmodule Pyairwaves.RedisEater do
         limit: 1
       )
 
-    extras = Pyairwaves.Repo.one!(q_extras)
+    extras = Pyairwaves.Repo.one!(q_extras, log: false)
 
     # 5/ Return it
     msg
