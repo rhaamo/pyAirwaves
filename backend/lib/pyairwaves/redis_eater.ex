@@ -191,7 +191,7 @@ defmodule Pyairwaves.RedisEater do
     # 4/ Add additionnal stuff to the msg
     q_extras =
       Ecto.Query.from(am in Pyairwaves.AircraftMode,
-        join: a in Pyairwaves.Aircraft,
+        left_join: a in Pyairwaves.Aircraft,
         on: am.icao_type_code == a.icao,
         where: am.mode_s == ^msg["hexIdent"],
         select: %{mode_s_country: am.mode_s_country, description: a.aircraft_description},
@@ -209,8 +209,8 @@ defmodule Pyairwaves.RedisEater do
     # same
     |> Map.put("addr", msg["hexIdent"])
     # Extras
-    |> Map.put("icaoAACC", extras.mode_s_country)
-    |> Map.put("category", extras.description)
+    |> Pyairwaves.Utils.put_if("icaoAACC", extras.mode_s_country)
+    |> Pyairwaves.Utils.put_if("category", extras.description)
   end
 
   # Handle and save a packet from RAW Mode-S format
