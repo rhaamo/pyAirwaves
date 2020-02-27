@@ -22,7 +22,7 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsRegistrations do
     Logger.info("Table cleaned.")
 
     regs = registrations()
-    Pyairwaves.Repo.insert_all(Pyairwaves.AircraftRegistration, regs, on_conflict: :nothing)
+    Pyairwaves.Repo.insert_all(Pyairwaves.AircraftRegistration, regs, on_conflict: :nothing, log: false)
 
     Logger.info("Update finished, handled #{length(regs)} items.")
   end
