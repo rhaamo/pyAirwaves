@@ -57,7 +57,7 @@ pipeline:
 
 services:
   database:
-    image: postgres
+    image: splashblot/postgis
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_DB=pyairwaves_test
