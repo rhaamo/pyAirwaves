@@ -62,6 +62,7 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeSogn do
     start_apps()
 
     Logger.info("Starting Aircrafts ModeS from Open Glider Network update. (Online)")
+    Logger.info("This can take some time.")
     HTTPoison.start()
 
     url = "http://ddb.glidernet.org/download/"

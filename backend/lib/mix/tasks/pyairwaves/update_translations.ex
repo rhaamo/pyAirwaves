@@ -18,6 +18,7 @@ defmodule Mix.Tasks.Pyairwaves.UpdateTranslations do
     start_apps()
 
     Logger.info("Starting translations update. (Online)")
+    Logger.info("This can take some time.")
     HTTPoison.start()
 
     url = "http://data.flightairmap.com/data/translation.tsv.gz"

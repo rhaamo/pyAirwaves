@@ -16,6 +16,7 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsRegistrations do
     start_apps()
 
     Logger.info("Starting aircraft registrations update. (Offline)")
+    Logger.info("This can take some time.")
 
     Pyairwaves.Repo.delete_all(Pyairwaves.AircraftRegistration)
     Logger.info("Table cleaned.")

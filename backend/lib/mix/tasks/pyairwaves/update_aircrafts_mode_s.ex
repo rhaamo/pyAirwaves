@@ -48,6 +48,7 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
     start_apps()
 
     Logger.info("Starting Aircrafts ModeS update. (online)")
+    Logger.info("This can take some time.")
 
     # start the required apps & repos
     HTTPoison.start()

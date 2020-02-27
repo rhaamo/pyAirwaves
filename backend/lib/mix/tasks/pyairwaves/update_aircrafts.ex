@@ -67,6 +67,7 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircrafts do
     start_apps()
 
     Logger.info("Starting aircrafts update. (Online)")
+    Logger.info("This can take some time.")
     HTTPoison.start()
 
     url = "https://www4.icao.int/doc8643/External/AircraftTypes"
