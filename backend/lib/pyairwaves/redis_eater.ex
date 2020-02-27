@@ -26,13 +26,19 @@ defmodule Pyairwaves.RedisEater do
         {:redix_pubsub, _pubsub, _ref, :message, %{channel: _channel, payload: message}},
         state
       ) do
-    message =
-      Jason.decode!(message)
-      |> archive_and_enhance_message
+    case Jason.decode(message) do
+      {:ok, msg} ->
+        # TODO: Broadcast only if lat and lon are available
+        Phoenix.PubSub.broadcast(
+          Pyairwaves.PubSub,
+          "room:vehicles",
+          {:redis_eat, archive_and_enhance_message(msg)}
+        )
 
-    # Broadcast only if alt/lat/lon defined TODO FIXME
-    Phoenix.PubSub.broadcast(Pyairwaves.PubSub, "room:vehicles", {:redis_eat, message})
-    # Logger.debug("Received from redis: #{inspect(message)}")
+      {:error, reason} ->
+        Logger.error("Cannot decode incoming struct: #{reason}")
+    end
+
     {:noreply, state, :hibernate}
   end
 
@@ -45,12 +51,13 @@ defmodule Pyairwaves.RedisEater do
       type: msg["type"]
     }
     |> Pyairwaves.Utils.put_if(:geom, Pyairwaves.Utils.to_geo_point(msg["lon"], msg["lat"]))
-    |> Pyairwaves.Repo.insert!(on_conflict: :nothing, log: false)
+    |> Pyairwaves.Repo.insert(on_conflict: :nothing, log: false)
   end
 
   defp archive_and_enhance_message(%{"type" => "airAIS"} = msg) do
     # 1/ Fetch or create the ArchiveSource
-    source = get_or_create_archive_source(msg)
+    # TODO FIXME handle :error
+    {:ok, source} = get_or_create_archive_source(msg)
 
     # 2/ Fetch the ship and update if necessary
     ship = Pyairwaves.Repo.get_by(Pyairwaves.ArchiveShip, [mmsi: msg["mmsi"]], log: false)
@@ -90,6 +97,7 @@ defmodule Pyairwaves.RedisEater do
     # Build a changeset
     Pyairwaves.ArchiveShip.changeset(ship, changes)
     # Save it
+    # TODO FIXME handle :error
     |> Pyairwaves.Repo.insert_or_update!(log: false)
 
     # 3/ Archive the rest of the message
@@ -117,6 +125,7 @@ defmodule Pyairwaves.RedisEater do
     )
     |> Pyairwaves.Utils.put_if(:turn_rate, Pyairwaves.Utils.to_float(msg["turnRt"]))
     |> Pyairwaves.Utils.put_if(:draught, Pyairwaves.Utils.to_float(msg["draught"]))
+    # TODO FIXME handle :error
     |> Pyairwaves.Repo.insert!(log: false)
 
     # Return the initial struct
@@ -131,7 +140,8 @@ defmodule Pyairwaves.RedisEater do
   # Handle and save a packet from SBS format
   defp archive_and_enhance_message(%{"type" => "airADSB", "srcAdsb" => "SBS"} = msg) do
     # 1/ Fetch or create the ArchiveSource
-    source = get_or_create_archive_source(msg)
+    # TODO FIXME handle :error
+    {:ok, source} = get_or_create_archive_source(msg)
 
     # 2/ Fetch the aircraft and update if necessary
     aircraft =
@@ -152,11 +162,13 @@ defmodule Pyairwaves.RedisEater do
     # Build a changeset
     Pyairwaves.ArchiveAircraft.changeset(aircraft, %{})
     # Save it
+    # TODO FIXME handle :error
     |> Pyairwaves.Repo.insert_or_update!(log: false)
 
     # No microseconds from the struct
     generated =
       msg["generated"]
+      # TODO FIXME handle :error
       |> Timex.parse!("%Y-%m-%d %H:%M:%S", :strftime)
       |> NaiveDateTime.truncate(:second)
 
@@ -186,6 +198,7 @@ defmodule Pyairwaves.RedisEater do
       archive_aircraft_id: aircraft.id,
       archive_source_id: source.id
     }
+    # TODO FIXME handle :error
     |> Pyairwaves.Repo.insert!(log: false)
 
     # 4/ Add additionnal stuff to the msg
@@ -216,7 +229,7 @@ defmodule Pyairwaves.RedisEater do
   # Handle and save a packet from RAW Mode-S format
   defp archive_and_enhance_message(%{"type" => "airADSB", "srcAdsb" => "RAW MODE-S"} = msg) do
     # 1/ Fetch or create the ArchiveSource
-    _source = get_or_create_archive_source(msg)
+    {:ok, _source} = get_or_create_archive_source(msg)
 
     # 2/ Fetch the aircraft and update if necessary
     # 3/ Archive the rest of the message
