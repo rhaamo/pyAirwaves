@@ -26,8 +26,11 @@ def broadcast(msg: pyais.messages.NMEAMessage):
 
     ais_message = AisType()
     ais_message.entryPoint = "airwaves_ais_client"
-    ais_message.src = config.PYAW_HOSTNAME
-    ais_message.clientName = config.AIS_SOURCE["name"]
+    ais_message.ourName = config.PYAW_HOSTNAME
+    ais_message.srcName = config.AIS_SOURCE["name"]
+    ais_message.srcLat = config.AIS_SOURCE["lat"]
+    ais_message.srcLon = config.AIS_SOURCE["lon"]
+    ais_message.srcPosMode = config.AIS_SOURCE["posMode"]
     ais_message.dataOrigin = "rtl-ais"
     ais_message.raw = msg.raw.decode("utf-8")
     ais_message.payload = msg.data.decode("utf-8")
@@ -42,7 +45,7 @@ def broadcast(msg: pyais.messages.NMEAMessage):
 
     # Valid message and emit if lat/lon are present
     # if ais_message.lat and ais_message.lon:
-    # print(ais_message.to_dict())
+    print(ais_message.to_dict())
     redis.publish("room:vehicles", json.dumps(ais_message.to_dict()))
 
 

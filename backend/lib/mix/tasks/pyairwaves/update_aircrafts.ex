@@ -10,6 +10,9 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircrafts do
   Cron recommanded: run one time per month
   """
 
+  # FIXME TODO; The initial list contains multiple ModelFullName per Designator
+  # We need to rebuild a new list, with unique Designator and a ModelFullName concatennating all the available ones
+
   defp parse_aircraft(aircraft) do
     aircraft_shadow =
       "generic_#{String.slice(aircraft["EngineType"], 0, 1)}#{aircraft["EngineCount"]}#{
@@ -33,6 +36,29 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircrafts do
       engine_count: engine_count,
       wake_category: aircraft["WTC"]
     }
+  end
+
+  # The initial dataset contains one entry per ModelFullName, we want only one per ICAO ID
+  # We should dedupe the list and concat the ModelFullName per ICAO ID
+  defp dedupe_list(from, to) when length(from) > 0 do
+    [item | tail] = from
+
+    type =
+      if Map.has_key?(to, item["Designator"]) do
+        Map.get(to, item["Designator"])["ModelFullName"] <> ", " <> item["ModelFullName"]
+      else
+        item["ModelFullName"]
+      end
+
+    new_entry = item |> Map.put("ModelFullName", type)
+
+    new_to = Map.put(to, item["Designator"], new_entry)
+
+    dedupe_list(tail, new_to)
+  end
+
+  defp dedupe_list(from, to) when length(from) == 0 do
+    to
   end
 
   @shortdoc "Update the list of known aircrafts models"
@@ -63,12 +89,15 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircrafts do
       HTTPoison.post!(url, "", headers, options).body
       |> Jason.decode()
 
-    Enum.map(aircrafts, fn ac -> parse_aircraft(ac) end)
+    aircrafts = dedupe_list(aircrafts, %{})
+
+    Enum.map(aircrafts, fn {_icao, ac} -> parse_aircraft(ac) end)
+    # Enum.each(aircrafts, fn {})
     |> Enum.chunk_every(1000)
     |> Enum.map(fn chunk ->
       Pyairwaves.Repo.insert_all(Pyairwaves.Aircraft, chunk, on_conflict: :nothing)
     end)
 
-    Logger.info("Update finished, handled #{length(aircrafts)} items.")
+    Logger.info("Update finished.")
   end
 end

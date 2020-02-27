@@ -1,5 +1,7 @@
 defmodule PyairwavesWeb.Router do
   use PyairwavesWeb, :router
+  use Plug.ErrorHandler
+  use Sentry.Plug
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -18,6 +20,9 @@ defmodule PyairwavesWeb.Router do
 
     get "/", MapController, :map
     get "/about", AppController, :about
+
+    get "/archives/ais/quick", ArchiveController, :ais_quick
+    get "/archives/adsb/quick", ArchiveController, :adsb_quick
   end
 
   # Other scopes may use custom stacks.

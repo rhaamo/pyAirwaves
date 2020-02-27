@@ -4,8 +4,10 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
 
   require Logger
 
+  NimbleCSV.define(MyParserModeS, separator: "\t", escape: "½")
+
   @moduledoc """
-  Update the list of aircrafts Mode S and Aircraft Owners
+  Update the list of aircrafts Mode S and Owners
 
   Cron recommanded: run one time per month
   """
@@ -41,21 +43,71 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
     }
   end
 
-  @shortdoc "Update the list of Aircraft Mode S and Aircraft Owners"
+  @shortdoc "Update the list of Aircraft Owner"
   def run(_) do
-    # start the required apps & repos
     start_apps()
 
-    Temp.track!()
+    Logger.info("Starting Aircrafts ModeS update. (online)")
 
-    Logger.info("Starting Aircrafts ModeS update. (Online)")
+    # start the required apps & repos
     HTTPoison.start()
-
-    url = "http://data.flightairmap.com/data/BaseStation.sqb.gz"
 
     Pyairwaves.Repo.delete_all(Pyairwaves.AircraftMode)
     Pyairwaves.Repo.delete_all(Pyairwaves.AircraftOwner)
-    Logger.info("Table cleaned.")
+    Logger.info("Tables cleaned.")
+
+    import_mode_s_from_fam()
+    import_mode_s_from_basestation()
+    import_owners_from_fam()
+  end
+
+  def import_mode_s_from_fam() do
+    Logger.info("Importing from modes TSV")
+
+    url = "http://data.flightairmap.com/data/modes.tsv.gz"
+
+    Pyairwaves.Repo.transaction(
+      fn ->
+        HTTPoison.get!(url, [], []).body
+        |> :zlib.gunzip()
+        |> MyParserModeS.parse_string(skip_headers: true)
+        |> Enum.map(fn [
+                         _first_created,
+                         _last_modified,
+                         mode_s,
+                         mode_s_country,
+                         registration,
+                         icao_type_code,
+                         type_flight
+                       ] ->
+          %Pyairwaves.AircraftMode{
+            updated_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second),
+            inserted_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second),
+            mode_s: mode_s,
+            mode_s_country: mode_s_country,
+            registration: registration,
+            icao_type_code: icao_type_code,
+            type_flight: type_flight,
+            source: "modes.tsv"
+          }
+        end)
+        |> Enum.map(fn item ->
+          Pyairwaves.Repo.insert!(item, on_conflict: :nothing, log: false)
+        end)
+      end,
+      timeout: :infinity,
+      log: false
+    )
+
+    Logger.info("TSV Import done.")
+  end
+
+  def import_mode_s_from_basestation() do
+    Logger.info("Importing from modes BaseStation")
+
+    Temp.track!()
+
+    url = "http://data.flightairmap.com/data/BaseStation.sqb.gz"
 
     temp_file = Temp.path!()
 
@@ -101,6 +153,44 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
     # )
 
     Temp.cleanup()
-    Logger.info("Update finished.")
+    Logger.info("BaseStation Import done.")
+  end
+
+  def import_owners_from_fam() do
+    Logger.info("Starting Aircrafts Owners update. (online)")
+
+    url = "http://data.flightairmap.com/data/owners.tsv.gz"
+
+    Pyairwaves.Repo.transaction(
+      fn ->
+        HTTPoison.get!(url, [], []).body
+        |> :zlib.gunzip()
+        |> MyParserModeS.parse_string(skip_headers: true)
+        |> Enum.map(fn [
+                         registration,
+                         base,
+                         owner,
+                         _date_first_reg
+                       ] ->
+          %Pyairwaves.AircraftOwner{
+            base: base,
+            # not contained in file
+            date_first_reg: nil,
+            # unknown
+            is_private: false,
+            owner: owner,
+            registration: registration,
+            source: "owners.tsv"
+          }
+        end)
+        |> Enum.map(fn item ->
+          Pyairwaves.Repo.insert!(item, on_conflict: :nothing, log: false)
+        end)
+      end,
+      timeout: :infinity,
+      log: false
+    )
+
+    Logger.info("Owners imported.")
   end
 end
