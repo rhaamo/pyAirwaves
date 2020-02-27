@@ -1,0 +1,98 @@
+/***********************************************************
+ * Airsuck User Interface Sidebar CSS
+ * v. 0.1
+ *
+ * Sidebar styling for airsuck UI-Sidebar
+ *
+ * Licensed under GPL V3
+ * https://github.com/ThreeSixes/airSuck
+ *
+ **********************************************************/
+
+.sidebar {
+    top: 3.7rem !important;
+    bottom: 1.8rem !important;
+}
+
+.sidebar-header {
+    margin-bottom: 10px !important;
+}
+
+#sidebar #aircrafts, #sidebar #ships {
+    font-size: 9px !important;
+    font-family: Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+
+#aircrafts.sidebar-pane .sidebar-header, #ships.sidebar-pane .sidebar-header {
+    margin-bottom: 0 !important;
+}
+
+.sidebar-tabs .locateMe {
+    margin-top: 3em;
+    padding-left: 3px;
+}
+
+#LocateMe .leaflet-control-locate {
+    left: 10.5px;
+}
+
+/* Vehicle List Container */
+
+.vehicle-table {
+    width: 100%;
+    max-height: 300px;
+    overflow: auto;
+    border-collapse: collapse;
+}
+
+.vehicle-table tbody {
+}
+
+.vehicle-table th {
+    height: 30px;
+}
+
+.vehicle-table td {
+    padding: 5px;
+}
+
+.vehicle-table-entry {
+    border-top: 1px solid #e6e6e6;
+}
+
+tr.vehicle-table-entry:hover {
+    background-color: #f2f2f2
+}
+
+tr.vehicle-table-entry {
+    cursor: pointer;
+}
+
+tr.vehicle-table-entry td {
+    text-overflow: ellipsis;
+}
+
+.vehicle-table-detail {
+    display: none;
+}
+
+.infoTable {
+    border: 0;
+}
+
+.tblHeader {
+    font-weight: bold;
+    border: 0;
+}
+
+.tblCell {
+    border: 0;
+}
+
+.tblEmerg {
+    font-weight: bold;
+    border: 0;
+    background-color: #ffff00;
+    color: #ff0000;
+}

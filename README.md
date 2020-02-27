@@ -2,7 +2,7 @@
 
 <a href="https://dronegh.sigpipe.me/rhaamo/pyAirwaves"><img src="https://dronegh.sigpipe.me/api/badges/rhaamo/pyAirwaves/status.svg" alt="Build Status"/></a>
 <a href="https://github.com/rhaamo/pyAirwaves/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-AGPL3-green.svg"/></a>
-<img src="https://img.shields.io/badge/python-%3E%3D3.6-blue.svg"/> [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+<img src="https://img.shields.io/badge/python-%3E%3D3.6-blue.svg"/> <img src="https://img.shields.io/badge/elixir-1.5%2B-blue" />
 
 ## Screenshot
   <img src="https://raw.githubusercontent.com/rhaamo/pyAirwaves/master/screenshot.png" alt="screenshow" width="800px">
@@ -26,6 +26,7 @@ Some more features will be available like airplane picture, company, and statist
 - redis server
 - postgresql >= 10 (should work with lower but you are on your own)
 - python >= 3.6
+- elixir >= 1.5
 
 ## Setup
 
@@ -37,7 +38,6 @@ Daemons/scripts:
 - `simulator_adsb_real_datas.py` instead of connecting to a remote dump1090, it will replay 15minutes of ADS-B datas
 - `simulator_adsb_coordinates.py` instead of connecting to a remote dump1090, it will replay three planes looping somewhere in the USA
 - `simulator_ais_real_datas.py` instead of connecting to a remote rtl-ais, it will replay a few minutes of AIS datas
-- `python app.py` will start the Flask-SocketIO server for development ONLY
 - `installation/*.service` systemd services files for the daemons and production server
 
 ## Docs

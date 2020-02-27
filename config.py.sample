@@ -1,27 +1,8 @@
-# Website translations
-BABEL_DEFAULT_LOCALE = "en"
-
-LISTEN_HOST = '127.0.0.1'
-LISTEN_PORT = '5000'
-
-# If using sentry, set a DSN
-SENTRY_USER_ATTRS = ['name', 'email']
-SENTRY_DSN = ""
-
 SQLALCHEMY_DATABASE_URI = \
     'postgresql+psycopg2://postgres@database/pyairwaves'
 
-# Redis configuration for socket.io
-SOCKETIO_MESSAGE_QUEUE = "redis://127.0.0.1:6379/3"
-SOCKETIO_CORS_ALLOWED_ORIGINS = ["https://pyairwaves.some.where/"]
-# or to entirely disable CORS
-# SOCKETIO_CORS_ALLOWED_ORIGINS = "*"
-
-# URL to FAA Archive
-FAA_ARCHIVE_URL = "https://registry.faa.gov/database/ReleasableAircraft.zip"
-FAA_DL_TEMP_PATH = "/tmp/faaingest/"
-
-UPDATE_DB_TEMP_PATH = "/tmp/updatedb_pyairwaves/"
+# Redis configuration for the ingesters<>backend pubsub
+REDIS_URL = "redis://127.0.0.1:6379/3"
 
 # Hostname on where this server is running
 PYAW_HOSTNAME = 'potato'
@@ -29,23 +10,9 @@ PYAW_HOSTNAME = 'potato'
 # Sources for ADS-B and AIS, PLEASE NOTE that currently only one source is handled for each !
 # Port for ADSB (dump1090) needs to be 30003 (SBS BaseStation)
 # Port for AIS (rtl-ais) needs to be 10110
-ADSB_SOURCE = {"host": "patate", "port": 30003, "name": "patate", "reconnect_delay": 5, "thread_timeout": 30}
-AIS_SOURCE = {'host': 'patate', 'port': 10110, "name": "patate", "reconnect_delay": 5, "thread_timeout": 30}
-
-SECRET_KEY = "pls fill me"
-
-# Development only options
-DEBUG = False
-TESTING = False
-SQLALCHEMY_ECHO = False
-DEBUG_TB_PROFILER_ENABLED = False
-DEBUG_TB_INTERCEPT_REDIRECTS = False
+# See docs/PubSub_structure.md for the value of (src)PosMode
+ADSB_SOURCE = {"host": "patate", "port": 30003, "name": "patate", "posMode": 0, "lon": None, "lat": None, "reconnect_delay": 5, "thread_timeout": 30}
+AIS_SOURCE = {'host': 'patate', 'port': 10110, "name": "patate", "posMode": 0, "lon": None, "lat": None, "reconnect_delay": 5, "thread_timeout": 30}
 
 # Do not touch that
-SQLALCHEMY_TRACK_MODIFICATIONS = False
-SQLALCHEMY_RECORD_QUERIES = True
-# Users can change password
-# Do not disable, will breaks things
-SECURITY_CHANGEABLE = True
-# Password hash algorithm
-SECURITY_PASSWORD_HASH = 'bcrypt'
+SQLALCHEMY_RECORD_QUERIES = False

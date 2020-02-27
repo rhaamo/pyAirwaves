@@ -3,13 +3,13 @@ Description=pyAirwaves webserver
 After=network.target
 
 [Service]
-# Only one -w orker allowed ! Using multiple breaks the websocket
-ExecStart=/home/pyairwaves/venv/bin/gunicorn --worker-class eventlet -w 1 --error-logfile=error.log --access-logfile=access.log --chdir=/home/pyairwaves/pyAirwaves -b 0.0.0.0:5000 "app:create_app()"
+ExecStart=mix phx.server
 Type=simple
 RestartSec=5
 Restart=on-failure
 User=pyairwaves
-WorkingDirectory=/home/pyairwaves/pyAirwaves
+WorkingDirectory=/home/pyairwaves/pyAirwaves/backend
+Environment=MIX_ENV=prod
 
 [Install]
 WantedBy=multi-user.target

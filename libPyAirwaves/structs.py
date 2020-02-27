@@ -22,24 +22,6 @@ class AdsbType(DefaultType):
         DefaultType.__init__(self)
         self.type: str = "airADSB"
 
-        # Vehicle address – will be a ICAO aircraft address or MMSI
-        self.addr: str = None
-
-        # Aircraft ID string
-        self.idInfo: str = None
-
-        # Mode A squawk code. 4 character string representing four octal numbers.
-        self.aSquawk: str = None
-
-        # Altitude data in feet
-        self.alt: int = None
-
-        # Decoded longitude
-        self.lon: float = None
-
-        # Decoded latitude
-        self.lat: float = None
-
         # Connector component the data arrived in the stack from
         self.entryPoint: str = None
 
@@ -49,21 +31,14 @@ class AdsbType(DefaultType):
         # Date/time stamp data hits system or is generated
         self.dts: datetime = None
 
-        # Name of source host.
-        self._src: str = None
-        # Equals to src
-        self.lastSrc: str = None
-
         # Raw data frame.
         self.data: str = None
 
-        # I don't know, probably unused
-        self._clientName: str = None
-        # Equals to clientName
-        self.lastClientName: str = None
+        # Name for the source giving out datas
+        self.srcName: str = None
 
-        # Is srcPos available
-        self.srcPos: bool = False
+        # Name for the server gathering the clients datas
+        self.ourName: str = None
 
         # Data source latitude
         self.srcLat: float = None
@@ -71,19 +46,91 @@ class AdsbType(DefaultType):
         # Data source longitude
         self.srcLon: float = None
 
-        # Metadata about how srcLat and srcLon are derived.
-        self.srcPosMeta: str = None
+        # Mode on how the source position is determined.
+        self.srcPosMode: str = None
+
+        # ADS-B Data "source" between "SBS" and "RAW MODE-S"
+        self.srcAdsb: str = None
+
+        # ADSB Fields
+        # 1 - (MSG, STA, ID, AIR, SEL or CLK)
+        self.msgType: str = None
+
+        # 2 - MSG sub types 1 to 8. Not used by other message types.
+        self.transmissionType: int = None
+
+        # 3 - Database Session record number
+        self.sessionId: str = None
+
+        # 4 - Database Aircraft record number
+        self.aircraftId: str = None
+
+        # 5 - Aircraft Mode S hexadecimal code
+        self.hexIdent: str = None
+
+        # 6 - Database Flight record number
+        self.flightId: str = None
+
+        # 7,8 - Date message generated
+        self.generated: str = None
+
+        # 9,10 - Date message logged
+        self.logged: str = None
+
+        # End of standard fields
+        # Now aircraft specific
+
+        # 11 - An eight digit flight ID - can be flight number or registration (or even nothing).
+        self.callsign: str = "@@@@@@@@"
+
+        # 12 - Mode C altitude. Height relative to 1013.2mb (Flight Level). Not height AMSL
+        self.altitude: int = None
+
+        # 13 - Speed over ground (not indicated airspeed)
+        self.ground_speed: int = None
+
+        # 14 - Track of aircraft (not heading). Derived from the velocity E/W and velocity N/S
+        # FYI in dump1090 this is the aircraft heading
+        self.track: int = None
+
+        # 15 - North and East positive. South and West negative
+        self.lat: float = None
+
+        # 16 - North and East positive. South and West negative
+        self.lon: float = None
+
+        # 17 - 64ft resolution
+        self.vertical_rate: int = None
+
+        # 18 - Assigned Mode A squawk code
+        self.squawk: str = None
+
+        # 19 - Flag to indicate squawk has changed
+        self.alert: bool = None
+
+        # 20 - Flag to indicate emergency code has been set
+        self.emergency: bool = None
+
+        # 21 - Flag to indicate transponder Ident has been activated
+        self.spi_ident: bool = None
+
+        # 22 - Flag to indicate ground squat switch is active
+        self.is_on_ground: bool = None
+
+        # EOA
+
+        # Aircraft ID string
+        self.idInfo: str = None
 
         # Vertical status of vehicle (air/gnd)
         self.vertStat: str = None
 
-        # Aircraft climb or decline rate in feet/min.
-        self.vertRate: int = None
-
         # Category
+        # Filled by SQL
         self.category: str = None
 
         # Country code of the block the ICAO AA is in. (Might also be “ICAO” reserved)
+        # Filled by SQL
         self.icaoAACC: str = None
 
         # Veocity in knots
@@ -95,32 +142,61 @@ class AdsbType(DefaultType):
         # True if aircraft is moving at supersonic speeds
         self.supersonic: bool = None
 
+    # A SBS flag is -1 for True, 0 for False...
+    def flag(self, f):
+        return False if f in ["0", 0] else True
+
+    def date_time_to_datetime(self, d, t):
+        # Strip microseconds because if 0, datetime will not have microseconds and will fuckup everything
+        return datetime.datetime.strptime(d + " " + t, "%Y/%m/%d %H:%M:%S.%f").replace(microsecond=0)
+
+    def populate_from_raw(self, msg: dict):
+        print(msg)
+        self.srcAdsb = "RAW MODE-S"
+
+        if "rawLat" in msg:
+            print(type(msg["rawLat"]))
+
     # Populate class with datas
     # TODO: add remaining fields of the ADS-B transmission message
-    # Remember that fields start at 1 but python array at 0, so field 3 (session ID) is at position 2
-    def populate_from_list(self, fields):
-        self.addr = fields[4]  # int(fields[4], 16)
-        self.idInfo = "@@@@@@@@"  # what is this thing ?
-        self.aSquawk = int(fields[17]) if fields[17] else None
-        self.alt = int(fields[11]) if fields[11] else None
-        self.lon = float(fields[15]) if fields[15] else None
-        self.lat = float(fields[14]) if fields[14] else None
-        self.dts = str(datetime.datetime.utcnow())
-        self.data = ",".join(fields)
-        self.srcPos = False  # TODO add position support
-        if fields[21] == 0 or fields[21] == "0":
-            self.vertStat = "air"
-        else:
-            self.vertStat = "gnd"
-        self.vertRate = int(fields[16]) if fields[16] else None
-        self.category = None
-        self.icaoAACC = None
-        self.velo = None
-        self.heading = None
-        self.supersonic = None
+    # http://woodair.net/sbs/article/barebones42_socket_data.htm
+    # Python arrays starts at 0, ADSB doc at 1, we pad the first entry to avoid messing with our brain
+    def populate_from_sbs(self, fields):
+        # pad first entry because lazyness
+        fields = ["pad"] + fields
 
-    def populate_from_string(self, msg):
-        self.populate_from_list(msg.split(","))
+        self.data = ",".join(fields[1:])  # exclude the padding
+        self.srcAdsb = "SBS"
+
+        self.msgType = fields[1]
+        self.transmissionType = int(fields[2])
+        self.sessionId = fields[3]
+        self.aircraftId = fields[4]
+        self.hexIdent = fields[5]  # Aircraft MODE S Address
+        self.flightId = fields[6]
+        self.generated = str(self.date_time_to_datetime(fields[7], fields[8]))
+        self.logged = str(self.date_time_to_datetime(fields[9], fields[10]))
+
+        self.callsign = fields[11] if fields[11] else "@@@@@@@@"
+        self.altitude = int(fields[12]) if fields[12] else None
+        self.ground_speed = int(fields[13]) if fields[13] else None
+        self.track = int(fields[14]) if fields[14] else None
+        self.lat = float(fields[15]) if fields[15] else None
+        self.lon = float(fields[16]) if fields[16] else None
+        self.vertical_rate = int(fields[17]) if fields[17] else None
+        self.squawk = fields[18] if fields[18] else None
+        self.alert = self.flag(fields[19]) if fields[19] else None
+        self.emergency = self.flag(fields[20]) if fields[20] else None
+        self.spi_ident = self.flag(fields[21]) if fields[21] else None
+        self.is_on_ground = self.flag(fields[22]) if fields[22] else None
+
+        # custom
+        self.vertStat = "gnd" if self.is_on_ground else "air"
+        self.supersonic = None  # unknown in SBS
+        self.heading = None
+        self.velo = None
+        self.icaoAACC = None
+        self.category = None
 
     # Various functions
 
@@ -133,29 +209,10 @@ class AdsbType(DefaultType):
         }
 
     def has_location(self):
-        if self.lat and self.lon and self.alt:
+        if self.lat and self.lon and self.altitude:
             return True
         else:
             return False
-
-    # Setters and Getters
-
-    def set_src(self, value):
-        self._src = value
-        self.lastSrc = value
-
-    def get_src(self):
-        return self._src
-
-    def set_client_name(self, value):
-        self._clientName = value
-        self.lastClientName = value
-
-    def get_client_name(self):
-        return self._clientName
-
-    src = property(get_src, set_src)
-    clientName = property(get_client_name, set_client_name)
 
 
 class AisType(DefaultType):
@@ -177,10 +234,11 @@ class AisType(DefaultType):
         # Date/time stamp data hits system or is generated
         self.dts: datetime = None
 
-        # Name of source host.
-        self._src: str = None
-        # Equals to src
-        self.lastSrc: str = None
+        # Name for the source giving out datas
+        self.srcName: str = None
+
+        # Name for the server gathering the clients datas
+        self.ourName: str = None
 
         # vdm[vdm] Raw data frame.
         self.data: str = None
@@ -194,8 +252,8 @@ class AisType(DefaultType):
         # Data source longitude
         self.srcLon: float = None
 
-        # Metadata about how srcLat and srcLon are derived.
-        self.srcPosMeta: str = None
+        # Mode on how the source position is determined.
+        self.srcPosMode: str = None
 
         # Decoded longitude
         self.lon: float = None
@@ -218,13 +276,13 @@ class AisType(DefaultType):
         # Maritime Mobile Service Identity ID
         self.mmsi: int = None
 
-        # Position Accuracy ?
+        # Position Accuracy. true = high <10m; false low >10m; default=false
         self.posAcc: bool = None
 
         # FIXME (libAirSuck/aisParse.py:616)
         self.maneuver: int = None
 
-        # Unknown
+        # Receiver autonomous integrity monitoring; false=not in use; true=in use; default=true
         self.raim: bool = None
 
         # Radio status
@@ -254,7 +312,7 @@ class AisType(DefaultType):
         self.dimToPort: int = None
         self.dimToStarboard: int = None
 
-        # ?
+        # Distance between "water line" and water
         self.draught: float = None
 
         # Ship ETA
@@ -310,7 +368,6 @@ class AisType(DefaultType):
             self.maneuver = message["maneuver"].numerator
         self.raim = message["raim"]
         self.radioStatus = message["radio"]
-        self.srcPos = False  # TODO add source position support
 
         # Extract MMSI Datas
         mmsiMeta = self.__getMMSIMeta()
@@ -529,22 +586,3 @@ class AisType(DefaultType):
             return True
         else:
             return False
-
-    # Setters and Getters
-
-    def set_src(self, value):
-        self._src = value
-        self.lastSrc = value
-
-    def get_src(self):
-        return self._src
-
-    def set_client_name(self, value):
-        self._clientName = value
-        self.lastClientName = value
-
-    def get_client_name(self):
-        return self._clientName
-
-    src = property(get_src, set_src)
-    clientName = property(get_client_name, set_client_name)

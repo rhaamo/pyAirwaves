@@ -3,16 +3,16 @@
 from real_datas_test import REAL_DATA_AIS
 from libPyAirwaves.structs import AisType
 import time
-from flask_socketio import SocketIO
 import config as cfg
-from app import create_app
+import redis
+import json
 
 
 DELAY_MESSAGES = 0.5  # second
 
-app = create_app()
-app.app_context().push()
-socketio = SocketIO(message_queue=cfg.SOCKETIO_MESSAGE_QUEUE)
+redis = redis.from_url(cfg.REDIS_URL)
+pubsub = redis.pubsub()
+pubsub.subscribe("room:vehicles")
 
 print("Sending messages...")
 
@@ -24,11 +24,14 @@ try:
             print("invalid message")
             continue
         ais_msg.entryPoint = "simulator"
-        ais_msg.src = cfg.PYAW_HOSTNAME
-        ais_msg.clientName = "sim_host"
+        ais_msg.ourName = cfg.PYAW_HOSTNAME
+        ais_msg.srcName = cfg.AIS_SOURCE["name"]
+        ais_msg.srcLat = cfg.AIS_SOURCE["lat"]
+        ais_msg.srcLon = cfg.AIS_SOURCE["lon"]
+        ais_msg.srcPosMode = cfg.AIS_SOURCE["posMode"]
         ais_msg.dataOrigin = "rtl-ais"
 
-        socketio.emit("message", ais_msg.to_dict())
+        redis.publish("room:vehicles", json.dumps(ais_msg.to_dict()))
         time.sleep(DELAY_MESSAGES)
 
 except KeyboardInterrupt:

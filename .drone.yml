@@ -1,6 +1,6 @@
 clone:
   git:
-    image: plugins/git:1
+    image: plugins/git
     depth: 50
     tags: true
 
@@ -13,7 +13,7 @@ pipeline:
       volumes:
           - /tmp/cache:/cache
 
-  build:
+  python-linting:
     image: python:3-alpine
     commands:
       - apk -U add libmagic file-dev libffi libffi-dev cmake gcc g++ make pkgconfig git boost-dev wget postgresql-dev curl curl-dev
@@ -25,16 +25,18 @@ pipeline:
       - black --check .
       - flake8 .
 
-  migrations:
-    image: python:3-alpine
+  backend-build:
+    image: elixir:1.8.1
+    environment:
+      MIX_ENV: test
     commands:
-      - apk -U add libmagic file-dev libffi libffi-dev postgresql-client cmake gcc g++ make pkgconfig git boost-dev wget postgresql-dev curl curl-dev
-      - pip install --upgrade pip setuptools
-      - pip install --cache-dir=.cache -r requirements.txt
-      - python setup.py install
-      - psql -U postgres -h database -w -c 'CREATE DATABASE pyairwaves'
-      - cp config.py.sample config.py
-      - flask db upgrade
+      - cd backend
+      - mix local.hex --force
+      - mix local.rebar --force 
+      - mix deps.get
+      - mix format --check-formatted
+      - mix compile --force
+      - mix ecto.migrate
 
   rebuild-cache:
       image: drillster/drone-volume-cache

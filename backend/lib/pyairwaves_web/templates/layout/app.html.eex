@@ -1,0 +1,68 @@
+<!--
+pyAirwaves geospatial viewer by Dashie (https://github.com/rhaamo)
+
+This project is licensed under GPLv3. See COPYING for dtails.
+
+This file is part of the airSuck project (https://github.com/rhaamo/pyAirwaves).
+-->
+
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    
+    <title>pyAirwaves geospatial viewer</title>
+    
+    <!-- Scripts and CSS -->
+    <link rel="stylesheet" type="text/css" href="<%= Routes.static_path(@conn, "/css/main.css") %>"><!-- Master stylesheet -->
+    <link rel="stylesheet" type="text/css" href="<%= Routes.static_path(@conn, "/css/sidebar.css") %>"><!-- Sidebar stylesheet -->
+    <link rel="stylesheet" type="text/css" href="<%= Routes.static_path(@conn, "/css/vendors/leaflet.css") %>"><!-- Leaflet stylesheet -->
+    <link rel="stylesheet" type="text/css" href="<%= Routes.static_path(@conn, "/css/vendors/leaflet-sidebar.min.css") %>"><!-- Leaflet-sidebar stylesheet -->
+    <link rel="stylesheet" type="text/css" href="<%= Routes.static_path(@conn, "/css/vendors/L.Control.Locate.min.css") %>"><!-- Leaflet control locate stylesheet -->
+    <link rel="stylesheet" type="text/css" href="<%= Routes.static_path(@conn, "/css/vendors/fork-awesome.min.css") %>"><!-- Master stylesheet -->
+    <link rel="stylesheet" type="text/css" href="<%= Routes.static_path(@conn, "/css/vendors/bootstrap.min.css") %>"><!-- Bootstrap stylesheet -->
+    <%= csrf_meta_tag() %>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="/">pyAirwaves</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item <%= if @page == "map" do %>active<% end %>">
+            <a class="nav-link" href="/">Map</a>
+          </li>
+          <li class="nav-item <%= if @page == "about" do %>active<% end %>">
+            <a class="nav-link" href="/about">About</a>
+          </li>
+        </ul>
+        <span id="websocket-status" class="badge badge-pill badge-secondary" title="WebSocket status unknown"><i class="fa fa-question-circle-o"></i></span>
+      </div>
+    </nav>
+
+    <div class="content">
+      <%= render @view_module, @view_template, assigns %>
+    </div>
+
+    <form><input type="text" class="msgBx dbgInactive" id="message" value="Waiting for message data..." /></form>
+
+    <script src="<%= Routes.static_path(@conn, "/js/vendors/jquery-3.4.1.min.js") %>" type="text/javascript"></script><!-- Include jQuery because normal JS sucks. -->
+    <script src="<%= Routes.static_path(@conn, "/js/vendors/bootstrap.min.js") %>" type="text/javascript"></script><!-- Include Bootstrap. -->
+    <script src="<%= Routes.static_path(@conn, "/js/vendors/socket.io.js") %>" type="text/javascript"></script><!-- Include Socket.IO. -->
+    <script src="<%= Routes.static_path(@conn, "/js/vendors/logger.min.js") %>" type="text/javascript"></script><!-- Include js-Logger. -->
+    <script src="<%= Routes.static_path(@conn, "/js/vendors/leaflet.js") %>" type="text/javascript"></script><!-- Include Leaflet mapping stuff. -->
+    <script src="<%= Routes.static_path(@conn, "/js/vendors/leaflet-providers.js") %>" type="text/javascript"></script><!-- Include Leaflet provider. -->
+    <script src="<%= Routes.static_path(@conn, "/js/leaflet.planemarker.js") %>" type="text/javascript"></script><!-- Include canvas plane marker. -->
+    <script src="<%= Routes.static_path(@conn, "/js/leaflet.boatmarker.js") %>" type="text/javascript"></script><!-- Include canvas boat marker. -->
+    <script src="<%= Routes.static_path(@conn, "/js/vendors/leaflet-sidebar.min.js") %>" type="text/javascript"></script><!-- Include leaflet sidebar. -->
+    <script src="<%= Routes.static_path(@conn, "/js/vendors/L.Terminator.js") %>" type="text/javascript"></script><!-- Include leaflet terminator. -->
+    <script src="<%= Routes.static_path(@conn, "/js/vendors/leaflet-hash.js") %>" type="text/javascript"></script><!-- Include leaflet hash. -->
+    <script src="<%= Routes.static_path(@conn, "/js/vendors/L.Control.Locate.min.js") %>" type="text/javascript"></script><!-- Include leaflet controllocate. -->
+    <script src="<%= Routes.static_path(@conn, "/js/vendors/phoenix.js") %>" type="text/javascript"></script><!-- Include phoenix. -->
+    <script src="<%= Routes.static_path(@conn, "/js/airsuckLoad.js") %>" type="text/javascript"></script><!-- Include airsuck JS loader. -->
+  </body>
+</html>

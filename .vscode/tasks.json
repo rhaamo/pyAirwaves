@@ -1,0 +1,40 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "command": "mix",
+      "type": "shell",
+      "args": ["compile"],
+      "problemMatcher": [
+        "$mixCompileError",
+        "$mixCompileWarning"
+      ],
+      "presentation": {
+        "reveal": "always"
+      },
+      "group": "build",
+      "options": {
+        "cwd": "backend"
+      }
+    },
+    {
+      "label": "test",
+      "command": "mix",
+      "type": "shell",
+      "args": ["test"],
+      "problemMatcher": [
+        "$mixCompileError",
+        "$mixCompileWarning",
+        "$mixTestFailure"
+        ],
+      "presentation": {
+        "reveal": "always"
+      },
+      "group": "build",
+      "options": {
+        "cwd": "backend"
+      }
+    }
+  ]
+}

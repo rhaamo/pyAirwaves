@@ -1,0 +1,57 @@
+<div class="noMap row justify-content-md-center">
+    <div class="col-md-10">
+        <h3>Stats</h3>
+        <ul>
+        <li>Sources: <%= @count_sources %></li>
+        <li>Known aircrafts: <%= @count_aircrafts %></li>
+        <li>Archived ADSB Messages: <%= @count_messages %></li>
+        </ul>
+    </div>
+</div>
+
+<div class="noMap row justify-content-md-center">
+    <div class="col-md-10">
+        <h3>ADSB Sources</h3>
+        <table class="table table-sm table-striped">
+        <thead>
+        <tr><th>Name</th><th>Type</th><th>Entrypoint</th><th>Data Origin</th></tr>
+        </thead>
+        <tbody>
+        <%= for source <- @sources do %>
+        <tr>
+            <td><%= source.name %></td>
+            <td><%= source.type %></td>
+            <td><%= source.entrypoint %></td>
+            <td><%= source.data_origin %></td>
+        </tr>
+        <% end %>
+        </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="noMap row justify-content-md-center">
+    <div class="col-md-10">
+        <h3>ADSB Aircrafts (last 15 detected)</h3>
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr>
+                    <th>Ident</th>
+                    <th>Type</th>
+                    <th>Flag</th>
+                    <th>Found on</th>
+                </tr>
+            </thead>
+        <tbody>
+        <%= for aircraft <- @aircrafts do %>
+        <tr>
+            <td><%= aircraft.mode_s %></td>
+            <td><%= aircraft.description || "Unknown" %></td>
+            <td><%= aircraft.mode_s_country %></td>
+            <td><%= aircraft.found %></td>
+        </tr>
+        <% end %>
+        </tbody>
+        </table>
+    </div>
+</div>

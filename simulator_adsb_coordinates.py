@@ -4,15 +4,15 @@
 from real_datas_test import fake_planes
 from libPyAirwaves.structs import AdsbType
 import time
-from flask_socketio import SocketIO
 import config as cfg
-from app import create_app
+import redis
+import json
 
 DELAY_MESSAGES = 2  # second
 
-app = create_app()
-app.app_context().push()
-socketio = SocketIO(message_queue=cfg.SOCKETIO_MESSAGE_QUEUE)
+redis = redis.from_url(cfg.REDIS_URL)
+pubsub = redis.pubsub()
+pubsub.subscribe("room:vehicles")
 
 print("Sending messages...")
 
@@ -31,10 +31,14 @@ try:
         adsb_msg = AdsbType()
         adsb_msg.populate_from_list(msg)
         adsb_msg.entryPoint = "simulator"
-        adsb_msg.src = cfg.PYAW_HOSTNAME
+        adsb_msg.ourName = cfg.PYAW_HOSTNAME
+        adsb_msg.srcName = cfg.ADSB_SOURCE["name"]
+        adsb_msg.srcLat = cfg.ADSB_SOURCE["lat"]
+        adsb_msg.srcLon = cfg.ADSB_SOURCE["lon"]
+        adsb_msg.srcPosMode = cfg.ADSB_SOURCE["posMode"]
         adsb_msg.clientName = "sim_host"
         adsb_msg.dataOrigin = "dump1090"
-        socketio.emit("message", adsb_msg.to_dict())
+        redis.publish("room:vehicles", json.dumps(adsb_msg.to_dict()))
         time.sleep(DELAY_MESSAGES)
 
     # "addr": "ffffff", "idInfo": "WEE2162", "alt": 45000, "aSquawk": "7007"
@@ -48,10 +52,14 @@ try:
         adsb_msg = AdsbType()
         adsb_msg.populate_from_list(msg)
         adsb_msg.entryPoint = "simulator"
-        adsb_msg.src = cfg.PYAW_HOSTNAME
+        adsb_msg.ourName = cfg.PYAW_HOSTNAME
+        adsb_msg.srcName = cfg.ADSB_SOURCE["name"]
+        adsb_msg.srcLat = cfg.ADSB_SOURCE["lat"]
+        adsb_msg.srcLon = cfg.ADSB_SOURCE["lon"]
+        adsb_msg.srcPosMode = cfg.ADSB_SOURCE["posMode"]
         adsb_msg.clientName = "sim_host"
         adsb_msg.dataOrigin = "dump1090"
-        socketio.emit("message", adsb_msg.to_dict())
+        redis.publish("room:vehicles", json.dumps(adsb_msg.to_dict()))
         time.sleep(DELAY_MESSAGES)
 
     # "addr": "111111", "idInfo": "NOPE", "alt": 40000, "aSquawk": "0666"
@@ -65,10 +73,14 @@ try:
         adsb_msg = AdsbType()
         adsb_msg.populate_from_list(msg)
         adsb_msg.entryPoint = "simulator"
-        adsb_msg.src = cfg.PYAW_HOSTNAME
+        adsb_msg.ourName = cfg.PYAW_HOSTNAME
+        adsb_msg.srcName = cfg.ADSB_SOURCE["name"]
+        adsb_msg.srcLat = cfg.ADSB_SOURCE["lat"]
+        adsb_msg.srcLon = cfg.ADSB_SOURCE["lon"]
+        adsb_msg.srcPosMode = cfg.ADSB_SOURCE["posMode"]
         adsb_msg.clientName = "sim_host"
         adsb_msg.dataOrigin = "dump1090"
-        socketio.emit("message", adsb_msg.to_dict())
+        redis.publish("room:vehicles", json.dumps(adsb_msg.to_dict()))
         time.sleep(DELAY_MESSAGES)
 
 
