@@ -95,7 +95,7 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircrafts do
     # Enum.each(aircrafts, fn {})
     |> Enum.chunk_every(1000)
     |> Enum.map(fn chunk ->
-      Pyairwaves.Repo.insert_all(Pyairwaves.Aircraft, chunk, on_conflict: :nothing)
+      Pyairwaves.Repo.insert_all(Pyairwaves.Aircraft, chunk, on_conflict: :nothing, log: false)
     end)
 
     Logger.info("Update finished.")

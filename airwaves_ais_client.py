@@ -19,10 +19,10 @@ pubsub.subscribe("room:vehicles")
 
 def broadcast(msg: pyais.messages.NMEAMessage):
     is_fragmented = msg.count > 1
-    if is_fragmented:
-        print("Fragmented packet:", msg)
-    else:
-        print("Single packet:", msg)
+    # if is_fragmented:
+    #     print("Fragmented packet:", msg)
+    # else:
+    #     print("Single packet:", msg)
 
     ais_message = AisType()
     ais_message.entryPoint = "airwaves_ais_client"
@@ -45,7 +45,7 @@ def broadcast(msg: pyais.messages.NMEAMessage):
 
     # Valid message and emit if lat/lon are present
     # if ais_message.lat and ais_message.lon:
-    print(ais_message.to_dict())
+    # print(ais_message.to_dict())
     redis.publish("room:vehicles", json.dumps(ais_message.to_dict()))
 
 

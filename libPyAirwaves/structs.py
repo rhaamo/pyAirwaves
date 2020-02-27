@@ -350,7 +350,6 @@ class AisType(DefaultType):
         # 'shipname': 'ETRETAT', 'shiptype': <ShipType.Passenger_NoAdditionalInformation: 69>, 'to_bow': 24,
         # 'to_stern': 163, 'to_port': 8, 'to_starboard': 18, 'epfd': <EpfdType.GPS: 1>, 'month': 2, 'day': 13,
         # 'hour': 17, 'minute': 30, 'draught': 6.0, 'destination': 'SANTANDER', 'dte': False}
-        print("chomp chomp AIS VDM")
 
         self.dts = str(datetime.datetime.utcnow())
 
