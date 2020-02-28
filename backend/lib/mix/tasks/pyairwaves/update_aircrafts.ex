@@ -20,10 +20,10 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircrafts do
       }.png"
 
     engine_count =
-      case aircraft["Enginecount"] do
+      case aircraft["EngineCount"] do
         "C" -> 1
         nil -> 1
-        _ -> String.to_integer(aircraft["Enginecount"])
+        _ -> String.to_integer(aircraft["EngineCount"])
       end
 
     %{
