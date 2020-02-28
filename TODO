@@ -27,16 +27,10 @@ my idea is that at some point the marker isn't created because of lat/lon missin
 
 
 ### new backend
-Add config field for srcPosMode, c'est la position déterminée de la source, manuel vs gps
-Utiliser un Enum
-Initier une lib interne en elixir qui reprendra ces déclarations
 enum sourcePositionReporting { manual, gps_manual, gps_auto } (auto unsupported yet)
 
-
-FRONT FRONT FRONT; ADSB Struct changed (like alt->altitude, addr->hexIdent etc.)
-
-in SBS:
-course over ground isn't airspeed
-and track isn't heading
-
-let's accomodate the front and fill alt/addr/heading from not-the-good-values in the feeder.
+Coverage plot
+    -> need source lat/lon
+    on every packet received calculate the distance src{lat,lon}->vehicle{lat,lon}
+    round the bearing, 123.4 -> 123, on the degree
+    save and replace {:distance} a %source_plot{:source_id, :distance, :bearing}
