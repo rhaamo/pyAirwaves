@@ -94,11 +94,3 @@ $(document).ready(function () {
         Logger.info("Map initialized.")
     });
 });
-
-function zoomIn() {
-    map.zoomIn(1)
-}
-
-function zoomOut() {
-    map.zoomOut(1)
-}

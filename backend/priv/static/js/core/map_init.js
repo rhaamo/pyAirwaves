@@ -114,3 +114,11 @@ function initMap() {
     // The map loaded.
     window.mapLoaded = true;
 }
+
+function zoomIn() {
+    map.zoomIn(1)
+}
+
+function zoomOut() {
+    map.zoomOut(1)
+}
