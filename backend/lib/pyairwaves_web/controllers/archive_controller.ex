@@ -44,6 +44,10 @@ defmodule PyairwavesWeb.ArchiveController do
           mode_s: am.mode_s,
           mode_s_country: am.mode_s_country,
           description: a.aircraft_description,
+          engine_count: a.engine_count,
+          engine_type: a.engine_type,
+          manufacturer: a.manufacturer,
+          types: a.type,
           found: aa.inserted_at
         },
         limit: 15,

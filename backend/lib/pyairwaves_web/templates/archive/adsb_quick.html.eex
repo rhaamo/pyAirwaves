@@ -37,8 +37,11 @@
             <thead>
                 <tr>
                     <th>Ident</th>
-                    <th>Type</th>
                     <th>Flag</th>
+                    <th>Type</th>
+                    <th>Manufacturer</th>
+                    <th>Model</th>
+                    <th>Engine</th>
                     <th>Found on</th>
                 </tr>
             </thead>
@@ -46,8 +49,11 @@
         <%= for aircraft <- @aircrafts do %>
         <tr>
             <td><%= aircraft.mode_s %></td>
-            <td><%= aircraft.description || "Unknown" %></td>
             <td><%= aircraft.mode_s_country %></td>
+            <td><%= aircraft.description || "Unknown" %></td>
+            <td><%= aircraft.manufacturer %></td>
+            <td title="<%= aircraft.types %>"><%= Enum.at(String.split(aircraft.types || "", ","), 0) %></td>
+            <td><%= if aircraft.engine_count do %><%= aircraft.engine_count %>, <%= aircraft.engine_type %><% end %></td>
             <td><%= aircraft.found %></td>
         </tr>
         <% end %>
