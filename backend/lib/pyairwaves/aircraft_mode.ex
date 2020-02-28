@@ -31,5 +31,6 @@ defmodule Pyairwaves.AircraftMode do
       :source_type
     ])
     |> validate_required([:mode_s])
+    |> unique_constraint(:icao_type_code)
   end
 end

@@ -131,7 +131,7 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
         end)
         |> elem(1)
         |> Enum.map(fn row ->
-          Pyairwaves.Repo.insert!(parse_aircraft_mode(row), log: false)
+          Pyairwaves.Repo.insert!(parse_aircraft_mode(row), on_conflict: :nothing, log: false)
 
           is_private =
             case String.downcase(to_string(row[:RegisteredOwners])) do
