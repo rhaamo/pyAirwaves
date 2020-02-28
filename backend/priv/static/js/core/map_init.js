@@ -111,13 +111,6 @@ function initMap() {
         }
     })
 
-    function zoomIn(){
-    map.zoomIn(1)
-    }
-    function zoomOut(){
-    map.zoomOut(1)
-    }
-
     // The map loaded.
     window.mapLoaded = true;
 }
