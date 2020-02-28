@@ -134,7 +134,11 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
         |> elem(1)
         |> Enum.map(fn row ->
           # We replace the existing icao_type_code if already exists, should be empty from the modes.csv
-          Pyairwaves.Repo.insert!(parse_aircraft_mode(row), on_conflict: {:replace, [:icao_type_code]}, conflict_target: :mode_s, log: false)
+          Pyairwaves.Repo.insert!(parse_aircraft_mode(row),
+            on_conflict: {:replace, [:icao_type_code]},
+            conflict_target: :mode_s,
+            log: false
+          )
 
           is_private =
             case String.downcase(to_string(row[:RegisteredOwners])) do
