@@ -57,8 +57,10 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
     Pyairwaves.Repo.delete_all(Pyairwaves.AircraftOwner)
     Logger.info("Tables cleaned.")
 
+    # Don't change order <<
     import_mode_s_from_fam()
     import_mode_s_from_basestation()
+    # >>
     import_owners_from_fam()
   end
 
@@ -131,7 +133,8 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
         end)
         |> elem(1)
         |> Enum.map(fn row ->
-          Pyairwaves.Repo.insert!(parse_aircraft_mode(row), on_conflict: :nothing, log: false)
+          # We replace the existing icao_type_code if already exists, should be empty from the modes.csv
+          Pyairwaves.Repo.insert!(parse_aircraft_mode(row), on_conflict: {:replace, [:icao_type_code]}, conflict_target: :mode_s, log: false)
 
           is_private =
             case String.downcase(to_string(row[:RegisteredOwners])) do
