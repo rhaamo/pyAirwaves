@@ -15,6 +15,7 @@ defmodule Pyairwaves.States.SourceCoverage do
 
   def init(:ok) do
     # TODO pre-fill from DB
+    schedule_flush_db() # schedule the periodic flush
     {:ok, :ets.new(:source_coverage, [:named_table, :protected])}
   end
 
@@ -54,7 +55,7 @@ defmodule Pyairwaves.States.SourceCoverage do
         # if nil (not present in struct, new bearing) or anything else (inferior)
         new_bearings = case prev_distance do
           prev_distance when prev_distance < new_distance ->
-            Logger.debug("prev < new #{prev_distance} < #{new_distance}")
+            # Logger.debug("prev < new #{prev_distance} < #{new_distance}")
             Map.put(coverages.bearings, coverage.bearing, coverage.distance)
           nil -> Map.put(coverages.bearings, coverage.bearing, coverage.distance)
           _ -> coverages.bearings
@@ -76,5 +77,15 @@ defmodule Pyairwaves.States.SourceCoverage do
         :ets.insert(table, {source_id, c_struct})
         {:reply, c_struct, table}
     end
+  end
+
+  def schedule_flush_db() do
+    Process.send_after(self(), :flush_to_db, 2 * 60 * 60 * 1000) # every hours
+  end
+
+  def handle_info(:flush_to_db, state) do
+    Logger.debug("Running task to flush to database")
+    schedule_flush_db()
+    {:noreply, state}
   end
 end
