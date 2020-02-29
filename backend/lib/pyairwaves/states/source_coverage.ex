@@ -14,6 +14,7 @@ defmodule Pyairwaves.States.SourceCoverage do
   end
 
   def init(:ok) do
+    # TODO pre-fill from DB
     {:ok, :ets.new(:source_coverage, [:named_table, :protected])}
   end
 
@@ -22,10 +23,6 @@ defmodule Pyairwaves.States.SourceCoverage do
       [{^name, items}] -> {:ok, items}
       [] -> :error
     end
-  end
-
-  def new(list) do
-    GenServer.call(__MODULE__, {:new, list})
   end
 
   @doc "Add a bearing/distance into the state"
@@ -44,7 +41,6 @@ defmodule Pyairwaves.States.SourceCoverage do
     end
   end
 
-  # TODO: if find, do not merge but replace if new_distance > old_distance
   def handle_call({:add, source_id, coverage}, _from, table) do
     case find(source_id) do
       {:ok, coverages} ->
@@ -68,7 +64,6 @@ defmodule Pyairwaves.States.SourceCoverage do
         :ets.insert(table, {source_id, c_new})
         {:reply, coverages, table}
       :error ->
-        Logger.warn("Does not exists")
         # build new bearings map
         bearings = %{}
         |> Map.put(coverage.bearing, coverage.distance)
