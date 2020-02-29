@@ -48,7 +48,7 @@ defmodule Pyairwaves.RedisEater do
     else
       # Logger.debug("Computing for source #{source.id}, #{source.name}, #{source.type}")
       distance = round(Geocalc.distance_between([msg["srcLat"], msg["srcLon"]], [msg["lat"], msg["lon"]]))
-      bearing = Float.round(Geocalc.bearing([msg["srcLat"], msg["srcLon"]], [msg["lat"], msg["lon"]]), 3)
+      bearing = Geocalc.bearing([msg["srcLat"], msg["srcLon"]], [msg["lat"], msg["lon"]])
       |> Pyairwaves.Utils.bearing_to_degrees()
       Logger.info("Vehicle is #{distance} meters away from source on bearing #{bearing}")
       coverage = %{
