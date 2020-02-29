@@ -53,7 +53,9 @@ defmodule Pyairwaves.MixProject do
       {:temp, "~> 0.4"},
       {:geo_postgis, "~> 3.1"},
       {:timex, "~> 3.5"},
-      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false},
+      # geocalc 0.8.0 is currently borked, see https://github.com/yltsrc/geocalc/issues/55
+      {:geocalc, git: "https://github.com/yltsrc/geocalc", ref: "master"}
     ]
   end
 

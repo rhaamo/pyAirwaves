@@ -18,7 +18,9 @@ defmodule Pyairwaves.Application do
       PyairwavesWeb.Endpoint,
       # Starts a worker by calling: Pyairwaves.Worker.start_link(arg)
       # {Pyairwaves.Worker, arg},
-      Pyairwaves.RedisEater
+      Pyairwaves.RedisEater,
+      # Handle the in-memory source coverage plot
+      Pyairwaves.States.SourceCoverage
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
