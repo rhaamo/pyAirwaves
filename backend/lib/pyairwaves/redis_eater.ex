@@ -50,8 +50,8 @@ defmodule Pyairwaves.RedisEater do
       position_mode: msg["srcPosMode"],
       type: msg["type"]
     }
-    |> Pyairwaves.Utils.put_if(:geom, Pyairwaves.Utils.to_geo_point(msg["lon"], msg["lat"]))
-    |> Pyairwaves.Repo.insert(on_conflict: :nothing, log: false)
+    |> Pyairwaves.Utils.put_if(:geom, Pyairwaves.Utils.to_geo_point(msg["srcLon"], msg["srcLat"]))
+    |> Pyairwaves.Repo.insert(
   end
 
   defp archive_and_enhance_message(%{"type" => "airAIS"} = msg) do
