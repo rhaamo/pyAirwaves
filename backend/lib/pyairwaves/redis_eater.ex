@@ -65,7 +65,7 @@ defmodule Pyairwaves.RedisEater do
     |> Pyairwaves.Utils.put_if(:geom, Pyairwaves.Utils.to_geo_point(msg["srcLon"], msg["srcLat"]))
     |> Pyairwaves.Repo.insert(
       returning: true,
-      on_conflict: :nothing,
+      on_conflict: [set: [name: msg["srcName"]]],
       conflict_target: [:name, :type]
     )
   end
