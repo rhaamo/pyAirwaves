@@ -49,13 +49,34 @@ defmodule Pyairwaves.States.SourceCoverage do
     case find(source_id) do
       {:ok, coverages} ->
         :ets.delete(table, source_id)
-        # TODO: replace bearing=>distance only if new_distance > old_distance
-        new_bearings = Map.put(coverages.bearings, coverage.bearing, coverage.distance)
+
+        # get the previous and next distance
+        prev_distance = Map.get(coverages.bearings, coverage.bearing, nil)
+        new_distance = coverage.distance
+
+        # conditionally update new_bearings if the new distance is > old one or just return the bearings
+        new_bearings = case prev_distance do
+          prev_distance when prev_distance < new_distance ->
+            Logger.debug("prev < new #{prev_distance} < #{new_distance}")
+            Map.put(coverages.bearings, coverage.bearing, coverage.distance)
+          nil -> Map.put(coverages.bearings, coverage.bearing, coverage.distance)
+          _ -> coverages.bearings
+        end
+
         c_new = Map.put(coverages, :bearings, new_bearings)
         :ets.insert(table, {source_id, c_new})
         {:reply, coverages, table}
       :error ->
-        c_struct = %{lat: coverage.lat, lon: coverage.lon, bearings: %{coverage.bearing => coverage.distance}}
+        Logger.warn("Does not exists")
+        # build new bearings map
+        bearings = %{}
+        |> Map.put(coverage.bearing, coverage.distance)
+
+        # add that map to the struct
+        c_struct = %{lat: coverage.lat, lon: coverage.lon}
+        |> Map.put(:bearings, bearings)
+
+        # insert in the state
         :ets.insert(table, {source_id, c_struct})
         {:reply, c_struct, table}
     end
