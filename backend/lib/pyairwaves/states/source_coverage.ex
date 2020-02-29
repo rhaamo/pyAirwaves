@@ -55,6 +55,7 @@ defmodule Pyairwaves.States.SourceCoverage do
         new_distance = coverage.distance
 
         # conditionally update new_bearings if the new distance is > old one or just return the bearings
+        # if nil (not present in struct, new bearing) or anything else (inferior)
         new_bearings = case prev_distance do
           prev_distance when prev_distance < new_distance ->
             Logger.debug("prev < new #{prev_distance} < #{new_distance}")
