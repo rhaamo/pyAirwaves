@@ -4,7 +4,7 @@ defmodule Pyairwaves.States.SourceCoverage do
 
   # The state is key-value
   # The key is the source ID from ArchiveSource db entry
-  # The value is a map, %{lat: 0, lon:0, bearings: [{bearing: 0, distance: 0}]}
+  # The value is a map, %{lat: 0, lon:0, bearings: {bearing => distance}}
   # lat and lon are the one of the source
   # The bearings list is a map of the actual bearing (1 to 360, ideally only every 30 degrees, float), and distance (in meters, integer)
   # Only the longuest distance for each bearing is in this list
@@ -49,11 +49,13 @@ defmodule Pyairwaves.States.SourceCoverage do
     case find(source_id) do
       {:ok, coverages} ->
         :ets.delete(table, source_id)
-        c_new = Map.put(coverages, :bearings, coverages.bearings ++ [%{distance: coverage.distance, bearing: coverage.bearing}])
+        # TODO: replace bearing=>distance only if new_distance > old_distance
+        new_bearings = Map.put(coverages.bearings, coverage.bearing, coverage.distance)
+        c_new = Map.put(coverages, :bearings, new_bearings)
         :ets.insert(table, {source_id, c_new})
         {:reply, coverages, table}
       :error ->
-        c_struct = %{lat: coverage.lat, lon: coverage.lon, bearings: [%{distance: coverage.distance, bearing: coverage.bearing}]}
+        c_struct = %{lat: coverage.lat, lon: coverage.lon, bearings: %{coverage.bearing => coverage.distance}}
         :ets.insert(table, {source_id, c_struct})
         {:reply, c_struct, table}
     end
