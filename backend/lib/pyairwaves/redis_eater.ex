@@ -46,9 +46,10 @@ defmodule Pyairwaves.RedisEater do
     if msg["srcPosMode"] == 0 or msg["srcPosMode"] == "0" do
       :ignored
     else
-      Logger.debug("Computing for source #{source.id}, #{source.name}, #{source.type}")
+      # Logger.debug("Computing for source #{source.id}, #{source.name}, #{source.type}")
       distance = round(Geocalc.distance_between([msg["srcLat"], msg["srcLon"]], [msg["lat"], msg["lon"]]))
       bearing = Float.round(Geocalc.bearing([msg["srcLat"], msg["srcLon"]], [msg["lat"], msg["lon"]]), 3)
+      |> Pyairwaves.Utils.bearing_to_degrees()
       Logger.info("Vehicle is #{distance} meters away from source on bearing #{bearing}")
       coverage = %{
         source_id: source.id,
@@ -75,7 +76,8 @@ defmodule Pyairwaves.RedisEater do
     |> Pyairwaves.Repo.insert(
       returning: true,
       on_conflict: [set: [name: msg["srcName"]]],
-      conflict_target: [:name, :type]
+      conflict_target: [:name, :type],
+      log: false
     )
   end
 

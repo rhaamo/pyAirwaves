@@ -24,4 +24,9 @@ defmodule Pyairwaves.Utils do
       %Geo.Point{coordinates: {lon, lat}, srid: 4326}
     end
   end
+
+  def bearing_to_degrees(bearing) do
+    degrees = round(Math.rad2deg(bearing))
+    rem(degrees + 360, 360)
+  end
 end
