@@ -52,14 +52,13 @@ defmodule Pyairwaves.RedisEater do
       |> Pyairwaves.Utils.bearing_to_degrees()
       Logger.info("Vehicle is #{distance} meters away from source on bearing #{bearing}")
       coverage = %{
-        source_id: source.id,
         lat: msg["srcLat"],
         lon: msg["srcLon"],
         bearing: bearing,
         distance: distance
       }
-      src_name = "#{source.name}_#{source.type}"
-      Pyairwaves.States.SourceCoverage.add(src_name, coverage)
+      Pyairwaves.States.SourceCoverage.add(source.id, coverage)
+      IO.inspect(Pyairwaves.States.SourceCoverage.find(source.id))
       :ok
     end
   end
