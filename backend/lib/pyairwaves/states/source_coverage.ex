@@ -127,7 +127,6 @@ defmodule Pyairwaves.States.SourceCoverage do
         {:ok, coverage} ->
           # from: {bearing => distance, bearing => distance...}
           # to: [{bearing: x, distance: x}, {bearing: x, distance: x}...]
-          IO.inspect(coverage.bearings)
           db_coverages =
             Enum.map(coverage.bearings, fn {bearing, distance} ->
               %{bearing: bearing, distance: distance}
@@ -135,7 +134,7 @@ defmodule Pyairwaves.States.SourceCoverage do
 
           new_source = Ecto.Changeset.change(source, coverage: db_coverages)
 
-          case Pyairwaves.Repo.update(new_source) do
+          case Pyairwaves.Repo.update(new_source, log: false) do
             {:ok, _struct} -> Logger.info("Source Coverage state synced.")
             {:error, changeset} -> Logger.error("Cannot sync Source Coverage state.", changeset)
           end
