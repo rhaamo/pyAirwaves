@@ -34,9 +34,9 @@
 			  margin: margin,
 			  levels: 5,
 			  roundStrokes: true,
-				color: d3.scaleOrdinal().range(["#26AF32", "#762712", "#2a2fd4"]),
-				format: '.0f',
-                unit: 'km'
+              color: d3.scaleOrdinal().range(["#EDC951","#CC333F","#00A0B0"]),
+              format: '.0f',
+              unit: 'km'
 			};
             let svg_radar = RadarChart("#polar-<%= source.name %>", data, radarChartOptions);
 
