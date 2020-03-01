@@ -13,11 +13,31 @@ defmodule Pyairwaves.States.SourceCoverage do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
+  defp prefill_from_db(table) do
+    Pyairwaves.Repo.all(Pyairwaves.ArchiveSource)
+    |> Enum.each(fn source ->
+      bearings = Enum.reduce(source.coverage, fn x, acc ->
+        Map.merge(%{x.bearing => x.distance}, acc)
+      end)
+
+      # add that map to the struct
+      {lon, lat} = source.geom.coordinates
+      c_struct =
+        %{lat: lat, lon: lon}
+        |> Map.put(:bearings, bearings)
+
+      # insert in the state
+      IO.inspect(c_struct)
+      :ets.insert(table, {source.id, c_struct})
+    end)
+  end
+
   def init(:ok) do
-    # TODO pre-fill from DB
+    table = :ets.new(:source_coverage, [:named_table, :protected])
+    prefill_from_db(table)
     # schedule the periodic flush
     schedule_flush_db()
-    {:ok, :ets.new(:source_coverage, [:named_table, :protected])}
+    {:ok, table}
   end
 
   def find(name) do
