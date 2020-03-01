@@ -80,11 +80,30 @@ defmodule Pyairwaves.States.SourceCoverage do
   end
 
   def schedule_flush_db() do
-    Process.send_after(self(), :flush_to_db, 2 * 60 * 60 * 1000) # every hours
+    Process.send_after(self(), :flush_to_db, 10 * 1000) # 2 * 60 * 60 * 1000) # every hours
   end
 
   def handle_info(:flush_to_db, state) do
-    Logger.debug("Running task to flush to database")
+    Logger.debug("Syncing in-memory coverage datas to database.")
+
+    Pyairwaves.Repo.all(Pyairwaves.ArchiveSource)
+    |> Enum.each(fn source ->
+      case find(source.id) do
+        {:ok, coverage} ->
+          # from: {bearing => distance, bearing => distance...}
+          # to: [{bearing: x, distance: x}, {bearing: x, distance: x}...]
+          db_coverages = Enum.map(coverage.bearings, fn {bearing, distance} ->
+            %{bearing: bearing, distance: distance}
+          end)
+          new_source = Ecto.Changeset.change(source, coverage: db_coverages)
+          case Pyairwaves.Repo.update(new_source) do
+            {:ok, _struct} -> Logger.info("Coverage synced.")
+            {:error, changeset} -> Logger.error("Cannot sync coverage.", changeset)
+          end
+      end
+    end)
+
+    # re-schedule the task to run in some time
     schedule_flush_db()
     {:noreply, state}
   end
