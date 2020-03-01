@@ -27,7 +27,6 @@ defmodule Pyairwaves.States.SourceCoverage do
         |> Map.put(:bearings, bearings)
 
       # insert in the state
-      IO.inspect(c_struct)
       :ets.insert(table, {source.id, c_struct})
     end)
   end
