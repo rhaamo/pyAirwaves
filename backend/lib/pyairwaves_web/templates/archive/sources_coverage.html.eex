@@ -20,7 +20,7 @@
 				width = Math.min(700, window.innerWidth / 4) - margin.left - margin.right,
 				height = Math.min(width, window.innerHeight - margin.top - margin.bottom);
 
-            let points: [
+            let points = [
                 <%= Enum.map(source.coverage, fn x -> Phoenix.HTML.raw("{axis: \"#{Pyairwaves.Utils.bearing_to_direction(x.bearing).shortname}\", value: #{x.distance / 1000}},") end) %>
             ];
 
@@ -53,7 +53,7 @@
                         converted.push({axis: d, value: 0});
                     }
                 });
-                console.log(converted)
+                // console.log(converted)
                 return converted;
             }
 
