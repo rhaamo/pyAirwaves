@@ -16,18 +16,24 @@ defmodule Pyairwaves.States.SourceCoverage do
   defp prefill_from_db(table) do
     Pyairwaves.Repo.all(Pyairwaves.ArchiveSource)
     |> Enum.each(fn source ->
-      bearings = Enum.reduce(source.coverage, fn x, acc ->
-        Map.merge(%{x.bearing => x.distance}, acc)
-      end)
+      if not is_nil(source.coverage) and length(source.coverage) > 0 do
+        sc = Enum.map(source.coverage, fn x ->
+          %{x.bearing => x.distance}
+        end)
+        bearings = Enum.reduce(sc, fn x, acc ->
+          Map.merge(x, acc)
+        end)
 
-      # add that map to the struct
-      {lon, lat} = source.geom.coordinates
-      c_struct =
-        %{lat: lat, lon: lon}
-        |> Map.put(:bearings, bearings)
+        # add that map to the struct
+        {lon, lat} = source.geom.coordinates
+        c_struct =
+          %{lat: lat, lon: lon}
+          |> Map.put(:bearings, bearings)
 
-      # insert in the state
-      :ets.insert(table, {source.id, c_struct})
+        # insert in the state
+        :ets.insert(table, {source.id, c_struct})
+        Logger.info("Loaded Source Coverage state from db.")
+      end
     end)
   end
 
@@ -121,6 +127,7 @@ defmodule Pyairwaves.States.SourceCoverage do
         {:ok, coverage} ->
           # from: {bearing => distance, bearing => distance...}
           # to: [{bearing: x, distance: x}, {bearing: x, distance: x}...]
+          IO.inspect(coverage.bearings)
           db_coverages =
             Enum.map(coverage.bearings, fn {bearing, distance} ->
               %{bearing: bearing, distance: distance}
@@ -129,12 +136,12 @@ defmodule Pyairwaves.States.SourceCoverage do
           new_source = Ecto.Changeset.change(source, coverage: db_coverages)
 
           case Pyairwaves.Repo.update(new_source) do
-            {:ok, _struct} -> Logger.info("Coverage synced.")
-            {:error, changeset} -> Logger.error("Cannot sync coverage.", changeset)
+            {:ok, _struct} -> Logger.info("Source Coverage state synced.")
+            {:error, changeset} -> Logger.error("Cannot sync Source Coverage state.", changeset)
           end
 
         :error ->
-          Logger.info("Datas not yet available.")
+          Logger.info("Source Coverage state datas not yet available.")
       end
     end)
 
