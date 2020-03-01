@@ -11,9 +11,9 @@ This file is part of the airSuck project (https://github.com/rhaamo/pyAirwaves).
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    
+
     <title>pyAirwaves geospatial viewer</title>
-    
+
     <!-- Scripts and CSS -->
     <link rel="stylesheet" type="text/css" href="<%= Routes.static_path(@conn, "/css/main.css") %>"><!-- Master stylesheet -->
     <link rel="stylesheet" type="text/css" href="<%= Routes.static_path(@conn, "/css/sidebar.css") %>"><!-- Sidebar stylesheet -->

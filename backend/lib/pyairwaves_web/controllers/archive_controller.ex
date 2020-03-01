@@ -2,6 +2,20 @@ defmodule PyairwavesWeb.ArchiveController do
   use PyairwavesWeb, :controller
   require Ecto.Query
 
+  def sources_coverage(conn, _params) do
+    sources =
+      Pyairwaves.ArchiveSource
+      |> Ecto.Query.order_by([a], asc: a.inserted_at)
+      |> Pyairwaves.Repo.all()
+      |> Enum.chunk_every(2)
+
+    render(conn, "sources_coverage.html",
+      version: Pyairwaves.Application.version(),
+      page: "sources_coverage",
+      sources: sources
+    )
+  end
+
   def ais_quick(conn, _params) do
     sources =
       Pyairwaves.ArchiveSource
