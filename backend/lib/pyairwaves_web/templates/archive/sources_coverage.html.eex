@@ -16,6 +16,26 @@
         <div id="polar-<%= source.name %>" class="chart" width="100%"></div>
         <script>
         (function() {
+            // TODO move that away
+            /** Indexes a finite array like a finite group */
+            const indexFiniteArray = (array, i) => array[((i % array.length) + array.length) % array.length];
+            // pick kernel size as appropriate
+            // const GAUSSIAN_BLUR_KERNEL = [0.27901, 0.44198, 0.27901];
+            const GAUSSIAN_BLUR_KERNEL = [0.06136, 0.24477, 0.38774, 0.24477, 0.06136];
+            // const GAUSSIAN_BLUR_KERNEL = [0.00598, 0.060626, 0.241843, 0.383103, 0.241843, 0.060626, 0.00598];
+            /**
+            * Applies a smoothing operation to the input array as a finite ring, assuming the input
+            * is like [0°, 1°, ..., 359°].map(angle => (the value at the angle))
+            */
+            const smoothAxisChartThing = data => data.map((_, index) => {
+                const kernelMaxDistance = (GAUSSIAN_BLUR_KERNEL.length - 1) / 2;
+                let value = 0;
+                for (let deltaI = -kernelMaxDistance; deltaI <= kernelMaxDistance; deltaI++) {
+                    value += GAUSSIAN_BLUR_KERNEL[deltaI + kernelMaxDistance] * indexFiniteArray(data, index + deltaI);
+                }
+                return value;
+            });
+
             var margin = { top: 50, right: 80, bottom: 50, left: 80 },
 				width = Math.min(700, window.innerWidth / 4) - margin.left - margin.right,
 				height = Math.min(width, window.innerHeight - margin.top - margin.bottom);
@@ -27,6 +47,8 @@
                   ]
                 }
             ];
+            // data[0].axes = smoothAxisChartThing(data[0].axes);
+            console.log(data);
 
             var radarChartOptions = {
 			  w: 290,
