@@ -100,6 +100,7 @@ defmodule Pyairwaves.States.SourceCoverage do
             {:ok, _struct} -> Logger.info("Coverage synced.")
             {:error, changeset} -> Logger.error("Cannot sync coverage.", changeset)
           end
+        :error -> Logger.info("Datas not yet available.")
       end
     end)
 
