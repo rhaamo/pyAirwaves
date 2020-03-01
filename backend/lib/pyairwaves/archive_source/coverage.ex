@@ -6,5 +6,4 @@ defmodule Pyairwaves.ArchiveSource.Coverage do
     field :bearing, :integer
     field :distance, :integer
   end
-
 end

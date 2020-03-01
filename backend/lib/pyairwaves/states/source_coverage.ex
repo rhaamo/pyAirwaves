@@ -15,7 +15,8 @@ defmodule Pyairwaves.States.SourceCoverage do
 
   def init(:ok) do
     # TODO pre-fill from DB
-    schedule_flush_db() # schedule the periodic flush
+    # schedule the periodic flush
+    schedule_flush_db()
     {:ok, :ets.new(:source_coverage, [:named_table, :protected])}
   end
 
@@ -53,25 +54,33 @@ defmodule Pyairwaves.States.SourceCoverage do
 
         # conditionally update new_bearings if the new distance is > old one or just return the bearings
         # if nil (not present in struct, new bearing) or anything else (inferior)
-        new_bearings = case prev_distance do
-          prev_distance when prev_distance < new_distance ->
-            # Logger.debug("prev < new #{prev_distance} < #{new_distance}")
-            Map.put(coverages.bearings, coverage.bearing, coverage.distance)
-          nil -> Map.put(coverages.bearings, coverage.bearing, coverage.distance)
-          _ -> coverages.bearings
-        end
+        new_bearings =
+          case prev_distance do
+            prev_distance when prev_distance < new_distance ->
+              # Logger.debug("prev < new #{prev_distance} < #{new_distance}")
+              Map.put(coverages.bearings, coverage.bearing, coverage.distance)
+
+            nil ->
+              Map.put(coverages.bearings, coverage.bearing, coverage.distance)
+
+            _ ->
+              coverages.bearings
+          end
 
         c_new = Map.put(coverages, :bearings, new_bearings)
         :ets.insert(table, {source_id, c_new})
         {:reply, coverages, table}
+
       :error ->
         # build new bearings map
-        bearings = %{}
-        |> Map.put(coverage.bearing, coverage.distance)
+        bearings =
+          %{}
+          |> Map.put(coverage.bearing, coverage.distance)
 
         # add that map to the struct
-        c_struct = %{lat: coverage.lat, lon: coverage.lon}
-        |> Map.put(:bearings, bearings)
+        c_struct =
+          %{lat: coverage.lat, lon: coverage.lon}
+          |> Map.put(:bearings, bearings)
 
         # insert in the state
         :ets.insert(table, {source_id, c_struct})
@@ -80,7 +89,8 @@ defmodule Pyairwaves.States.SourceCoverage do
   end
 
   def schedule_flush_db() do
-    Process.send_after(self(), :flush_to_db, 10 * 1000) # 2 * 60 * 60 * 1000) # every hours
+    # 2 * 60 * 60 * 1000) # every hours
+    Process.send_after(self(), :flush_to_db, 10 * 1000)
   end
 
   def handle_info(:flush_to_db, state) do
@@ -92,15 +102,20 @@ defmodule Pyairwaves.States.SourceCoverage do
         {:ok, coverage} ->
           # from: {bearing => distance, bearing => distance...}
           # to: [{bearing: x, distance: x}, {bearing: x, distance: x}...]
-          db_coverages = Enum.map(coverage.bearings, fn {bearing, distance} ->
-            %{bearing: bearing, distance: distance}
-          end)
+          db_coverages =
+            Enum.map(coverage.bearings, fn {bearing, distance} ->
+              %{bearing: bearing, distance: distance}
+            end)
+
           new_source = Ecto.Changeset.change(source, coverage: db_coverages)
+
           case Pyairwaves.Repo.update(new_source) do
             {:ok, _struct} -> Logger.info("Coverage synced.")
             {:error, changeset} -> Logger.error("Cannot sync coverage.", changeset)
           end
-        :error -> Logger.info("Datas not yet available.")
+
+        :error ->
+          Logger.info("Datas not yet available.")
       end
     end)
 

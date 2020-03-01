@@ -32,22 +32,53 @@ defmodule Pyairwaves.Utils do
 
   def bearing_to_direction(bearing) do
     case bearing do
-      bearing when bearing == 360 or (bearing >= 0 and bearing < 22.5 ) -> %{degree: bearing, shortname: "N", fullname: "North"}
-      bearing when bearing >= 22.5 and bearing < 45 -> %{degree: bearing, shortname: "NNE", fullname: "North-Northeast"}
-      bearing when bearing >= 45 and bearing < 67.5 -> %{degree: bearing, shortname: "NE", fullname: "Northeast"}
-      bearing when bearing >= 67.5 and bearing < 90 -> %{degree: bearing, shortname: "ENE", fullname: "East-Northeast"}
-      bearing when bearing >= 90 and bearing < 112.5 -> %{degree: bearing, shortname: "E", fullname: "East"}
-      bearing when bearing >= 112.5 and bearing < 135 -> %{degree: bearing, shortname: "ESE", fullname: "East-Southeast"}
-      bearing when bearing >= 135 and bearing < 157.5 -> %{degree: bearing, shortname: "SE", fullname: "Southeast"}
-      bearing when bearing >= 157.5 and bearing < 180 -> %{degree: bearing, shortname: "SSE", fullname: "South-Southeast"}
-      bearing when bearing >= 180 and bearing < 202.5 -> %{degree: bearing, shortname: "S", fullname: "South"}
-      bearing when bearing >= 202.5 and bearing < 225 -> %{degree: bearing, shortname: "SSW", fullname: "South-Southwest"}
-      bearing when bearing >= 225 and bearing < 247.5 -> %{degree: bearing, shortname: "SW", fullname: "Southwest"}
-      bearing when bearing >= 247.5 and bearing < 270 -> %{degree: bearing, shortname: "WSW", fullname: "West-Southwest"}
-      bearing when bearing >= 270 and bearing < 292.5 -> %{degree: bearing, shortname: "W", fullname: "West"}
-      bearing when bearing >= 292.5 and bearing < 315 -> %{degree: bearing, shortname: "WNW", fullname: "West-Northwest"}
-      bearing when bearing >= 315 and bearing < 337.5 -> %{degree: bearing, shortname: "NW", fullname: "Northwest"}
-      bearing when bearing >= 337.5 and bearing < 360 -> %{degree: bearing, shortname: "NNW", fullname: "North-Northwest"}
+      bearing when bearing == 360 or (bearing >= 0 and bearing < 22.5) ->
+        %{degree: bearing, shortname: "N", fullname: "North"}
+
+      bearing when bearing >= 22.5 and bearing < 45 ->
+        %{degree: bearing, shortname: "NNE", fullname: "North-Northeast"}
+
+      bearing when bearing >= 45 and bearing < 67.5 ->
+        %{degree: bearing, shortname: "NE", fullname: "Northeast"}
+
+      bearing when bearing >= 67.5 and bearing < 90 ->
+        %{degree: bearing, shortname: "ENE", fullname: "East-Northeast"}
+
+      bearing when bearing >= 90 and bearing < 112.5 ->
+        %{degree: bearing, shortname: "E", fullname: "East"}
+
+      bearing when bearing >= 112.5 and bearing < 135 ->
+        %{degree: bearing, shortname: "ESE", fullname: "East-Southeast"}
+
+      bearing when bearing >= 135 and bearing < 157.5 ->
+        %{degree: bearing, shortname: "SE", fullname: "Southeast"}
+
+      bearing when bearing >= 157.5 and bearing < 180 ->
+        %{degree: bearing, shortname: "SSE", fullname: "South-Southeast"}
+
+      bearing when bearing >= 180 and bearing < 202.5 ->
+        %{degree: bearing, shortname: "S", fullname: "South"}
+
+      bearing when bearing >= 202.5 and bearing < 225 ->
+        %{degree: bearing, shortname: "SSW", fullname: "South-Southwest"}
+
+      bearing when bearing >= 225 and bearing < 247.5 ->
+        %{degree: bearing, shortname: "SW", fullname: "Southwest"}
+
+      bearing when bearing >= 247.5 and bearing < 270 ->
+        %{degree: bearing, shortname: "WSW", fullname: "West-Southwest"}
+
+      bearing when bearing >= 270 and bearing < 292.5 ->
+        %{degree: bearing, shortname: "W", fullname: "West"}
+
+      bearing when bearing >= 292.5 and bearing < 315 ->
+        %{degree: bearing, shortname: "WNW", fullname: "West-Northwest"}
+
+      bearing when bearing >= 315 and bearing < 337.5 ->
+        %{degree: bearing, shortname: "NW", fullname: "Northwest"}
+
+      bearing when bearing >= 337.5 and bearing < 360 ->
+        %{degree: bearing, shortname: "NNW", fullname: "North-Northwest"}
     end
   end
 end

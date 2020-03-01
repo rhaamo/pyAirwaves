@@ -21,7 +21,7 @@ defmodule PyairwavesWeb.Router do
     get "/", MapController, :map
     get "/about", AppController, :about
 
-    get"/archives/sources/coverage", ArchiveController, :sources_coverage
+    get "/archives/sources/coverage", ArchiveController, :sources_coverage
 
     # temp
     get "/archives/ais/quick", ArchiveController, :ais_quick
