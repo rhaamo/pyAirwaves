@@ -13,7 +13,7 @@ defmodule Pyairwaves.ArchiveSource do
     field :entrypoint, :string
     field :data_origin, :string
 
-    embeds_many(:coverage, Pyairwaves.ArchiveSource.Coverage, on_replace: :delete)
+    embeds_many :coverage, Pyairwaves.ArchiveSource.Coverage, on_replace: :delete
 
     has_many :archive_ship_messages, Pyairwaves.ArchiveShipMessage
     has_many :archive_aircraft_messages, Pyairwaves.ArchiveShipMessage
