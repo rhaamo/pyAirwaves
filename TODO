@@ -1,36 +1,5 @@
-Some short ISSUES log/infos
-
-- Some planes doesn't have a lat/lon
-google maps accepted creating a marker without lat/lon or null but not leaflet
-but, some vehicles with lat/lon aren't trigger correctly
-vehicles[vehName] seems to have lat and lon but in handleMessage it's triggered in the else { no lat / lon}
--> can't reproduce with console debugger in browser :(
-so it spawn errors "Cannot read property 'setIcon' of null" in movePosition.
-because this.marker is null / not created
-my idea is that at some point the marker isn't created because of lat/lon missing.
-
-- no pos -> then pos, no marker, sidebar toggle row dont work
-
-- Change fill colors of markers
- active blue
- selected yellow
- idle grey
-
-- Expiration timer: grey-ish old markers before deletion
-
-- Better planes icons
-
-- javascript cleanup needed
-
-
-
-
-
 ### new backend
 enum sourcePositionReporting { manual, gps_manual, gps_auto } (auto unsupported yet)
 
 Coverage plot
-    -> need source lat/lon
-    on every packet received calculate the distance src{lat,lon}->vehicle{lat,lon}
-    round the bearing, 123.4 -> 123, on the degree
-    save and replace {:distance} a %source_plot{:source_id, :distance, :bearing}
+    add last sync timestamp
