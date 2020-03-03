@@ -17,15 +17,19 @@ defmodule Pyairwaves.States.SourceCoverage do
     Pyairwaves.Repo.all(Pyairwaves.ArchiveSource)
     |> Enum.each(fn source ->
       if not is_nil(source.coverage) and length(source.coverage) > 0 do
-        sc = Enum.map(source.coverage, fn x ->
-          %{x.bearing => x.distance}
-        end)
-        bearings = Enum.reduce(sc, fn x, acc ->
-          Map.merge(x, acc)
-        end)
+        sc =
+          Enum.map(source.coverage, fn x ->
+            %{x.bearing => x.distance}
+          end)
+
+        bearings =
+          Enum.reduce(sc, fn x, acc ->
+            Map.merge(x, acc)
+          end)
 
         # add that map to the struct
         {lon, lat} = source.geom.coordinates
+
         c_struct =
           %{lat: lat, lon: lon}
           |> Map.put(:bearings, bearings)
@@ -114,7 +118,8 @@ defmodule Pyairwaves.States.SourceCoverage do
   end
 
   def schedule_flush_db() do
-    Process.send_after(self(), :flush_to_db, 2 * 60 * 60 * 1000) # every hours
+    # every hours
+    Process.send_after(self(), :flush_to_db, 2 * 60 * 60 * 1000)
   end
 
   def handle_info(:flush_to_db, state) do
