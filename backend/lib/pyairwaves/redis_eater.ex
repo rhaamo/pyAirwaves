@@ -42,7 +42,33 @@ defmodule Pyairwaves.RedisEater do
     {:noreply, state, :hibernate}
   end
 
-  def get_or_create_archive_source(msg) do
+  defp compute_source_coverage(source, msg) do
+    if msg["srcPosMode"] == 0 or msg["srcPosMode"] == "0" do
+      :ignored
+    else
+      # Logger.debug("Computing for source #{source.id}, #{source.name}, #{source.type}")
+      distance =
+        round(Geocalc.distance_between([msg["srcLat"], msg["srcLon"]], [msg["lat"], msg["lon"]]))
+
+      bearing =
+        Geocalc.bearing([msg["srcLat"], msg["srcLon"]], [msg["lat"], msg["lon"]])
+        |> Pyairwaves.Utils.bearing_to_degrees()
+
+      # Logger.info("Vehicle is #{distance} meters away from source on bearing #{bearing}")
+      coverage = %{
+        lat: msg["srcLat"],
+        lon: msg["srcLon"],
+        bearing: bearing,
+        distance: distance
+      }
+
+      Pyairwaves.States.SourceCoverage.add(source.id, coverage)
+      # IO.inspect(Pyairwaves.States.SourceCoverage.find(source.id))
+      :ok
+    end
+  end
+
+  defp get_or_create_archive_source(msg) do
     %Pyairwaves.ArchiveSource{
       name: msg["srcName"],
       entrypoint: msg["entryPoint"],
@@ -50,14 +76,20 @@ defmodule Pyairwaves.RedisEater do
       position_mode: msg["srcPosMode"],
       type: msg["type"]
     }
-    |> Pyairwaves.Utils.put_if(:geom, Pyairwaves.Utils.to_geo_point(msg["lon"], msg["lat"]))
-    |> Pyairwaves.Repo.insert(on_conflict: :nothing, log: false)
+    |> Pyairwaves.Utils.put_if(:geom, Pyairwaves.Utils.to_geo_point(msg["srcLon"], msg["srcLat"]))
+    |> Pyairwaves.Repo.insert(
+      returning: true,
+      on_conflict: [set: [name: msg["srcName"]]],
+      conflict_target: [:name, :type],
+      log: false
+    )
   end
 
   defp archive_and_enhance_message(%{"type" => "airAIS"} = msg) do
     # 1/ Fetch or create the ArchiveSource
     # TODO FIXME handle :error
     {:ok, source} = get_or_create_archive_source(msg)
+    compute_source_coverage(source, msg)
 
     # 2/ Fetch the ship and update if necessary
     ship = Pyairwaves.Repo.get_by(Pyairwaves.ArchiveShip, [mmsi: msg["mmsi"]], log: false)
@@ -142,6 +174,7 @@ defmodule Pyairwaves.RedisEater do
     # 1/ Fetch or create the ArchiveSource
     # TODO FIXME handle :error
     {:ok, source} = get_or_create_archive_source(msg)
+    compute_source_coverage(source, msg)
 
     # 2/ Fetch the aircraft and update if necessary
     aircraft =
@@ -229,7 +262,8 @@ defmodule Pyairwaves.RedisEater do
   # Handle and save a packet from RAW Mode-S format
   defp archive_and_enhance_message(%{"type" => "airADSB", "srcAdsb" => "RAW MODE-S"} = msg) do
     # 1/ Fetch or create the ArchiveSource
-    {:ok, _source} = get_or_create_archive_source(msg)
+    {:ok, source} = get_or_create_archive_source(msg)
+    compute_source_coverage(source, msg)
 
     # 2/ Fetch the aircraft and update if necessary
     # 3/ Archive the rest of the message
