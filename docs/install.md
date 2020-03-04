@@ -64,6 +64,17 @@ CREATE EXTENSION IF NOT EXISTS "postgis";
     pip install -r requirements.txt
 
 
+# Upgrade
+
+    sudo su - pyairwaves
+    cd pyAirwaves/backend
+    git pull
+    export MIX_ENV=prod
+    mix deps.get
+    mix ecto.migrate
+    exit
+    sudo systemctl restart pyairwaves-web
+
 # Automatic run
 
 Look at the `installation/` folder, there is sample SystemD services for each part.
