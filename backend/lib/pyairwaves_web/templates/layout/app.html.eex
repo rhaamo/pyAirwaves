@@ -43,6 +43,11 @@ This file is part of the airSuck project (https://github.com/rhaamo/pyAirwaves).
           <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="archivesDd" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Archives</a>
           <div class="dropdown-menu" aria-labelledby="archivesDd">
+            <h6 class="dropdown-header">ADSB</h6>
+            <a class="dropdown-item" href="/archives/adsb/quick">Quick stats</a>
+            <h6 class="dropdown-header">AIS</h6>
+            <a class="dropdown-item" href="/archives/ais/quick">Quick stats</a>
+            <h6 class="dropdown-header">Global</h6>
             <a class="dropdown-item" href="/archives/sources/coverage">Receivers coverage</a>
           </div>
         </li>
@@ -51,7 +56,7 @@ This file is part of the airSuck project (https://github.com/rhaamo/pyAirwaves).
       </div>
     </nav>
 
-    <div class="<%= if @page == "map" do %>content<%= else %>container page_content<% end %>">
+    <div class="<%= if @page == "map" do %>content<%= else %>container-fluid page_content<% end %>">
       <%= render @view_module, @view_template, assigns %>
     </div>
 

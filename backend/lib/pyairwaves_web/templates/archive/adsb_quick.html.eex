@@ -3,7 +3,7 @@
         <h3>Stats</h3>
         <ul>
         <li>Sources: <%= @count_sources %></li>
-        <li>Known aircrafts: <%= @count_aircrafts %></li>
+        <li>Seen aircrafts: <%= @count_aircrafts %></li>
         <li>Archived ADSB Messages: <%= @count_messages %></li>
         </ul>
     </div>

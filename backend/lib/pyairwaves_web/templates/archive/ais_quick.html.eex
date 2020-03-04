@@ -3,7 +3,7 @@
         <h3>Stats</h3>
         <ul>
         <li>Sources: <%= @count_sources %></li>
-        <li>Known ships: <%= @count_ships %></li>
+        <li>Seen ships: <%= @count_ships %></li>
         <li>Archived AIS Messages: <%= @count_messages %></li>
         </ul>
     </div>

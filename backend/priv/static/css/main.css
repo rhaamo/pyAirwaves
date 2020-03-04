@@ -32,7 +32,7 @@ div.content {
     height: 100%;
 }
 
-div.container.page_content {
+div.container.page_content, div.container-fluid.page_content {
     padding-top: 4rem;
 }
 
