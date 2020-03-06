@@ -58,7 +58,7 @@ This file is part of the airSuck project (https://github.com/rhaamo/pyAirwaves).
       </div>
     </nav>
 
-    <div class="<%= if @page == "map" do %>content<%= else %>container-fluid page_content<% end %>">
+    <div class="<%= if @page == "map" do %>content<% else %>container-fluid page_content<% end %>">
       <%= render @view_module, @view_template, assigns %>
     </div>
 
