@@ -119,7 +119,7 @@ defmodule Pyairwaves.States.SourceCoverage do
 
   def schedule_flush_db() do
     # every hours
-    Process.send_after(self(), :flush_to_db, 2 * 60 * 60 * 1000)
+    Process.send_after(self(), :flush_to_db, 1 * 60 * 60 * 1000)
   end
 
   def handle_info(:flush_to_db, state) do
@@ -136,7 +136,7 @@ defmodule Pyairwaves.States.SourceCoverage do
               %{bearing: bearing, distance: distance}
             end)
 
-          new_source = Ecto.Changeset.change(source, coverage: db_coverages)
+          new_source = Ecto.Changeset.change(source, coverage: db_coverages, coverage_updated_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second))
 
           case Pyairwaves.Repo.update(new_source, log: false) do
             {:ok, _struct} -> Logger.info("Source Coverage state synced.")

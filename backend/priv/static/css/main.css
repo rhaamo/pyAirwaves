@@ -64,3 +64,8 @@ span.icon-socket-ok {
 span.icon-socket-nok {
     color: red;
 }
+
+/* Source coverage */
+div.header_source_coverage {
+    text-align: center;
+}

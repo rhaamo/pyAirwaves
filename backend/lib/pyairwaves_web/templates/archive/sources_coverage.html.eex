@@ -11,12 +11,15 @@
 <%= for sources_cols <- @sources do %>
 <div class="row justify-content-md-center">
     <%= for source <- sources_cols do %>
-    <div class="col-md-5">
-        <h3><%= source.name %>, <%= source.type %>
+    <div class="col-md-2 source_coverage">
+        <div class="header_source_coverage">
+            <h3><%= source.name %>, <%= source.type %></h3>
+            <small>updated on <%= source.coverage_updated_at %></small>
+        </div>
         <div id="polar-<%= source.name %>" class="chart" width="100%"></div>
         <script>
         (function() {
-            var margin = { top: 50, right: 80, bottom: 50, left: 80 },
+            var margin = { top: 50, right: 50, bottom: 50, left: 50 },
                 width = Math.min(700, window.innerWidth / 4) - margin.left - margin.right,
                 height = Math.min(width, window.innerHeight - margin.top - margin.bottom);
 

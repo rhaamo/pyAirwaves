@@ -14,6 +14,7 @@ defmodule Pyairwaves.ArchiveSource do
     field :data_origin, :string
 
     embeds_many :coverage, Pyairwaves.ArchiveSource.Coverage, on_replace: :delete
+    field :coverage_updated_at, :naive_datetime
 
     has_many :archive_ship_messages, Pyairwaves.ArchiveShipMessage
     has_many :archive_aircraft_messages, Pyairwaves.ArchiveShipMessage
