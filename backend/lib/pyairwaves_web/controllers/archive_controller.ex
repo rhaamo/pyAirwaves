@@ -7,7 +7,7 @@ defmodule PyairwavesWeb.ArchiveController do
       Pyairwaves.ArchiveSource
       |> Ecto.Query.order_by([a], asc: a.inserted_at)
       |> Pyairwaves.Repo.all()
-      |> Enum.chunk_every(2)
+      |> Enum.chunk_every(4)
 
     render(conn, "sources_coverage.html",
       version: Pyairwaves.Application.version(),
