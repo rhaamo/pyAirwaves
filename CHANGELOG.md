@@ -6,11 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 ### Added
 - AIS Messages logging
+- ADSB Message logging
+- Receiver/source coverage page
+- AIS and ADSB quick stats page
 
 ### Changed
 - **Breaking:** Backend rewritten from python to Elixir
 - Frontend: Markers out of the current displayed map bounds are dropped when received
 - Renamed srcPosMeta to srcPosMode
+- Map now uses the RRZE tile server for SD/HD maps
+- *Breaking:* Nginx config now has cache for RRZE tile server, highly recommended to setup!
 
 ## [0.0.1]
 ### Added
