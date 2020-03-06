@@ -53,4 +53,4 @@ var pathStrokeWeight = 2.0;
 var pathzIndex = 1000;
 
 // Uses local tileserver cache or no (need specific nginx config)
-var mapUsesLocalCache = false;
+var mapUsesLocalCache = true;

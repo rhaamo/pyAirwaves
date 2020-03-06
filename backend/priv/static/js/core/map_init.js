@@ -43,7 +43,7 @@ function initMap() {
         var rrzeUrl = 'https://osm.rrze.fau.de/osmhd';
     } else {
         Logger.info('Using RRZE tile server through local cache.');
-        var rrzeUrl = '/';
+        var rrzeUrl = '/cache/tiles/rrze/osmhd';
     }
     let layerRrze = L.tileLayer(rrzeUrl + '/{z}/{x}/{y}.png', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors and <a href="https://osm.rrze.fau.de/">RRZE Tile Server</a'
