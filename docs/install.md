@@ -31,6 +31,7 @@ You should uses the file `installation/nginx.conf` as a template.
 
 If you enable the tile caching part, you should also set `mapUsesLocalCache` to `true` in `backend/priv/static/js/config.js`.
 
+Tile caching is highly recommended since the RRZE tile server do aggressive throttling.
 
 # Install
 
