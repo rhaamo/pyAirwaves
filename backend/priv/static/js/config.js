@@ -51,3 +51,6 @@ var defaultZoom = 9; // Default zoom level of the map
 var pathStrokeOpacity = 0.8;
 var pathStrokeWeight = 2.0;
 var pathzIndex = 1000;
+
+// Uses local tileserver cache or no (need specific nginx config)
+var mapUsesLocalCache = true;

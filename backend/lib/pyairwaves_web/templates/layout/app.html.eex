@@ -52,7 +52,9 @@ This file is part of the airSuck project (https://github.com/rhaamo/pyAirwaves).
           </div>
         </li>
         </ul>
-        <span id="websocket-status" class="badge badge-pill badge-secondary" title="WebSocket status unknown"><i class="fa fa-question-circle-o"></i></span>
+        <%= if @page == "map" do %>
+          <span id="websocket-status" class="badge badge-pill badge-secondary" title="WebSocket status unknown"><i class="fa fa-question-circle-o"></i></span>
+        <% end %>
       </div>
     </nav>
 
