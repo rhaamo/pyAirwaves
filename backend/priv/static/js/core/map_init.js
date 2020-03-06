@@ -15,6 +15,37 @@
  * INITIALIZE MAPS
  * Using Leaflet, no Google Map available
  **************************************************/
+
+ // TileLayer for RRZE with custom sd/hd url mapping
+L.TileLayer.RRZE = L.TileLayer.extend({
+    getTileUrl: function(coords) {
+        var data = {
+			r: L.Browser.retina ? 'osmhd' : 'tiles',
+			s: this._getSubdomain(coords),
+			x: coords.x,
+			y: coords.y,
+			z: this._getZoomForUrl()
+		};
+		if (this._map && !this._map.options.crs.infinite) {
+			var invertedY = this._globalTileRange.max.y - coords.y;
+			if (this.options.tms) {
+				data['y'] = invertedY;
+			}
+			data['-y'] = invertedY;
+		}
+
+		return L.Util.template(this._url, L.Util.extend(data, this.options));
+    },
+    getAttribution: function() {
+        return 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors and <a href="https://osm.rrze.fau.de/">RRZE Tile Server</a>';
+    }
+});
+
+L.tileLayer.RRZE = function(url) {
+    return new L.TileLayer.RRZE(url);
+}
+
+
 // Initialize the map.
 function initMap() {
     Logger.info("Initializing maps...");
@@ -40,16 +71,13 @@ function initMap() {
     // Setup layers
     if (mapUsesLocalCache === false) {
         Logger.info('Using RRZE tile server directly.');
-        var rrzeUrl = 'https://osm.rrze.fau.de/osmhd';
+        var rrzeUrl = 'https://osm.rrze.fau.de/{r}/{z}/{x}/{y}.png';
     } else {
         Logger.info('Using RRZE tile server through local cache.');
-        var rrzeUrl = '/cache/tiles/rrze/osmhd';
+        var rrzeUrl = '/cache/tiles/rrze/{r}/{z}/{x}/{y}.png';
     }
-    let layerRrze = L.tileLayer(rrzeUrl + '/{z}/{x}/{y}.png', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors and <a href="https://osm.rrze.fau.de/">RRZE Tile Server</a'
-    })
     let baseLayers = {
-        "OpenStreetMap": layerRrze,
+        "OpenStreetMap": L.tileLayer.RRZE(rrzeUrl),
         "Esri World Imagery": L.tileLayer.provider('Esri.WorldImagery'),
         "OpenTopo (non-hd)": L.tileLayer.provider('OpenTopoMap'),
         "Stamen Terrain": L.tileLayer.provider('Stamen.Terrain'),
