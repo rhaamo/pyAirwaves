@@ -136,7 +136,11 @@ defmodule Pyairwaves.States.SourceCoverage do
               %{bearing: bearing, distance: distance}
             end)
 
-          new_source = Ecto.Changeset.change(source, coverage: db_coverages, coverage_updated_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second))
+          new_source =
+            Ecto.Changeset.change(source,
+              coverage: db_coverages,
+              coverage_updated_at: NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second)
+            )
 
           case Pyairwaves.Repo.update(new_source, log: false) do
             {:ok, _struct} -> Logger.info("Source Coverage state synced.")
