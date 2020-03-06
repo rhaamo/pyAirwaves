@@ -27,6 +27,8 @@ Some more features will be available like airplane picture, company, and statist
 - postgresql >= 10 (should work with lower but you are on your own)
 - python >= 3.6
 - elixir >= 1.5
+- at least 5G of disk space on the server running nginx (tile caching)
+
 
 ## Setup
 

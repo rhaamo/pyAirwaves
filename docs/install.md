@@ -25,6 +25,13 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "postgis";
 ```
 
+# Nginx
+
+You should uses the file `installation/nginx.conf` as a template.
+
+If you enable the tile caching part, you should also set `mapUsesLocalCache` to `true` in `backend/priv/static/js/config.js`.
+
+
 # Install
 
     useradd -m -s /bin/bash pyairwaves

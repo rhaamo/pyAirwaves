@@ -38,12 +38,22 @@ function initMap() {
     }
 
     // Setup layers
+    if (mapUsesLocalCache === false) {
+        Logger.info('Using RRZE tile server directly.');
+        var rrzeUrl = 'https://osm.rrze.fau.de/osmhd';
+    } else {
+        Logger.info('Using RRZE tile server through local cache.');
+        var rrzeUrl = '/';
+    }
+    let layerRrze = L.tileLayer(rrzeUrl + '/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors and <a href="https://osm.rrze.fau.de/">RRZE Tile Server</a'
+    })
     let baseLayers = {
-        "OpenStreetMap": L.tileLayer.provider('OpenStreetMap.Mapnik'),
+        "OpenStreetMap": layerRrze,
         "Esri World Imagery": L.tileLayer.provider('Esri.WorldImagery'),
-        "OpenTopo": L.tileLayer.provider('OpenTopoMap'),
+        "OpenTopo (non-hd)": L.tileLayer.provider('OpenTopoMap'),
         "Stamen Terrain": L.tileLayer.provider('Stamen.Terrain'),
-        "Esri Ocean Basemap": L.tileLayer.provider('Esri.OceanBasemap')
+        "Esri Ocean Basemap (non-hd)": L.tileLayer.provider('Esri.OceanBasemap')
     };
 
     let overlaysLayers = {
