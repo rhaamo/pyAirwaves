@@ -69,3 +69,8 @@ span.icon-socket-nok {
 div.header_source_coverage {
     text-align: center;
 }
+
+div.header_page_source_coverage {
+    text-align: center;
+    margin-bottom: 2em;
+}

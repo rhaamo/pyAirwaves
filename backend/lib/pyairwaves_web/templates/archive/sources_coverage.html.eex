@@ -3,10 +3,34 @@
 <script src="<%= Routes.static_path(@conn, "/js/vendors/radarChart.js") %>" type="text/javascript"></script><!-- Include d3.js. -->
 
 <div class="row justify-content-md-center">
-    <div class="col-md-10">
+    <div class="col-md-2 header_page_source_coverage">
         <h3>Sources coverage</h3>
     </div>
 </div>
+
+<script>
+function fixPoints(points) {
+    let directions = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+    let groupings = {};
+    points.forEach((p) => {
+        if (!groupings[p.axis]) {
+            groupings[p.axis] = p.value;
+        } else {
+            groupings[p.axis] = Math.max(groupings[p.axis], p.value);
+        }
+    })
+    let converted = [];
+    directions.forEach((d) => {
+        if (groupings[d]) {
+            converted.push({axis: d, value: groupings[d]});
+        } else {
+            converted.push({axis: d, value: 0});
+        }
+    });
+    console.log(converted)
+    return converted;
+}
+</script>
 
 <%= for sources_cols <- @sources do %>
 <div class="row justify-content-md-center">
@@ -14,12 +38,12 @@
     <div class="col-md-2 source_coverage">
         <div class="header_source_coverage">
             <h3><%= source.name %>, <%= source.type %></h3>
-            <small>updated on <%= source.coverage_updated_at %></small>
+            <small>updated on <%= source.coverage_updated_at || "never" %></small>
         </div>
         <div id="polar-<%= source.name %>" class="chart" width="100%"></div>
         <script>
         (function() {
-            var margin = { top: 50, right: 50, bottom: 50, left: 50 },
+            let margin = { top: 50, right: 50, bottom: 50, left: 50 },
                 width = Math.min(700, window.innerWidth / 4) - margin.left - margin.right,
                 height = Math.min(width, window.innerHeight - margin.top - margin.bottom);
 
@@ -27,44 +51,18 @@
                 <%= Enum.map(source.coverage, fn x -> Phoenix.HTML.raw("{axis: \"#{Pyairwaves.Utils.bearing_to_direction(x.bearing).shortname}\", value: #{x.distance / 1000}},") end) %>
             ];
 
-            var radarChartOptions = {
-            w: 290,
-            h: 350,
-            margin: margin,
-            levels: 5,
-            roundStrokes: true,
-            color: d3.scaleOrdinal().range(["#EDC951","#CC333F","#00A0B0"]),
-            format: '.0f',
-            unit: ' km'
+            let radarChartOptions = {
+                w: 290,
+                h: 350,
+                margin: margin,
+                levels: 5,
+                roundStrokes: true,
+                color: d3.scaleOrdinal().range(["#EDC951","#CC333F","#00A0B0"]),
+                format: '.0f',
+                unit: ' km'
             };
 
-            function fixPoints(points) {
-                let directions = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
-                let groupings = {};
-                points.forEach((p) => {
-                    if (!groupings[p.axis]) {
-                        groupings[p.axis] = p.value;
-                    } else {
-                        groupings[p.axis] = Math.max(groupings[p.axis], p.value);
-                    }
-                })
-                let converted = [];
-                directions.forEach((d) => {
-                    if (groupings[d]) {
-                        converted.push({axis: d, value: groupings[d]});
-                    } else {
-                        converted.push({axis: d, value: 0});
-                    }
-                });
-                // console.log(converted)
-                return converted;
-            }
-
-            var data = [
-                { name: '<%= source.type %>',
-                axes: fixPoints(points)
-                }
-            ];
+            let data = [{ name: '<%= source.type %>', axes: fixPoints(points)}];
             let svg_radar = RadarChart("#polar-<%= source.name %>", data, radarChartOptions);
 
         })();

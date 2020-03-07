@@ -16,7 +16,7 @@
 /***************************************************
  * DEBUG
  **************************************************/
-var debug = false; // Do we want to have debugging data onscreen and in the console?
+var debug = true; // Do we want to have debugging data onscreen and in the console?
 
 /***************************************************
  * CUSTOM VEHICLES TO INCLUDE - from the js/vehicles directory

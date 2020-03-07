@@ -5,6 +5,7 @@ defmodule PyairwavesWeb.ArchiveController do
   def sources_coverage(conn, _params) do
     sources =
       Pyairwaves.ArchiveSource
+      |> Ecto.Query.where([a], a.position_mode != 0)
       |> Ecto.Query.order_by([a], asc: a.inserted_at)
       |> Pyairwaves.Repo.all()
       |> Enum.chunk_every(4)

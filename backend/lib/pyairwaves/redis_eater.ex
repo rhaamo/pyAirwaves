@@ -29,11 +29,16 @@ defmodule Pyairwaves.RedisEater do
     case Jason.decode(message) do
       {:ok, msg} ->
         # TODO: Broadcast only if lat and lon are available
-        Phoenix.PubSub.broadcast(
-          Pyairwaves.PubSub,
-          "room:vehicles",
-          {:redis_eat, archive_and_enhance_message(msg)}
-        )
+        if msg["lat"] == 91.0 or msg["lon"] == 181.0 do
+          # bogus datas
+          {:noreply, state, :hibernate}
+        else
+          Phoenix.PubSub.broadcast(
+            Pyairwaves.PubSub,
+            "room:vehicles",
+            {:redis_eat, archive_and_enhance_message(msg)}
+          )
+        end
 
       {:error, reason} ->
         Logger.error("Cannot decode incoming struct: #{reason}")
@@ -43,7 +48,8 @@ defmodule Pyairwaves.RedisEater do
   end
 
   defp compute_source_coverage(source, msg) do
-    if msg["srcPosMode"] == 0 or msg["srcPosMode"] == "0" do
+    # Drop if position mode is 0 (none) or if the message doesn't have lat/lon
+    if msg["srcPosMode"] == 0 or msg["srcPosMode"] == "0" or not Map.has_key?(msg, "lat") or not Map.has_key?(msg, "lon") do
       :ignored
     else
       # Logger.debug("Computing for source #{source.id}, #{source.name}, #{source.type}")
@@ -79,7 +85,7 @@ defmodule Pyairwaves.RedisEater do
     |> Pyairwaves.Utils.put_if(:geom, Pyairwaves.Utils.to_geo_point(msg["srcLon"], msg["srcLat"]))
     |> Pyairwaves.Repo.insert(
       returning: true,
-      on_conflict: [set: [name: msg["srcName"]]],
+      on_conflict: {:replace, [:geom, :position_mode]},
       conflict_target: [:name, :type],
       log: false
     )
