@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Renamed srcPosMeta to srcPosMode
 - Map now uses the RRZE tile server for SD/HD maps
 - *Breaking:* Nginx config now has cache for RRZE tile server, highly recommended to setup!
+- Bogus lat/lon are not processed anymore
 
 ## [0.0.1]
 ### Added
