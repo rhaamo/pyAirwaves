@@ -11,6 +11,7 @@ PYAW_HOSTNAME = 'potato'
 # Port for ADSB (dump1090) needs to be 30003 (SBS BaseStation)
 # Port for AIS (rtl-ais) needs to be 10110
 # See docs/PubSub_structure.md for the value of (src)PosMode
+# Please note that the lat/lon of sources is public, you might want to use a lat/lon a bit away from your real location, or use town center, etc.
 ADSB_SOURCE = {"host": "patate", "port": 30003, "name": "patate", "posMode": 0, "lon": None, "lat": None, "reconnect_delay": 5, "thread_timeout": 30}
 AIS_SOURCE = {'host': 'patate', 'port': 10110, "name": "patate", "posMode": 0, "lon": None, "lat": None, "reconnect_delay": 5, "thread_timeout": 30}
 

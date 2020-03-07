@@ -29,8 +29,8 @@ defmodule Pyairwaves.RedisEater do
     case Jason.decode(message) do
       {:ok, msg} ->
         # TODO: Broadcast only if lat and lon are available
-        if msg["lat"] == 91.0 or msg["lon"] == 181.0 do
-          # bogus datas
+        if msg["lat"] >= 91.0 or msg["lat"] <= -91.0 or msg["lon"] >= 181.0 or msg["lon"] <= -181.0 do
+          # bogus datas if anything not in -90/90 or -180/180
           {:noreply, state, :hibernate}
         else
           Phoenix.PubSub.broadcast(
@@ -68,6 +68,8 @@ defmodule Pyairwaves.RedisEater do
         bearing: bearing,
         distance: distance
       }
+      # IO.inspect(coverage)
+      # IO.inspect(msg)
 
       Pyairwaves.States.SourceCoverage.add(source.id, coverage)
       # IO.inspect(Pyairwaves.States.SourceCoverage.find(source.id))

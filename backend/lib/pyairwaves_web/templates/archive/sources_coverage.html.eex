@@ -38,7 +38,7 @@ function fixPoints(points) {
     <div class="col-md-2 source_coverage">
         <div class="header_source_coverage">
             <h3><%= source.name %>, <%= source.type %></h3>
-            <small>updated on <%= source.coverage_updated_at || "never" %></small>
+            <small>updated on <time datetime="<%= source.coverage_updated_at %>"><%= source.coverage_updated_at || "never" %></time></small>
         </div>
         <div id="polar-<%= source.name %>" class="chart" width="100%"></div>
         <script>
