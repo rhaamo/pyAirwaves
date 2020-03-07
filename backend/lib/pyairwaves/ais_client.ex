@@ -3,7 +3,8 @@ defmodule Pyairwaves.AisClient do
   require Logger
 
   def start_link(_) do
-    GenServer.start_link(__MODULE__, %{socket: nil}, name: __MODULE__)
+    {:ok, ais} = AIS.new()
+    GenServer.start_link(__MODULE__, %{socket: nil, ais: ais}, name: __MODULE__)
   end
 
   def init(state) do
@@ -27,6 +28,14 @@ defmodule Pyairwaves.AisClient do
     data = data
     |> String.trim
     Logger.info("Received '#{data}'")
+    case AIS.parse(state[:ais], data) do
+      {:ok, decoded} ->
+        Logger.debug("Got a full packet:")
+        IO.inspect(decoded)
+      {:incomplete, decoded} ->
+        Logger.debug("Incomplete one:")
+        IO.inspect(decoded)
+    end
     {:noreply, state}
   end
 
