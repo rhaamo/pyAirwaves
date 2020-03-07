@@ -20,7 +20,8 @@ defmodule Pyairwaves.Application do
       # {Pyairwaves.Worker, arg},
       Pyairwaves.RedisEater,
       # Handle the in-memory source coverage plot
-      Pyairwaves.States.SourceCoverage
+      Pyairwaves.States.SourceCoverage,
+      Pyairwaves.AisClient
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

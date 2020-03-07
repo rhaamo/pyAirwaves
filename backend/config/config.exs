@@ -23,6 +23,8 @@ config :pyairwaves, Pyairwaves.Repo,
 # Configuration of the PubSub Redis server used between the backend and the data parsers
 config :pyairwaves, redis: "redis://127.0.0.1:6379/4"
 
+config :pyairwaves, :ais_client, host: "127.0.0.1", port: 10110, pos_mode: 0, name: "local", lon: 0.0, lat: 0.0
+
 # Configures the endpoint
 config :pyairwaves, PyairwavesWeb.Endpoint,
   url: [host: "localhost"],
