@@ -49,7 +49,8 @@ defmodule Pyairwaves.RedisEater do
 
   defp compute_source_coverage(source, msg) do
     # Drop if position mode is 0 (none) or if the message doesn't have lat/lon
-    if msg["srcPosMode"] == 0 or msg["srcPosMode"] == "0" or not Map.has_key?(msg, "lat") or not Map.has_key?(msg, "lon") do
+    if msg["srcPosMode"] == 0 or msg["srcPosMode"] == "0" or not Map.has_key?(msg, "lat") or
+         not Map.has_key?(msg, "lon") do
       :ignored
     else
       # Logger.debug("Computing for source #{source.id}, #{source.name}, #{source.type}")
