@@ -13,3 +13,10 @@ repos:
             entry: flake8
             types: [python]
             files: .
+          - id: elixir
+            name: mix format
+            language: system
+            entry: mix format --check-formatted
+            types: [file, text, non-executable]
+            files: \.(ex|exs)$
+            pass_filenames: false
