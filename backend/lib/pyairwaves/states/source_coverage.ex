@@ -144,12 +144,12 @@ defmodule Pyairwaves.States.SourceCoverage do
             )
 
           case Pyairwaves.Repo.update(new_source, log: false) do
-            {:ok, _struct} -> Logger.info("Source Coverage state synced.")
-            {:error, changeset} -> Logger.error("Cannot sync Source Coverage state.", changeset)
+            {:ok, _struct} -> Logger.info("Source Coverage state synced for #{source.name}.")
+            {:error, changeset} -> Logger.error("Cannot sync Source Coverage state for #{source.name}.", changeset)
           end
 
         :error ->
-          Logger.info("Source Coverage state datas not yet available.")
+          Logger.info("Source Coverage state datas not yet available for #{source.name}.")
       end
     end)
 
