@@ -36,7 +36,7 @@ defmodule Pyairwaves.States.SourceCoverage do
 
         # insert in the state
         :ets.insert(table, {source.id, c_struct})
-        Logger.info("Loaded Source Coverage state from db.")
+        Logger.info("Loaded Source Coverage state from db for #{source.name}.")
       end
     end)
   end
