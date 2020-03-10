@@ -8,18 +8,26 @@ defmodule Pyairwaves.AisClient do
     GenServer.start_link(__MODULE__, %{socket: nil, ais: ais, cfg: cfg, log_name: log_name})
   end
 
-   def init(state) do
+  def init(state) do
     send(self(), :connect)
     {:ok, state}
   end
 
   def handle_info(:connect, state) do
     settings = state[:cfg]
-    Logger.info("[#{state[:log_name]}] AIS Client connecting to #{settings[:host]}:#{settings[:port]}")
+
+    Logger.info(
+      "[#{state[:log_name]}] AIS Client connecting to #{settings[:host]}:#{settings[:port]}"
+    )
+
     case :gen_tcp.connect(settings[:host], settings[:port], [:binary, active: true]) do
       {:ok, socket} ->
-        Logger.info("[#{state[:log_name]}] AIS Client connected to #{settings[:host]}:#{settings[:port]}")
+        Logger.info(
+          "[#{state[:log_name]}] AIS Client connected to #{settings[:host]}:#{settings[:port]}"
+        )
+
         {:noreply, %{state | socket: socket}}
+
       {:error, reason} ->
         disconnect(state, reason)
     end
@@ -27,19 +35,25 @@ defmodule Pyairwaves.AisClient do
 
   def handle_info({:tcp, _, data}, state) do
     data
-    |> String.trim
-    |> String.split
+    |> String.trim()
+    |> String.split()
     |> Enum.each(fn d ->
       case AIS.parse(state[:ais], d) do
-        {:ok, _decoded} -> nil
-          # Logger.debug("full: #{d}")
+        {:ok, _decoded} ->
+          nil
+
+        # Logger.debug("full: #{d}")
         {:error, {:invalid_checksum, _decoded}} ->
           Logger.error("[#{state[:log_name]}] checksum: #{d}")
-        {:error, {:incomplete, _}} -> nil
+
+        {:error, {:incomplete, _}} ->
+          nil
+
         {:error, {:invalid, _}} ->
           Logger.error("[#{state[:log_name]}] invalid: #{d}")
       end
     end)
+
     {:noreply, state}
   end
 
