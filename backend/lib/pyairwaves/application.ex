@@ -21,7 +21,10 @@ defmodule Pyairwaves.Application do
       Pyairwaves.RedisEater,
       # Handle the in-memory source coverage plot
       Pyairwaves.States.SourceCoverage,
-      Pyairwaves.AisClient
+      # Supervisor for all AIS Clients
+      Pyairwaves.AisClientsSupervisor,
+      # Just start all AIS clients
+      Pyairwaves.ClientsStarter
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
