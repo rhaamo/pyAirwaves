@@ -1,0 +1,10 @@
+repos:
+    - repo: local
+      hooks:
+          - id: elixir
+            name: mix format
+            language: system
+            entry: mix format --check-formatted
+            types: [file, text, non-executable]
+            files: \.(ex|exs)$
+            pass_filenames: false
