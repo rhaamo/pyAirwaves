@@ -22,7 +22,7 @@ defmodule Pyairwaves.Application do
       # Handle the in-memory source coverage plot
       Pyairwaves.States.SourceCoverage,
       # Supervisor for all AIS Clients
-      Pyairwaves.AisClientsSupervisor,
+      Pyairwaves.AisClientsSupervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

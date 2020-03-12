@@ -6,9 +6,13 @@ defmodule Pyairwaves.ArchiveShipMessage do
 
   schema "archive_ship_message" do
     field :mmsi, :integer
+    field :geom, Geo.PostGIS.Geometry
+    # To add later
+    # field :message_id, :integer
+
+    # To be deleted later
     field :raw, :string
     field :assembled, :boolean, default: false
-    field :geom, Geo.PostGIS.Geometry
     field :heading, :float
     field :course_over_ground, :float
     field :turn_rate, :float

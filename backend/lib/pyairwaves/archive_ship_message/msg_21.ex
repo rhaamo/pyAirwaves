@@ -8,10 +8,10 @@ defmodule Pyairwaves.ArchiveShipMessage.Msg1 do
     field :channel, :string
     field :checksum, :string
     field :current, :string
-    field :dimension_a , :integer
-    field :dimension_b , :integer
-    field :dimension_c , :integer
-    field :dimension_d , :integer
+    field :dimension_a, :integer
+    field :dimension_b, :integer
+    field :dimension_c, :integer
+    field :dimension_d, :integer
     field :formatter, :string
     # field :id, :integer
     field :latitude, :float
