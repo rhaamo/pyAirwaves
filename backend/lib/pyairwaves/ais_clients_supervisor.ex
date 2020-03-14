@@ -14,7 +14,7 @@ defmodule Pyairwaves.AisClientsSupervisor do
     DynamicSupervisor.init(strategy: :one_for_one)
   end
 
-  def start_ais_clients() do
+  def start_ais_clients do
     ais_clients_config = Application.get_env(:pyairwaves, :ais_clients)
 
     Enum.each(ais_clients_config, fn x ->

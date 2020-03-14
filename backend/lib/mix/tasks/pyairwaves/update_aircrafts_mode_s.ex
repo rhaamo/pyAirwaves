@@ -64,7 +64,7 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
     import_owners_from_fam()
   end
 
-  def import_mode_s_from_fam() do
+  def import_mode_s_from_fam do
     Logger.info("Importing from modes TSV")
 
     url = "http://data.flightairmap.com/data/modes.tsv.gz"
@@ -105,7 +105,7 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
     Logger.info("TSV Import done.")
   end
 
-  def import_mode_s_from_basestation() do
+  def import_mode_s_from_basestation do
     Logger.info("Importing from modes BaseStation")
 
     Temp.track!()
@@ -164,7 +164,7 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeS do
     Logger.info("BaseStation Import done.")
   end
 
-  def import_owners_from_fam() do
+  def import_owners_from_fam do
     Logger.info("Starting Aircrafts Owners update. (online)")
 
     url = "http://data.flightairmap.com/data/owners.tsv.gz"

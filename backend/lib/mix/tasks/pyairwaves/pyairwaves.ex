@@ -31,7 +31,7 @@ defmodule Mix.Tasks.Pyairwaves do
     end
   end
 
-  defp general() do
+  defp general do
     Mix.shell().info("pyAirwaves v#{Pyairwaves.Application.version()}")
     Mix.shell().info("ADSB and AIS mapper and logger")
     Mix.shell().info("\nAvailable tasks:\n")

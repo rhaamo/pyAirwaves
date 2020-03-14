@@ -121,7 +121,7 @@ defmodule Pyairwaves.States.SourceCoverage do
     end
   end
 
-  def schedule_flush_db() do
+  def schedule_flush_db do
     # every hours
     Process.send_after(self(), :flush_to_db, 1 * 60 * 60 * 1000)
     # Process.send_after(self(), :flush_to_db, 10 * 1000)
