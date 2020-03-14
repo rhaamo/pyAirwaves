@@ -7,7 +7,7 @@ defmodule Pyairwaves.MessageProcessor do
   Process the incoming message, archive it, add things if needed and return it
   """
 
-  def archive_and_enhance_message(%{"type" => "airAIS"} = msg) do
+  def archive_and_enhance_redis_message(%{"type" => "airAIS"} = msg) do
     # 1/ Fetch or create the ArchiveSource
     # TODO FIXME handle :error
     {:ok, source} = get_or_create_archive_source(msg)
@@ -92,7 +92,7 @@ defmodule Pyairwaves.MessageProcessor do
   # But we still handle both to not have much feeder requirements
 
   # Handle and save a packet from SBS format
-  def archive_and_enhance_message(%{"type" => "airADSB", "srcAdsb" => "SBS"} = msg) do
+  def archive_and_enhance_redis_message(%{"type" => "airADSB", "srcAdsb" => "SBS"} = msg) do
     # 1/ Fetch or create the ArchiveSource
     # TODO FIXME handle :error
     {:ok, source} = get_or_create_archive_source(msg)
@@ -182,7 +182,7 @@ defmodule Pyairwaves.MessageProcessor do
   end
 
   # Handle and save a packet from RAW Mode-S format
-  def archive_and_enhance_message(%{"type" => "airADSB", "srcAdsb" => "RAW MODE-S"} = msg) do
+  def archive_and_enhance_redis_message(%{"type" => "airADSB", "srcAdsb" => "RAW MODE-S"} = msg) do
     # 1/ Fetch or create the ArchiveSource
     {:ok, source} = get_or_create_archive_source(msg)
     compute_source_coverage(source, msg)
