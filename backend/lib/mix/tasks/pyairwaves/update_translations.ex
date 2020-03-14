@@ -44,7 +44,7 @@ defmodule Mix.Tasks.Pyairwaves.UpdateTranslations do
       }
     end)
     |> Enum.chunk_every(1000)
-    |> Enum.map(fn chunk ->
+    |> Enum.each(fn chunk ->
       Pyairwaves.Repo.insert_all(Pyairwaves.Translation, chunk, on_conflict: :nothing, log: false)
     end)
 

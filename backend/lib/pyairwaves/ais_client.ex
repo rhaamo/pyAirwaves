@@ -2,6 +2,10 @@ defmodule Pyairwaves.AisClient do
   use GenServer, restart: :transient
   require Logger
 
+  @moduledoc """
+  Connects to a specified rtl-ais and process NMEA messages coming from it
+  """
+
   def start_link({cfg}) do
     {:ok, ais} = AIS.new()
     log_name = "#{cfg[:name]} #{cfg[:host]}"

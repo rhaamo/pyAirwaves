@@ -1,7 +1,10 @@
 defmodule PyairwavesWeb.VehicleChannel do
   use Phoenix.Channel
-
   require Logger
+
+  @moduledoc """
+  PubSub channel "room:vehicles"
+  """
 
   def join("room:vehicles", _message, socket) do
     {:ok, socket}

@@ -2,6 +2,10 @@ defmodule Pyairwaves.AisClientsSupervisor do
   use DynamicSupervisor
   require Logger
 
+  @moduledoc """
+  Supervise the starting of one AisClient per item in config
+  """
+
   def start_link(_) do
     DynamicSupervisor.start_link(__MODULE__, :ok, name: __MODULE__)
   end

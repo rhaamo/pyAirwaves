@@ -95,7 +95,7 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircrafts do
     Enum.map(aircrafts, fn {_icao, ac} -> parse_aircraft(ac) end)
     # Enum.each(aircrafts, fn {})
     |> Enum.chunk_every(1000)
-    |> Enum.map(fn chunk ->
+    |> Enum.each(fn chunk ->
       Pyairwaves.Repo.insert_all(Pyairwaves.Aircraft, chunk, on_conflict: :nothing, log: false)
     end)
 
