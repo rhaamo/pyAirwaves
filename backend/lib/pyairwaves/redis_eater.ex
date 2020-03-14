@@ -3,7 +3,7 @@ defmodule Pyairwaves.RedisEater do
   require Logger
 
   @moduledoc """
-  Receives messages from the Redis PubSub, pass is through the MessageProcessor and forward them to the internal PubSub
+  Receives messages from the Redis PubSub and forward them to the internal PubSub
   """
 
   def start_link(_) do
@@ -39,7 +39,7 @@ defmodule Pyairwaves.RedisEater do
           Phoenix.PubSub.broadcast(
             Pyairwaves.PubSub,
             "room:vehicles",
-            {:redis_eat, Pyairwaves.MessageProcessor.archive_and_enhance_message(msg)}
+            {:redis_eat, msg}
           )
         end
 
