@@ -29,10 +29,7 @@ def broadcast(msg: pyais.messages.NMEAMessage):
     ais_message["srcPosMode"] = config.AIS_SOURCE["posMode"]
     ais_message["dataOrigin"] = "rtl-ais"
 
-    # Valid message and emit if lat/lon are present
-    # if ais_message.lat and ais_message.lon:
-    # print(ais_message.to_dict())
-    print(ais_message)
+    # print(ais_message)
     redis.publish("room:vehicles", json.dumps(ais_message))
 
 
