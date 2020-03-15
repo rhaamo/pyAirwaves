@@ -12,15 +12,15 @@ def restructure_ais(msg: pyais.messages.NMEAMessage):
     elif t == 5:
         struct = msg_5(decoded)
     elif t == 9:
-        pass
+        struct = msg_9(decoded)
     elif t == 12:
-        pass
+        struct = msg_12(decoded)
     elif t == 14:
-        pass
+        struct = msg_14(decoded)
     elif t == 18:
-        pass
+        struct = msg_18(decoded)
     elif t == 21:
-        pass
+        struct = msg_21(decoded)
     else:
         return {}
 
@@ -41,7 +41,7 @@ def restructure_ais(msg: pyais.messages.NMEAMessage):
 
 def msg_123(decoded: pyais.messages.AISMessage):
     """
-    Message type 1, 2, 3
+    Message type 1, 2, 3 - Class A AIS Position Report
 
     {'type': 1, 'repeat': 0, 'mmsi': 227729770, 'status': <NavigationStatus.UnderWayUsingEngine: 0>, 'turn': 0, 'speed': 5.6, 'accuracy': False,
     'lon': 0.11224333333333333, 'lat': 49.484318333333334, 'course': 272.0, 'heading': 316, 'second': 6, 'maneuver': <ManeuverIndicator.NotAvailable: 0>,
@@ -68,7 +68,7 @@ def msg_123(decoded: pyais.messages.AISMessage):
 
 def msg_4(decoded: pyais.messages.AISMessage):
     """
-    Message type 4
+    Message type 4 - AIS Base Station Report
 
     {'type': 4, 'repeat': 0, 'mmsi': 2288218, 'year': 2020, 'month': 3, 'day': 15, 'hour': 19, 'minute': 16, 'second': 23, 'accuracy': False,
     'lon': 0.07107166666666667, 'lat': 49.50914, 'epfd': <EpfdType.GPS: 1>, 'raim': False, 'radio': 49251}
@@ -94,7 +94,7 @@ def msg_4(decoded: pyais.messages.AISMessage):
 
 def msg_5(decoded: pyais.messages.AISMessage):
     """
-    Message type 5
+    Message type 5 - AIS Class A Ship Static And Voyage Related Data
 
     {'type': 5, 'repeat': 0, 'mmsi': 228179700, 'ais_version': 1, 'imo': 9293040, 'callsign': 'FVFB', 'shipname': 'VB BARFLEUR (18)',
     'shiptype': <ShipType.Trug: 52>, 'to_bow': 10, 'to_stern': 20, 'to_port': 5, 'to_starboard': 5, 'epfd': <EpfdType.GPS: 1>,
@@ -119,3 +119,46 @@ def msg_5(decoded: pyais.messages.AISMessage):
         "type_of_ship_and_cargo_type": int(decoded["shiptype"]),
         "user_id": decoded["mmsi"],
     }
+
+
+def msg_9(decoded: pyais.messages.AISMessage):
+    """
+    Message type 9 - AIS Standard Search And Rescue Aircraft Position Report
+    """
+    print(decoded)
+
+
+def msg_12(decoded: pyais.messages.AISMessage):
+    """
+    Message type 12 - AIS Addressed Safety Related Message
+    """
+    print(decoded)
+
+
+def msg_14(decoded: pyais.messages.AISMessage):
+    """
+    Message type 14 - AIS Safety Related Broadcast Message
+    """
+    print(decoded)
+
+
+def msg_18(decoded: pyais.messages.AISMessage):
+    """
+    Message type 18 - AIS Standard Class B Equipment Position Report
+
+    {'type': 18, 'repeat': 0, 'mmsi': 227006810, 'speed': 10.5, 'accuracy': False, 'lon': 0.08755666666666667, 'lat': 49.477621666666664,
+    'course': 126.7, 'heading': 511, 'second': 5, 'regional': 0, 'cs': True, 'display': False, 'dsc': True, 'band': True, 'msg22': True,
+    'assigned': False, 'raim': True, 'radio': 917510}
+    """
+    return {}
+
+
+def msg_21(decoded: pyais.messages.AISMessage):
+    """
+    Message type 21 - AIS Aids To Navigation (ATON) ReportAIS Aids To Navigation (ATON) Report
+
+    {'type': 21, 'repeat': 0, 'mmsi': 992276203, 'aid_type': <NavAid.ISOLATED_DANGER: 28>, 'name': 'EPAVE ANTARES', 'accuracy': False,
+    'lon': 0.0315, 'lat': 49.536165, 'to_bow': 5, 'to_stern': 6, 'to_port': 7, 'to_starboard': 7, 'epfd': <EpfdType.Undefined: 0>,
+    'second': 60, 'off_position': False, 'regional': 0, 'raim': False, 'virtual_aid': False, 'assigned': False, 'name_extension': ''}
+    """
+    return {}

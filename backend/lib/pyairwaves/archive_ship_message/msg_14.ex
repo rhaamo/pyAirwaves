@@ -3,6 +3,13 @@ defmodule Pyairwaves.ArchiveShipMessage.Msg14 do
 
   # AIS Safety Related Broadcast Message
   embedded_schema do
+    # AIS
+    field :repeat_indicator, :integer
+    field :safety_related_text, :string
+    field :source_id, :integer
+    field :spare, :integer
+
+    # NMEA
     field :channel, :string
     field :checksum, :string
     field :current, :string
@@ -10,12 +17,8 @@ defmodule Pyairwaves.ArchiveShipMessage.Msg14 do
     field :message_id, :integer
     field :padding, :string
     field :payload, :string
-    field :repeat_indicator, :integer
-    field :safety_related_text, :string
-    field :sequential, :string
-    field :source_id, :integer
-    field :spare, :integer
     field :talker, :string
     field :total, :string
+    field :sequential, :string
   end
 end
