@@ -182,4 +182,25 @@ def msg_21(decoded: pyais.messages.AISMessage):
     'lon': 0.0315, 'lat': 49.536165, 'to_bow': 5, 'to_stern': 6, 'to_port': 7, 'to_starboard': 7, 'epfd': <EpfdType.Undefined: 0>,
     'second': 60, 'off_position': False, 'regional': 0, 'raim': False, 'virtual_aid': False, 'assigned': False, 'name_extension': ''}
     """
-    return {}
+    return {
+        "assigned_mode_flag": 1 if decoded["assigned"] else 0,
+        "aton_status": 00000000,  # doesn't seems handled ?
+        "dimension_a": decoded["to_bow"],
+        "dimension_b": decoded["to_stern"],
+        "dimension_c": decoded["to_port"],
+        "dimension_d": decoded["to_starboard"],
+        "latitude": decoded["lat"],
+        "longitude": decoded["lon"],
+        "name_of_aids_to_navigation": decoded["name"],
+        "name_extension": decoded["name_extension"],
+        "assembled_name": decoded["name"] + decoded["name_extension"],  # TODO validate
+        "off_position_indicator": 1 if decoded["off_position"] else 0,
+        "position_accuracy": 1 if decoded["accuracy"] else 0,
+        "raim_flag": 1 if decoded["raim"] else 0,
+        "repeat_indicator": decoded["repeat"],
+        "spare": None,
+        "time_stamp": decoded["second"],
+        "type_of_aids_to_navigation": int(decoded["aid_type"]),
+        "type_of_electronic_position_fixing_device": int(decoded["epfd"]),
+        "virtual_aton_flag": 1 if decoded["virtual_aid"] else 0,
+    }
