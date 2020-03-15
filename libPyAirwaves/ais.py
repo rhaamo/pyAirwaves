@@ -124,6 +124,9 @@ def msg_5(decoded: pyais.messages.AISMessage):
 def msg_9(decoded: pyais.messages.AISMessage):
     """
     Message type 9 - AIS Standard Search And Rescue Aircraft Position Report
+
+    {'type': 9, 'repeat': 0, 'mmsi': 111232506, 'alt': 583, 'speed': 122, 'accuracy': False, 'lon': -2.14309, 'lat': 50.685065,
+    'course': 117.7, 'second': 1, 'dte': True, 'assigned': False, 'raim': False, 'radio': 49549}
     """
     print(decoded)
 
@@ -131,15 +134,32 @@ def msg_9(decoded: pyais.messages.AISMessage):
 def msg_12(decoded: pyais.messages.AISMessage):
     """
     Message type 12 - AIS Addressed Safety Related Message
+
+    {'type': 12, 'repeat': 0, 'mmsi': 271002099, 'seqno': 0, 'dest_mmsi': 271002111, 'retransmit': True, 'text': 'MSG FROM 271002099'}
     """
-    print(decoded)
+    return {
+        "destination_id": decoded["dest_mmsi"],
+        "repeat_indicator": decoded["repeat"],
+        "retransmit_flag": 1 if decoded["retransmit"] else 0,
+        "safety_related_text": decoded["text"],
+        "sequence_number": decoded["seqno"],
+        "source_id": decoded["mmsi"],
+        "spare": None,
+    }
 
 
 def msg_14(decoded: pyais.messages.AISMessage):
     """
     Message type 14 - AIS Safety Related Broadcast Message
+
+    {'type': 14, 'repeat': 0, 'mmsi': 351809000, 'text': 'RCVD YR TEST MSG'}
     """
-    print(decoded)
+    return {
+        "repeat_indicator": decoded["repeat"],
+        "safety_related_text": decoded["text"],
+        "source_id": decoded["mmsi"],
+        "spare": None,
+    }
 
 
 def msg_18(decoded: pyais.messages.AISMessage):
