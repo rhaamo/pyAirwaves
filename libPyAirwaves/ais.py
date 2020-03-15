@@ -150,7 +150,28 @@ def msg_18(decoded: pyais.messages.AISMessage):
     'course': 126.7, 'heading': 511, 'second': 5, 'regional': 0, 'cs': True, 'display': False, 'dsc': True, 'band': True, 'msg22': True,
     'assigned': False, 'raim': True, 'radio': 917510}
     """
-    return {}
+    return {
+        "class_b_band_flag": 1 if decoded["band"] else 0,
+        "class_b_display_flag": 1 if decoded["display"] else 0,
+        "class_b_dsc_flag": 1 if decoded["dsc"] else 0,
+        "class_b_message_22_flag": 1 if decoded["msg22"] else 0,
+        "class_b_unit_flag": 1 if decoded["regional"] else 0,
+        "cog": decoded["course"],
+        "communication_state": decoded["radio"],
+        "communication_state_selector_flag": 1 if decoded["cs"] else 0,
+        "latitude": decoded["lat"],
+        "longitude": decoded["lon"],
+        "mode_flag": 1 if decoded["assigned"] else 0,
+        "position_accuracy": 1 if decoded["accuracy"] else 0,
+        "raim_flag": 1 if decoded["raim"] else 0,
+        "repeat_indicator": decoded["repeat"],
+        "sog": decoded["speed"],
+        "spare1": None,
+        "spare2": None,
+        "time_stamp": decoded["second"],
+        "true_heading": decoded["heading"],
+        "user_id": decoded["mmsi"],
+    }
 
 
 def msg_21(decoded: pyais.messages.AISMessage):
