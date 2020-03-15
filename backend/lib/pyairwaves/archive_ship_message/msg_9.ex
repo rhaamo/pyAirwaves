@@ -20,6 +20,7 @@ defmodule Pyairwaves.ArchiveShipMessage.Msg9 do
     field :spare2, :integer
     field :time_stamp, :integer
     field :user_id, :integer
+    field :dte, :integer
 
     # NMEA
     field :channel, :string

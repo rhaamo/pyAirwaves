@@ -128,7 +128,25 @@ def msg_9(decoded: pyais.messages.AISMessage):
     {'type': 9, 'repeat': 0, 'mmsi': 111232506, 'alt': 583, 'speed': 122, 'accuracy': False, 'lon': -2.14309, 'lat': 50.685065,
     'course': 117.7, 'second': 1, 'dte': True, 'assigned': False, 'raim': False, 'radio': 49549}
     """
-    print(decoded)
+    return {
+        "altitude": decoded["alt"],
+        "altitude_sensor": None,  # not handled ?
+        "assigned_mode_flag": 1 if decoded["assigned"] else 0,
+        "cog": decoded["course"],
+        "communication_state": decoded["radio"],
+        "communication_state_selector_flag": None,  # not handled ?
+        "latitude": decoded["lat"],
+        "longitude": decoded["lon"],
+        "position_accuracy": 1 if decoded["accuracy"] else 0,
+        "raim_flag": 1 if decoded["raim"] else 0,
+        "repeat_indicator": decoded["repeat"],
+        "sog": decoded["speed"],
+        "spare1": None,
+        "spare2": None,
+        "time_stamp": decoded["second"],
+        "user_id": decoded["mmsi"],
+        "dte": decoded["dte"],
+    }
 
 
 def msg_12(decoded: pyais.messages.AISMessage):
