@@ -21,13 +21,15 @@ pubsub.subscribe("room:vehicles")
 def broadcast(msg: pyais.messages.NMEAMessage):
     # Populate the structure from parsed VDM
     ais_message = restructure_ais(msg)
-    ais_message["entryPoint"] = "airwaves_ais_client"
-    ais_message["ourName"] = config.PYAW_HOSTNAME
-    ais_message["srcName"] = config.AIS_SOURCE["name"]
-    ais_message["srcLat"] = config.AIS_SOURCE["lat"]
-    ais_message["srcLon"] = config.AIS_SOURCE["lon"]
-    ais_message["srcPosMode"] = config.AIS_SOURCE["posMode"]
-    ais_message["dataOrigin"] = "rtl-ais"
+    ais_message["source_metadatas"] = {
+        "entry_point": "airwaves_ais_client",
+        "our_name": config.PYAW_HOSTNAME,
+        "src_name": config.AIS_SOURCE["name"],
+        "src_lat": config.AIS_SOURCE["lat"],
+        "src_lon": config.AIS_SOURCE["lon"],
+        "src_pos_mode": config.AIS_SOURCE["posMode"],
+        "data_origin": "rtl-ais",
+    }
 
     # print(ais_message)
     redis.publish("room:vehicles", json.dumps(ais_message))
