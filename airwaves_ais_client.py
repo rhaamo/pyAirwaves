@@ -29,6 +29,7 @@ def broadcast(msg: pyais.messages.NMEAMessage):
         "src_lon": config.AIS_SOURCE["lon"],
         "src_pos_mode": config.AIS_SOURCE["posMode"],
         "data_origin": "rtl-ais",
+        "type": "airAIS",
     }
 
     # print(ais_message)

@@ -43,18 +43,10 @@ defmodule Pyairwaves.AisClient do
     |> String.split()
     |> Enum.each(fn d ->
       case AIS.parse(state[:ais], d) do
-        {:ok, _decoded} ->
-          nil
-
-        # Logger.debug("full: #{d}")
-        {:error, {:invalid_checksum, _decoded}} ->
-          Logger.error("[#{state[:log_name]}] checksum: #{d}")
-
-        {:error, {:incomplete, _}} ->
-          nil
-
-        {:error, {:invalid, _}} ->
-          Logger.error("[#{state[:log_name]}] invalid: #{d}")
+        {:ok, decoded} -> Pyairwaves.MessageProcessor.archive_and_enhance_ais_client_message(decoded)
+        {:error, {:invalid, _}} -> Logger.error("[#{state[:log_name]}] invalid: #{d}")
+        {:error, {:invalid_checksum, _decoded}} -> Logger.error("[#{state[:log_name]}] checksum: #{d}")
+        {:error, {:incomplete, _}} -> nil
       end
     end)
 

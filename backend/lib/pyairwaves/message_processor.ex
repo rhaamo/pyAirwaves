@@ -7,7 +7,11 @@ defmodule Pyairwaves.MessageProcessor do
   Process the incoming message, archive it, add things if needed and return it
   """
 
-  def archive_and_enhance_redis_message(%{"type" => "airAIS"} = msg) do
+  def archive_and_enhance_ais_client_message(_decoded) do
+    Logger.info("do something")
+  end
+
+  def archive_and_enhance_redis_message(%{"source_metadatas" => %{"type" => "airAIS"}} = msg) do
     # 1/ Fetch or create the ArchiveSource
     # TODO FIXME handle :error
     {:ok, source} = get_or_create_archive_source(msg)

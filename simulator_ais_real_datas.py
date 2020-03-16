@@ -29,6 +29,7 @@ try:
             "src_lon": 0,
             "src_pos_mode": 0,
             "data_origin": "real_datas",
+            "type": "airAIS",
         }
         redis.publish("room:vehicles", json.dumps(ais_message))
         time.sleep(DELAY_MESSAGES)
