@@ -7,4 +7,4 @@ sqlalchemy==1.3.13
 bcrypt==3.1.7
 sqlalchemy_searchable==1.1.0
 redis==3.4.1
-pyais==1.0.0
+pyais==1.3.1
