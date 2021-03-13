@@ -1,0 +1,38 @@
+name: Backend testing
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
+    strategy:
+      matrix:
+        otp: ['22.0', '23.2']
+        elixir: ['1.11']
+    env:
+      MIX_ENV: test
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-elixir@v1
+        with:
+          otp-version: ${{matrix.otp}}
+          elixir-version: ${{matrix.elixir}}
+      - uses: huaxk/postgis-action@v1
+        with:
+          postgresql version: '11'
+          postgresql password: 'postgres'
+          postgresql user: 'postgres'
+          postgresql db: 'pyairwaves_test'
+      - uses: supercharge/redis-github-action@1.2.0
+        with:
+          redis-version: 6
+      - run: mix deps.get
+      - run: mix format --check-formatted
+      - run: mix compile
+      - run: mix ecto.migrate
