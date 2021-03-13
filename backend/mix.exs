@@ -11,7 +11,9 @@ defmodule Pyairwaves.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      dialyzer: [plt_add_deps: :transitive]
+      dialyzer: [plt_add_deps: :transitive],
+      description: description(),
+      package: package()
     ]
   end
 
@@ -28,6 +30,21 @@ defmodule Pyairwaves.MixProject do
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
+
+  defp description do
+    """
+     pyAirwaves is an ADS-B and AIS processing, storage (planned), and display application with Leaflets integration.
+    """
+  end
+  
+  defp package do
+    [
+      files: ["lib", "mix.exs", "README*", "LICENSE*"],
+      maintainers: ["dashie@sigpipe.me"],
+      licenses: ["AGPL3"],
+      links: %{"Github" => "https://github.com/rhaamo/pyAirwaves/"}
+    ]
+  end
 
   # Specifies your project dependencies.
   #
