@@ -36,7 +36,7 @@ defmodule Pyairwaves.MixProject do
      pyAirwaves is an ADS-B and AIS processing, storage (planned), and display application with Leaflets integration.
     """
   end
-  
+
   defp package do
     [
       files: ["lib", "mix.exs", "../README*", "../LICENSE*"],
