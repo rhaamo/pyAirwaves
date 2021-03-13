@@ -29,6 +29,9 @@ jobs:
           postgresql password: 'postgres'
           postgresql user: 'postgres'
           postgresql db: 'pyairwaves_test'
+      - uses: supercharge/redis-github-action@1.2.0
+        with:
+          redis-version: 6
       - run: mix deps.get
       - run: mix format --check-formatted
       - run: mix compile
