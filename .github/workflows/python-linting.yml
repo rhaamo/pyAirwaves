@@ -1,8 +1,6 @@
-on:
-  push:
-    branches: [ $default-branch ]
-  pull_request:
-    branches: [ $default-branch ]
+name: Python testing
+
+on: push
 
 jobs:
   build:
