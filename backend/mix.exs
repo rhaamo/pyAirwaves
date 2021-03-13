@@ -39,7 +39,7 @@ defmodule Pyairwaves.MixProject do
   
   defp package do
     [
-      files: ["lib", "mix.exs", "README*", "LICENSE*"],
+      files: ["lib", "mix.exs", "../README*", "../LICENSE*"],
       maintainers: ["dashie@sigpipe.me"],
       licenses: ["AGPL3"],
       links: %{"Github" => "https://github.com/rhaamo/pyAirwaves/"}
