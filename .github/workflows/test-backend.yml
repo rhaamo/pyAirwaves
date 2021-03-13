@@ -1,6 +1,6 @@
 name: Backend testing
 
-on: push]
+on: push
 
 jobs:
   test:
