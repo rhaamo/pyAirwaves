@@ -11,20 +11,6 @@ jobs:
         otp: ['22.0', '23.2']
         elixir: ['1.11']
 
-    services:
-      db:
-        image: splashblot/docker-postgis
-        ports: ['5432:5432']
-        env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: pyairwaves_test
-          POSTGRES_HOST_AUTH_METHOD: trust
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     defaults:
       run:
         working-directory: backend
@@ -35,6 +21,12 @@ jobs:
         with:
           otp-version: ${{matrix.otp}}
           elixir-version: ${{matrix.elixir}}
+      - uses: huaxk/postgis-action@v1
+        with:
+          postgresql version: '11'
+          postgresql password: 'postgres'
+          postgresql user: 'postgres'
+          postgresql db: 'pyairwaves_test'
       - run: mix deps.get
       - run: mix format --check-formatted
       - run: mix compile
