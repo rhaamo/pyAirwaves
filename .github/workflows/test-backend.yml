@@ -36,4 +36,3 @@ jobs:
       - run: mix format --check-formatted
       - run: mix compile
       - run: mix ecto.migrate
-      - run: mix test
