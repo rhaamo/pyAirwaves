@@ -2,12 +2,16 @@ defmodule Pyairwaves.States.SourceCoverage do
   use GenServer
   require Logger
 
-  # The state is key-value
-  # The key is the source ID from ArchiveSource db entry
-  # The value is a map, %{lat: 0, lon:0, bearings: {bearing => distance}}
-  # lat and lon are the one of the source
-  # The bearings list is a map of the actual bearing (1 to 360, ideally only every 30 degrees, float), and distance (in meters, integer)
-  # Only the longuest distance for each bearing is in this list
+  @moduledoc """
+  Holds a SourceCoverage state
+
+  The state is key-value
+  The key is the source ID from ArchiveSource db entry
+  The value is a map, %{lat: 0, lon:0, bearings: {bearing => distance}}
+  lat and lon are the one of the source
+  The bearings list is a map of the actual bearing (1 to 360, ideally only every 30 degrees, float), and distance (in meters, integer)
+  Only the longuest distance for each bearing is in this list
+  """
 
   def start_link(_) do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
@@ -36,7 +40,7 @@ defmodule Pyairwaves.States.SourceCoverage do
 
         # insert in the state
         :ets.insert(table, {source.id, c_struct})
-        Logger.info("Loaded Source Coverage state from db.")
+        Logger.info("Loaded Source Coverage state from db for #{source.name}.")
       end
     end)
   end
@@ -117,10 +121,10 @@ defmodule Pyairwaves.States.SourceCoverage do
     end
   end
 
-  def schedule_flush_db() do
+  def schedule_flush_db do
     # every hours
-    # Process.send_after(self(), :flush_to_db, 1 * 60 * 60 * 1000)
-    Process.send_after(self(), :flush_to_db, 10 * 1000)
+    Process.send_after(self(), :flush_to_db, 1 * 60 * 60 * 1000)
+    # Process.send_after(self(), :flush_to_db, 10 * 1000)
   end
 
   def handle_info(:flush_to_db, state) do
@@ -144,12 +148,15 @@ defmodule Pyairwaves.States.SourceCoverage do
             )
 
           case Pyairwaves.Repo.update(new_source, log: false) do
-            {:ok, _struct} -> Logger.info("Source Coverage state synced.")
-            {:error, changeset} -> Logger.error("Cannot sync Source Coverage state.", changeset)
+            {:ok, _struct} ->
+              Logger.info("Source Coverage state synced for #{source.name}.")
+
+            {:error, changeset} ->
+              Logger.error("Cannot sync Source Coverage state for #{source.name}.", changeset)
           end
 
         :error ->
-          Logger.info("Source Coverage state datas not yet available.")
+          Logger.info("Source Coverage state datas not yet available for #{source.name}.")
       end
     end)
 

@@ -1,16 +1,17 @@
 #!/usr/bin/env python
 
 from real_datas_test import REAL_DATA_AIS
-from libPyAirwaves.structs import AisType
+from libPyAirwaves.ais import restructure_ais
 import time
-import config as cfg
+import config
 import redis
 import json
+import pyais
 
 
 DELAY_MESSAGES = 0.5  # second
 
-redis = redis.from_url(cfg.REDIS_URL)
+redis = redis.from_url(config.REDIS_URL)
 pubsub = redis.pubsub()
 pubsub.subscribe("room:vehicles")
 
@@ -18,20 +19,19 @@ print("Sending messages...")
 
 try:
     for msg in REAL_DATA_AIS[0:20]:
-        print(msg)
-        ais_msg = AisType()
-        if not ais_msg.populate_from_string(msg):
-            print("invalid message")
-            continue
-        ais_msg.entryPoint = "simulator"
-        ais_msg.ourName = cfg.PYAW_HOSTNAME
-        ais_msg.srcName = cfg.AIS_SOURCE["name"]
-        ais_msg.srcLat = cfg.AIS_SOURCE["lat"]
-        ais_msg.srcLon = cfg.AIS_SOURCE["lon"]
-        ais_msg.srcPosMode = cfg.AIS_SOURCE["posMode"]
-        ais_msg.dataOrigin = "rtl-ais"
-
-        redis.publish("room:vehicles", json.dumps(ais_msg.to_dict()))
+        nmea = pyais.NMEAMessage.from_string(msg)
+        ais_message = restructure_ais(nmea)
+        ais_message["source_metadatas"] = {
+            "entry_point": "simulator",
+            "our_name": config.PYAW_HOSTNAME,
+            "src_name": "simulator_ais_real_datas",
+            "src_lat": 0,
+            "src_lon": 0,
+            "src_pos_mode": 0,
+            "data_origin": "real_datas",
+            "type": "airAIS",
+        }
+        redis.publish("room:vehicles", json.dumps(ais_message))
         time.sleep(DELAY_MESSAGES)
 
 except KeyboardInterrupt:

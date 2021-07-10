@@ -4,10 +4,11 @@ blah
 """
 
 import config
-from libPyAirwaves.structs import AisType
+from libPyAirwaves.ais import restructure_ais
 import pyais
 import redis
 import json
+import traceback
 
 count_failed_connection = 0
 max_failed_connection = 10
@@ -18,35 +19,21 @@ pubsub.subscribe("room:vehicles")
 
 
 def broadcast(msg: pyais.messages.NMEAMessage):
-    is_fragmented = msg.count > 1
-    # if is_fragmented:
-    #     print("Fragmented packet:", msg)
-    # else:
-    #     print("Single packet:", msg)
-
-    ais_message = AisType()
-    ais_message.entryPoint = "airwaves_ais_client"
-    ais_message.ourName = config.PYAW_HOSTNAME
-    ais_message.srcName = config.AIS_SOURCE["name"]
-    ais_message.srcLat = config.AIS_SOURCE["lat"]
-    ais_message.srcLon = config.AIS_SOURCE["lon"]
-    ais_message.srcPosMode = config.AIS_SOURCE["posMode"]
-    ais_message.dataOrigin = "rtl-ais"
-    ais_message.raw = msg.raw.decode("utf-8")
-    ais_message.payload = msg.data.decode("utf-8")
-
-    ais_parsed = msg.decode()
-
-    if is_fragmented:
-        ais_message.isAssembled = True
-
     # Populate the structure from parsed VDM
-    ais_message.populateFromParsedVdm(ais_parsed)
+    ais_message = restructure_ais(msg)
+    ais_message["source_metadatas"] = {
+        "entry_point": "airwaves_ais_client",
+        "our_name": config.PYAW_HOSTNAME,
+        "src_name": config.AIS_SOURCE["name"],
+        "src_lat": config.AIS_SOURCE["lat"],
+        "src_lon": config.AIS_SOURCE["lon"],
+        "src_pos_mode": config.AIS_SOURCE["posMode"],
+        "data_origin": "rtl-ais",
+        "type": "airAIS",
+    }
 
-    # Valid message and emit if lat/lon are present
-    # if ais_message.lat and ais_message.lon:
-    # print(ais_message.to_dict())
-    redis.publish("room:vehicles", json.dumps(ais_message.to_dict()))
+    # print(ais_message)
+    redis.publish("room:vehicles", json.dumps(ais_message))
 
 
 if __name__ == "__main__":
@@ -57,4 +44,5 @@ if __name__ == "__main__":
                 broadcast(msg)
         except Exception as e:
             print("Got an exception, reconnecting...", e)
+            traceback.print_exc()
             pass

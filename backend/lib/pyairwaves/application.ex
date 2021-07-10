@@ -20,13 +20,21 @@ defmodule Pyairwaves.Application do
       # {Pyairwaves.Worker, arg},
       Pyairwaves.RedisEater,
       # Handle the in-memory source coverage plot
-      Pyairwaves.States.SourceCoverage
+      Pyairwaves.States.SourceCoverage,
+      # Supervisor for all AIS Clients
+      Pyairwaves.AisClientsSupervisor
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Pyairwaves.Supervisor]
-    Supervisor.start_link(children, opts)
+    ret = Supervisor.start_link(children, opts)
+
+    # Start AIS Clients
+    Pyairwaves.AisClientsSupervisor.start_ais_clients()
+
+    # Return the supervisor
+    ret
   end
 
   # Tell Phoenix to update the endpoint configuration

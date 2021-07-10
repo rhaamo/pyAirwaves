@@ -1,4 +1,8 @@
 defmodule Pyairwaves.Utils do
+  @moduledoc """
+  Various pyairwaves utils
+  """
+
   @doc "Return acc with key=value if value defined else returns acc untouched"
   def put_if(acc, key, value) do
     case value do
@@ -30,6 +34,7 @@ defmodule Pyairwaves.Utils do
     rem(degrees + 360, 360)
   end
 
+  @doc "Get a degree bearing and return a map with the full name like North"
   def bearing_to_direction(bearing) do
     case bearing do
       bearing when bearing == 360 or (bearing >= 0 and bearing < 22.5) ->
