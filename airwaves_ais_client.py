@@ -59,5 +59,5 @@ if __name__ == "__main__":
                 broadcast(msg)
         except Exception as e:
             print("Got an exception, reconnecting...", e)
-            time.sleep(config.AIS_SOURCE['reconnect_delay'])
+            time.sleep(config.AIS_SOURCE["reconnect_delay"])
             pass
