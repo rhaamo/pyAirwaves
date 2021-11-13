@@ -108,6 +108,15 @@ mix help pyairwaves.update_aircrafts
 - pyairwaves.update_aircrafts_mode_s: one time per month
 - pyairwaves.update_aircrafts_mode_sogn: one time per month
 
+```
+# /etc/cron.d/pyairwaves
+MIX_ENV=prod
+0 0 1 * * pyairwaves cd /home/pyairwaves/pyAirwaves/backend && mix pyairwaves.update_aircrafts
+0 0 1 * * pyairwaves cd /home/pyairwaves/pyAirwaves/backend && mix pyairwaves.update_translations
+0 0 1 * * pyairwaves cd /home/pyairwaves/pyAirwaves/backend && mix pyairwaves.update_aircrafts_mode_s
+0 0 1 * * pyairwaves cd /home/pyairwaves/pyAirwaves/backend && mix pyairwaves.update_aircrafts_mode_sogn
+```
+
 # rtl-ais
 
 Uses this fork: https://github.com/mik3y/rtl-ais until https://github.com/dgiardini/rtl-ais/pull/34 is merged.
