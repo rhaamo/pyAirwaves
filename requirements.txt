@@ -1,4 +1,4 @@
-psycopg2-binary==2.8.6
+psycopg2-binary==2.9.1
 texttable==1.6.3
 Unidecode==1.2.0
 python-magic==0.4.22
