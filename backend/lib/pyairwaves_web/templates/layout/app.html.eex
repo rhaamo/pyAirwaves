@@ -59,7 +59,7 @@ This file is part of the airSuck project (https://github.com/rhaamo/pyAirwaves).
     </nav>
 
     <div class="<%= if @page == "map" do %>content<% else %>container-fluid page_content<% end %>">
-      <%= render @view_module, @view_template, assigns %>
+      <%= render Phoenix.Controller.view_module(@conn), Phoenix.Controller.view_template(@conn), assigns %>
     </div>
 
     <form><input type="text" class="msgBx dbgInactive" id="message" value="Waiting for message data..." /></form>
