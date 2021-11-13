@@ -8,6 +8,8 @@ from libPyAirwaves.structs import AisType
 import pyais
 import redis
 import json
+import time
+
 
 count_failed_connection = 0
 max_failed_connection = 10
@@ -57,4 +59,5 @@ if __name__ == "__main__":
                 broadcast(msg)
         except Exception as e:
             print("Got an exception, reconnecting...", e)
+            time.sleep(config.AIS_SOURCE['reconnect_delay'])
             pass
