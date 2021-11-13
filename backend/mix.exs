@@ -51,29 +51,29 @@ defmodule Pyairwaves.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.4.13"},
-      {:phoenix_pubsub, "~> 1.1"},
-      {:phoenix_ecto, "~> 4.0"},
-      {:ecto_sql, "~> 3.1"},
-      {:postgrex, ">= 0.0.0"},
-      {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:gettext, "~> 0.11"},
-      {:sentry, "~> 7.2.2"},
-      {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"},
-      {:redix, ">= 0.0.0"},
-      {:nimble_csv, "~> 0.6"},
-      {:httpoison, "~> 1.6"},
-      {:esqlite, "~> 0.4.0"},
+      {:phoenix, "~> 1.6.0"},
+      {:phoenix_pubsub, "~> 2.0"},
+      {:phoenix_ecto, "~> 4.4"},
+      {:phoenix_html, "~> 3.1"},
+      {:phoenix_live_reload, "~> 1.3", only: :dev},
+      {:ecto_sql, "~> 3.7"},
+      {:postgrex, ">= 0.15.13"},
+      {:gettext, "~> 0.18"},
+      {:sentry, "~> 8.0.6"},
+      {:jason, "~> 1.2"},
+      {:plug_cowboy, "~> 2.5"},
+      {:redix, ">= 1.1.4"},
+      {:nimble_csv, "~> 1.1"},
+      {:httpoison, "~> 1.8"},
+      {:esqlite, "~> 0.4.1"},
       {:sqlitex, "~> 1.7"},
       {:temp, "~> 0.4"},
-      {:geo_postgis, "~> 3.1"},
-      {:timex, "~> 3.5"},
-      {:dialyxir, "~> 1.0.0-rc.7", only: [:dev], runtime: false},
+      {:geo_postgis, "~> 3.4"},
+      {:timex, "~> 3.7"},
+      {:dialyxir, "~> 1.1.0", only: [:dev], runtime: false},
       # geocalc 0.8.0 is currently borked, see https://github.com/yltsrc/geocalc/issues/55
       {:geocalc, git: "https://github.com/yltsrc/geocalc", ref: "master"},
-      {:math, "~> 0.5.0"}
+      {:math, "~> 0.7.0"}
     ]
   end
 
