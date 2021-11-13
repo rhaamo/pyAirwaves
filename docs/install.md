@@ -107,3 +107,8 @@ mix help pyairwaves.update_aircrafts
 - pyairwaves.update_translations: one time per month
 - pyairwaves.update_aircrafts_mode_s: one time per month
 - pyairwaves.update_aircrafts_mode_sogn: one time per month
+
+# rtl-ais
+
+Uses this fork: https://github.com/mik3y/rtl-ais until https://github.com/dgiardini/rtl-ais/pull/34 is merged.
+We need the mode to keep TCP socket open or it won't update the AIS messages.

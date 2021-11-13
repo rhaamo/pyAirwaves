@@ -3,7 +3,8 @@ Description=AIS receiver and decoder
 After=network.target
 
 [Service]
-ExecStart=/usr/local/bin/rtl_ais -d 0 -T
+# device 0, TCP, keep socket open, RTL AGC, Tuner gain 30, print NMEA to console
+ExecStart=/usr/local/bin/rtl_ais -d 0 -T -k -R -g 30 -n
 Type=simple
 RestartSec=5
 Restart=on-failure
