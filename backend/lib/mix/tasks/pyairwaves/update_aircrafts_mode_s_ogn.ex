@@ -78,11 +78,12 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircraftsModeSogn do
       fn ->
         # CSV Header:
         # DEVICE_TYPE,DEVICE_ID,AIRCRAFT_MODEL,REGISTRATION,CN,TRACKED,IDENTIFIED
+        # Duplicate ICAO codes (on_conflict) will be ignored
         HTTPoison.get!(url, [], []).body
         |> UAMSOGNParser.parse_string(skip_headers: true)
         |> Enum.map(fn row ->
           {:ok, am} = parse_aircraft_mode(row)
-          Pyairwaves.Repo.insert!(am, log: false)
+          Pyairwaves.Repo.insert!(am, on_conflict: :nothing, log: false)
         end)
       end,
       log: false,
