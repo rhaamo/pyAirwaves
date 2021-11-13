@@ -15,9 +15,7 @@ defmodule Mix.Tasks.Pyairwaves.UpdateAircrafts do
 
   defp parse_aircraft(aircraft) do
     aircraft_shadow =
-      "generic_#{String.slice(aircraft["EngineType"], 0, 1)}#{aircraft["EngineCount"]}#{
-        aircraft["WTC"]
-      }.png"
+      "generic_#{String.slice(aircraft["EngineType"], 0, 1)}#{aircraft["EngineCount"]}#{aircraft["WTC"]}.png"
 
     engine_count =
       case aircraft["EngineCount"] do

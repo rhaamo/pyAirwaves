@@ -31,7 +31,6 @@ config :pyairwaves, PyairwavesWeb.Endpoint,
   live_view: [signing_salt: "q2gfUiPH"],
   pubsub_server: Pyairwaves.PubSub
 
-
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
