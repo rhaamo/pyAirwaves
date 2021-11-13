@@ -28,6 +28,8 @@ Some more features will be available like airplane picture, company, and statist
 - python >= 3.6
 - elixir >= 1.5
 - at least 5G of disk space on the server running nginx (tile caching)
+- an ADSB source (dump1090)
+- an AIS source (rtl-ais)
 
 
 ## Setup
