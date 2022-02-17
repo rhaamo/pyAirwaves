@@ -6,5 +6,5 @@ python-slugify==4.0.1
 sqlalchemy==1.4.27
 bcrypt==3.2.0
 sqlalchemy_searchable==1.2.0
-redis==3.5.3
+redis==4.1.4
 pyais==1.4.0
