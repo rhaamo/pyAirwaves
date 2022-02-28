@@ -2,7 +2,7 @@ psycopg2-binary==2.9.2
 texttable==1.6.3
 Unidecode==1.2.0
 python-magic==0.4.22
-python-slugify==4.0.1
+python-slugify==6.1.1
 sqlalchemy==1.4.27
 bcrypt==3.2.0
 sqlalchemy_searchable==1.2.0
