@@ -4,7 +4,7 @@ Unidecode==1.2.0
 python-magic==0.4.22
 python-slugify==4.0.1
 sqlalchemy==1.4.27
-bcrypt==3.2.0
+bcrypt==4.0.1
 sqlalchemy_searchable==1.2.0
 redis==3.5.3
 pyais==1.4.0
